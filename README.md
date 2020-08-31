@@ -13,15 +13,16 @@ Her følger oversikt over arbeidet/episodene. Først er dette en plan, men etter
 
 ### Gitpodifisering av repoet
 
-Planen er å bruke både gitpod og Eclipse til utvikling, hhv. en nettleserbasert og desktop-basert IDE.
+Planen er å primært bruke gitpod til utvikling (selv om det kanskje ville vært mest praktisk for meg å bare bruke Eclipse).
 Første trinn blir å "gitpodifisere" repoet, dvs. gjøre at gitpod kan startes opp rett fra repo-sida på gitlab.
 
 ### Oppsett av første trinn av utviklingsprosjektet
 
-I første omgang skal vi sette opp et enkelt JavaFX-prosjekt med maven som bygge-system.
-Vi tar utgangspunkt i malen som ligger i *javafx-maven*-grenen i [gitpod-templates-repoet](https://gitlab.stud.idi.ntnu.no/it1901/gitpod-templates)
-Så gjør vi nødvendige tilpasninger, slik at det passer til vårt bruk (f.eks. endres navnet).
-Merk at prosjektoppsettet er enklere enn det vil måtte bli, men vi gjør det sånn for å komme raskere i gang.
+I første omgang skal vi sette opp et enkelt JavaFX-prosjekt med maven som bygge-system. Vi setter det opp fra scratch, vha. en enkel mal for
+maven-prosjekter og så justerer vi litt på det ved å kopiere elementer fra malen som ligger i *javafx-maven*-grenen i
+[gitpod-templates-repoet](https://gitlab.stud.idi.ntnu.no/it1901/gitpod-templates). Jeg gjør det på denne måten, fordi det da er enklere
+å forklare hvert element i pom.xml-fila, som inneholder oppsettet. Merk at prosjektoppsettet er enklere enn det vil måtte bli, men
+vi gjør det sånn for å komme raskere i gang. Så bygger vi ut etterhvert og omstrukturerer når det trengs.
 
 ### Vår første utviklingsoppgave: Et enkelt API for todo-lister m/tester
 
