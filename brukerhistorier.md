@@ -23,7 +23,7 @@ Hvert punkt i handlelista trenger ikke å være mer enn en enkelt tekst, og de m
 - huke av elementer
 - gjenbruke gamle (avhukede) elementer
 
-## Brukerhistorie - ukas gjøremål
+## Brukerhistorie 2 - ukas gjøremål
 
 Brukeren har behov for å notere ned ukas gjøremål og gjerne knytte en frist til enkeltelementer.
 Elementer som ikke har en frist har implisitt samme frist som lista.
