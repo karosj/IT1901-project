@@ -1,3 +1,5 @@
+[![Gitpod Ready-to-Code](https://img.shields.io/badge/Gitpod-Ready--to--Code-blue?logo=gitpod)](https://gitpod.idi.ntnu.no/#https://gitlab.stud.idi.ntnu.no/it1901/todo-list) 
+
 # todo-list-prosjektet
 
 Dette prosjektet er et utviklingsprosjekt tilsvarende det en skal gjennom i IT1901. Det er ment å være til et nyttig eksempel på flere måter:
