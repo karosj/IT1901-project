@@ -4,7 +4,7 @@ Her samler vi brukerhistorier som har til hensikt å (av)dekke krav som systemet
 Det finnes ulike former for brukerhistorier, med mer eller mindre stramme krav om form, her gjør vi det nokså uformelt,
 men prøver å oppsummere hver av dem litt strukturert.
 
-## Brukerhistorie 1 - handleliste
+## Handleliste (us-1)
 
 Som privatperson ønsker jeg å holde oversikt over og orden på det jeg skal handle,
 så jeg er sikker på å få handlet det jeg trenger.
@@ -26,7 +26,7 @@ Hvert punkt i handlelista trenger ikke å være mer enn en enkelt tekst, og de m
 - huke av elementer
 - gjenbruke gamle (avhukede) elementer
 
-## Brukerhistorie 2 - ukas gjøremål
+## Ukas gjøremål (us-2)
 
 Som privatperson ønsker jeg å holde oversikt over og orden på gjøremål,
 så jeg er sikker på å få gjort dem i tide.
