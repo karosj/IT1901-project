@@ -6,12 +6,32 @@ men prøver å oppsummere hver av dem litt strukturert.
 
 ## Brukerhistorie 1 - handleliste
 
-Som privatperson har jeg behov for å holde oversikt over og orden på det jeg skal handle,
+Som privatperson ønsker jeg å holde oversikt over og orden på det jeg skal handle,
 så jeg er sikker på å få handlet det jeg trenger.
+
+Brukeren har behov for å lage en handleliste i forkant av en handletur og
+så huke av underveis/etterpå hva som blir/ble handlet så en er sikker på at en får/har fått med alt.
+Når en lager en handlelista, så er det kjekt å kunne gjenbruke tidligere avhukede elementer,
+da en jo ofte handler de samme tingene på samme sted.
+Hvert punkt i handlelista trenger ikke å være mer enn en enkelt tekst, og de må kunne hukes av og på.
+
+### Viktig å kunne se
+
+- når en handler: oversikt over hva som gjenstår å handle
+- det en har handlet: ting man har handlet tidligere
+
+### Viktig å kunne gjøre
+
+- legge inn nye elementer
+- huke av elementer
+- gjenbruke gamle (avhukede) elementer
 
 ## Brukerhistorie 2 - ukas gjøremål
 
-Brukeren har behov for å notere ned ukas gjøremål og gjerne knytte en frist til enkeltelementer.
+Som privatperson ønsker jeg å holde oversikt over og orden på gjøremål,
+så jeg er sikker på å få gjort dem i tide.
+
+Brukeren har behov for å notere ned gjøremål, f.eks. i kommende uke, og gjerne knytte en frist til enkeltelementer.
 Elementer som ikke har en frist har implisitt samme frist som lista.
 
 ### Viktig å kunne se
