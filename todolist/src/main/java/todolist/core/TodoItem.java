@@ -5,6 +5,11 @@ public class TodoItem {
     private String text;
     private boolean checked;
 
+    @Override
+    public String toString() {
+        return String.format("[TodoItem text=%s checked=%s]", getText(), isChecked());
+    }
+
     public String getText() {
         return text;
     }
