@@ -27,6 +27,16 @@ Så bygger vi ut og omstrukturerer når det trengs.
 
 ### Vår første utviklingsoppgave: Et enkelt API for todo-lister
 
-Vi tar utgangspunkt i [brukerhistorie 1](brukerhistorier.md) og definerer to brukeroppgaver, én for API-et og én for GUI-et og begynner på API-et.
+Vi tar utgangspunkt i [brukerhistorie 1](brukerhistorier.md) og definerer tre brukeroppgaver, én for API-et, en for JSON-basert tekstformat og én for GUI-et og begynner på API-et.
+API-et består av to klasser, **TodoList** og **TodoItem**, hvor den første inneholder flere av den andre.
+**TodoList** har metoder for å legge til, fjerne og hente ut TodoItem-elementer.
+
+Det ble to episoder, episode 2 og 2b.
+
+### JSON-basert tekstformat for handlelist-data
+
+Vi bruker Jackson-biblioteket og implementerer serialisering- og deserialisering-klasser.
+
+Det ble to episoder, episode 3 og 3b.
 
 ### Et enkelt JavaFX-GUI for todo-lista
