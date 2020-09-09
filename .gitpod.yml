@@ -3,8 +3,7 @@ image:
 
 tasks:
   - init: sdk use java 14.0.2.j9-adpt
-    command: echo "Replace me with something that should run on every start, or just
-      remove me entirely."
+    command: cd todolist
 
 ports:
   # used by virtual desktop and vnc, supports JavaFX
