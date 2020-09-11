@@ -30,7 +30,20 @@ public class TodoModuleTest {
         mapper.registerModule(new TodoModule());
     }
 
-    private final static String todoListWithTwoItems = "{\"items\":[{\"text\":\"item1\",\"checked\":false},{\"text\":\"item2\",\"checked\":true}]}";
+    private final static String todoListWithTwoItems = """
+        {
+            "items": [
+                {
+                    "text": "item1",
+                    "checked" : false
+                },
+                {
+                    "text": "item2",
+                    "checked" : true
+                }
+            ]
+        }
+        """;
 
     @Test
     public void testSerializers() {
@@ -43,7 +56,7 @@ public class TodoModuleTest {
         list.addTodoItem(item1);
         list.addTodoItem(item2);
         try {
-            assertEquals(todoListWithTwoItems, mapper.writeValueAsString(list));
+            assertEquals(todoListWithTwoItems.replaceAll("\\s+", ""), mapper.writeValueAsString(list));
         } catch (JsonProcessingException e) {
             fail();
         }
