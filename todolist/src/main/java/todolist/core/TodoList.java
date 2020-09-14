@@ -5,20 +5,34 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
-public class TodoList implements Iterable<TodoItem> {
+public class TodoList implements Iterable<TodoListItem> {
 
-    private List<TodoItem> items = new ArrayList<>();
+    private List<TodoListItem> items = new ArrayList<>();
+
+    public TodoItem createTodoItem() {
+        return new TodoListItem(this);
+    }
 
     public void addTodoItem(TodoItem item) {
-        items.add(item);
+        TodoListItem todoListItem = null;
+        if (item instanceof TodoListItem) {
+            todoListItem = (TodoListItem) item;
+        } else {
+            todoListItem = new TodoListItem(this);
+            todoListItem.setText(item.getText());
+            todoListItem.setChecked(item.isChecked());
+        }
+        items.add(todoListItem);
+        fireTodoListChanged();
     }
 
     public void removeTodoItem(TodoItem item) {
         items.remove(item);
+        fireTodoListChanged();
     }
 
     @Override
-    public Iterator<TodoItem> iterator() {
+    public Iterator<TodoListItem> iterator() {
         return items.iterator();
     }
 
@@ -46,5 +60,27 @@ public class TodoList implements Iterable<TodoItem> {
 
     public Collection<TodoItem> getUncheckedTodoItems() {
         return getTodoItems(false);
+    }
+
+    // støtte for lytting
+
+    private Collection<TodoListListener> todoListListeners = new ArrayList<>();
+
+    public void addTodoListListener(TodoListListener listener) {
+        todoListListeners.add(listener);
+    }
+
+    public void removeTodoListListener(TodoListListener listener) {
+        todoListListeners.remove(listener);
+    }
+
+    protected void fireTodoListChanged(TodoItem item) {
+        fireTodoListChanged();
+    }
+
+    protected void fireTodoListChanged() {
+        for (TodoListListener listener : todoListListeners) {
+            listener.todoListChanged(this);
+        }
     }
 }

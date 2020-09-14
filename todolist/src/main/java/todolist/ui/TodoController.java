@@ -14,8 +14,20 @@ import todolist.json.TodoModule;
 
 public class TodoController {
 
-    private final static String todoListWithTwoItems =
-    "{\"items\":[{\"text\":\"item2\",\"checked\":true},{\"text\":\"item1\",\"checked\":false},{\"text\":\"item3\",\"checked\":true}]}";
+    private final static String todoListWithTwoItems = """
+        {
+            "items": [
+                {
+                    "text": "item1",
+                    "checked" : false
+                },
+                {
+                    "text": "item2",
+                    "checked" : true
+                }
+            ]
+        }
+        """;
 
     private TodoList todoList;
     private ObjectMapper mapper = new ObjectMapper();
@@ -40,6 +52,7 @@ public class TodoController {
     public void initialize() {
         // kobler data til list-controll
         updateTodoListView();
+        todoList.addTodoListListener(todoList -> updateTodoListView());
     }
 
     protected void updateTodoListView() {
@@ -54,7 +67,6 @@ public class TodoController {
         TodoItem item = new TodoItem();
         item.setText(newTodoItemText.getText());
         todoList.addTodoItem(item);
-        updateTodoListView();
     }
 
     @FXML
@@ -62,7 +74,6 @@ public class TodoController {
         TodoItem item = todoListView.getSelectionModel().getSelectedItem();
         if (item != null) {
             todoList.removeTodoItem(item);
-            updateTodoListView();
         }
     }
 
@@ -70,6 +81,5 @@ public class TodoController {
     public void handleCheckItemAction() {
         TodoItem item = todoListView.getSelectionModel().getSelectedItem();
         item.setChecked(true);
-        updateTodoListView();
     }
 }
