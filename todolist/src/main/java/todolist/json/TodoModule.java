@@ -1,21 +1,20 @@
 package todolist.json;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.util.VersionUtil;
+import com.fasterxml.jackson.core.Version;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 
 import todolist.core.TodoItem;
 import todolist.core.TodoList;
 
+@SuppressWarnings("serial")
 public class TodoModule extends SimpleModule {
 
     private static final String NAME = "TodoModule";
-    private static final VersionUtil VERSION_UTIL = new VersionUtil() {
-    };
 
     public TodoModule() {
-        super(NAME, VERSION_UTIL.version());
+        super(NAME, Version.unknownVersion());
         addSerializer(TodoItem.class, new TodoItemSerializer());
         addSerializer(TodoList.class, new TodoListSerializer());
         addDeserializer(TodoItem.class, new TodoItemDeserializer());
