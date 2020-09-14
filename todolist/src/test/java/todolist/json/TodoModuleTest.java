@@ -48,9 +48,9 @@ public class TodoModuleTest {
     @Test
     public void testSerializers() {
         TodoList list = new TodoList();
-        TodoItem item1 = new TodoItem();
+        TodoItem item1 = list.createTodoItem();
         item1.setText("item1");
-        TodoItem item2 = new TodoItem();
+        TodoItem item2 = list.createTodoItem();
         item2.setText("item2");
         item2.setChecked(true);
         list.addTodoItem(item1);

@@ -5,9 +5,9 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
-public class TodoList implements Iterable<TodoListItem> {
+public class TodoList implements Iterable<TodoItem> {
 
-    private List<TodoListItem> items = new ArrayList<>();
+    private List<TodoItem> items = new ArrayList<>();
 
     public TodoItem createTodoItem() {
         return new TodoListItem(this);
@@ -32,7 +32,7 @@ public class TodoList implements Iterable<TodoListItem> {
     }
 
     @Override
-    public Iterator<TodoListItem> iterator() {
+    public Iterator<TodoItem> iterator() {
         return items.iterator();
     }
 

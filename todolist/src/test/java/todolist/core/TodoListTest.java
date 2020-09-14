@@ -28,14 +28,14 @@ public class TodoListTest {
 
     @Test
     public void testGetCheckedTodoItems_oneUncheckedItem() {
-        TodoItem item = new TodoItem();
+        TodoItem item = newList.createTodoItem();
         newList.addTodoItem(item);
         assertTrue(newList.getCheckedTodoItems().isEmpty());
     }
 
     @Test
     public void testGetCheckedTodoItems_oneCheckedItem() {
-        TodoItem item = new TodoItem();
+        TodoItem item = newList.createTodoItem();
         newList.addTodoItem(item);
         item.setChecked(true);
         Collection<TodoItem> items = newList.getCheckedTodoItems();
@@ -45,7 +45,7 @@ public class TodoListTest {
 
     @Test
     public void testGetCheckedTodoItems_oneItemCheckedAfterAdding() {
-        TodoItem item = new TodoItem();
+        TodoItem item = newList.createTodoItem();
         newList.addTodoItem(item);
         assertTrue(newList.getCheckedTodoItems().isEmpty());
         item.setChecked(true);
@@ -63,7 +63,7 @@ public class TodoListTest {
 
     @Test
     public void testGetUncheckedTodoItems_oneUncheckedItem() {
-        TodoItem item = new TodoItem();
+        TodoItem item = newList.createTodoItem();
         newList.addTodoItem(item);
         Collection<TodoItem> items = newList.getUncheckedTodoItems();
         assertEquals(1, items.size());
@@ -72,7 +72,7 @@ public class TodoListTest {
 
     @Test
     public void testGetUncheckedTodoItems_oneCheckedItem() {
-        TodoItem item = new TodoItem();
+        TodoItem item = newList.createTodoItem();
         newList.addTodoItem(item);
         item.setChecked(true);
         assertTrue(newList.getUncheckedTodoItems().isEmpty());
@@ -80,7 +80,7 @@ public class TodoListTest {
 
     @Test
     public void testGetUncheckedTodoItems_oneItemCheckedAfterAdding() {
-        TodoItem item = new TodoItem();
+        TodoItem item = newList.createTodoItem();
         newList.addTodoItem(item);
         Collection<TodoItem> items = newList.getUncheckedTodoItems();
         assertEquals(1, items.size());
@@ -98,7 +98,7 @@ public class TodoListTest {
 
     @Test
     public void testGetTodoItems_oneUncheckedItem() {
-        TodoItem item = new TodoItem();
+        TodoItem item = newList.createTodoItem();
         newList.addTodoItem(item);
         Collection<TodoItem> items = newList.getTodoItems();
         assertEquals(1, items.size());
@@ -107,7 +107,7 @@ public class TodoListTest {
 
     @Test
     public void testGetTodoItems_oneCheckedItem() {
-        TodoItem item = new TodoItem();
+        TodoItem item = newList.createTodoItem();
         item.setChecked(true);
         newList.addTodoItem(item);
         Collection<TodoItem> items = newList.getTodoItems();
@@ -117,7 +117,7 @@ public class TodoListTest {
 
     @Test
     public void testGetTodoItems_oneItemCheckedAfterAdding() {
-        TodoItem item = new TodoItem();
+        TodoItem item = newList.createTodoItem();
         newList.addTodoItem(item);
         Collection<TodoItem> items1 = newList.getTodoItems();
         assertEquals(1, items1.size());
@@ -143,7 +143,7 @@ public class TodoListTest {
     @Test
     public void testIterator_addingAndRemovingItems() {
         checkIterator(newList.iterator());
-        TodoItem item1 = new TodoItem(), item2 = new TodoItem(), item3 = new TodoItem();
+        TodoItem item1 = newList.createTodoItem(), item2 = newList.createTodoItem(), item3 = newList.createTodoItem();
         newList.addTodoItem(item1);
         checkIterator(newList.iterator(), item1);
         newList.addTodoItem(item2);
