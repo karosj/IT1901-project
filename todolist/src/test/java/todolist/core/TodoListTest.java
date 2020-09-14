@@ -2,6 +2,9 @@ package todolist.core;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.junit.jupiter.api.Assertions.assertSame;
 
 import java.util.Collection;
@@ -156,5 +159,40 @@ public class TodoListTest {
         checkIterator(newList.iterator(), item3);
         newList.removeTodoItem(item3);
         checkIterator(newList.iterator());
+    }
+
+    private int receivedNotificationCount = 0;
+
+    @Test
+    public void testFireTodoListChanged_addItemAndReceiveNotification() {
+        newList.addTodoListListener(list -> {
+            receivedNotificationCount++;
+        });
+        assertEquals(0, receivedNotificationCount);
+        TodoItem item = newList.createTodoItem();
+        newList.addTodoItem(item);
+        assertEquals(1, receivedNotificationCount);
+        newList.removeTodoItem(item);
+        assertEquals(2, receivedNotificationCount);
+        item.setText("endret verdi");
+        assertEquals(3, receivedNotificationCount);
+        item.setChecked(true);
+        assertEquals(4, receivedNotificationCount);
+    }
+
+    @Test
+    public void testFireTodoListChanged_addItemAndMockReceiveNotification() {
+        TodoListListener listener = mock(TodoListListener.class);
+        newList.addTodoListListener(listener);
+        verify(listener, times(0)).todoListChanged(newList);
+        TodoItem item = newList.createTodoItem();
+        newList.addTodoItem(item);
+        verify(listener, times(1)).todoListChanged(newList);
+        newList.removeTodoItem(item);
+        verify(listener, times(2)).todoListChanged(newList);
+        item.setText("endret verdi");
+        verify(listener, times(3)).todoListChanged(newList);
+        item.setChecked(true);
+        verify(listener, times(4)).todoListChanged(newList);
     }
 }
