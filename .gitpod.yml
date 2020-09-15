@@ -8,3 +8,7 @@ tasks:
 ports:
   # used by virtual desktop and vnc, supports JavaFX
   - port: 6080
+
+vscode:
+  extensions:
+    - redhat.java@0.66.0:isbEqq9wcF5w98K9rJHzbA==
