@@ -1,11 +1,13 @@
 package todolist.ui;
 
+import java.util.Collection;
 import java.util.List;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import todolist.core.TodoItem;
@@ -49,10 +51,22 @@ public class TodoController {
     ListView<TodoItem> todoListView;
 
     @FXML
+    Button deleteTodoItemButton;
+
+    @FXML
+    Button checkTodoItemButton;
+
+    private Collection<Button> selectionButtons;
+
+    @FXML
     public void initialize() {
+        selectionButtons = List.of(deleteTodoItemButton, checkTodoItemButton);
         // kobler data til list-controll
         updateTodoListView();
+        updateTodoListButtons();
         todoList.addTodoListListener(todoList -> updateTodoListView());
+        todoListView.setCellFactory(listView -> new TodoItemListCell());
+        todoListView.getSelectionModel().selectedItemProperty().addListener((prop, oldValue, newValue) -> updateTodoListButtons());
     }
 
     protected void updateTodoListView() {
@@ -62,12 +76,21 @@ public class TodoController {
         viewList.addAll(todoList.getCheckedTodoItems());
     }
 
+    private void updateTodoListButtons() {
+        boolean disable = todoListView.getSelectionModel().getSelectedItem() == null;
+        for (Button button : selectionButtons) {
+            button.setDisable(disable);
+        }
+    }
+
     @FXML
     public void handleNewTodoItemAction() {
-        TodoItem item = new TodoItem();
+        TodoItem item = todoList.createTodoItem();
         item.setText(newTodoItemText.getText());
         todoList.addTodoItem(item);
     }
+
+
 
     @FXML
     public void handleDeleteItemAction() {
@@ -80,6 +103,8 @@ public class TodoController {
     @FXML
     public void handleCheckItemAction() {
         TodoItem item = todoListView.getSelectionModel().getSelectedItem();
-        item.setChecked(true);
+        if (item != null) {
+            item.setChecked(true);
+        }
     }
 }
