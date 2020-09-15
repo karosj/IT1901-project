@@ -16,20 +16,7 @@ import todolist.json.TodoModule;
 
 public class TodoController {
 
-    private final static String todoListWithTwoItems = """
-        {
-            "items": [
-                {
-                    "text": "item1",
-                    "checked" : false
-                },
-                {
-                    "text": "item2",
-                    "checked" : true
-                }
-            ]
-        }
-        """;
+    private final static String todoListWithTwoItems = "{\"items\":[{\"text\":\"item1\",\"checked\":false},{\"text\":\"item2\",\"checked\":true}]}";
 
     private TodoList todoList;
     private ObjectMapper mapper = new ObjectMapper();

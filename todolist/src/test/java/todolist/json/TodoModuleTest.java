@@ -30,20 +30,7 @@ public class TodoModuleTest {
         mapper.registerModule(new TodoModule());
     }
 
-    private final static String todoListWithTwoItems = """
-        {
-            "items": [
-                {
-                    "text": "item1",
-                    "checked" : false
-                },
-                {
-                    "text": "item2",
-                    "checked" : true
-                }
-            ]
-        }
-        """;
+    private final static String todoListWithTwoItems = "{\"items\":[{\"text\":\"item1\",\"checked\":false},{\"text\":\"item2\",\"checked\":true}]}";
 
     @Test
     public void testSerializers() {
