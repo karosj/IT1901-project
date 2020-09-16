@@ -167,9 +167,10 @@ public class TodoListTest {
 
   @Test
   public void testFireTodoListChanged_addItemAndReceiveNotification() {
-    newList.addTodoListListener(list -> {
+    TodoListListener listener = list -> {
       receivedNotificationCount++;
-    });
+    };
+    newList.addTodoListListener(listener);
     assertEquals(0, receivedNotificationCount);
     TodoItem item = newList.createTodoItem();
     newList.addTodoItem(item);
@@ -179,6 +180,9 @@ public class TodoListTest {
     item.setText("endret verdi");
     assertEquals(3, receivedNotificationCount);
     item.setChecked(true);
+    assertEquals(4, receivedNotificationCount);
+    newList.removeTodoListListener(listener);
+    item.setChecked(false);
     assertEquals(4, receivedNotificationCount);
   }
 
