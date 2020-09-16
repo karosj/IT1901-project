@@ -145,6 +145,10 @@ public class TodoListTest {
   public void testIterator_addingAndRemovingItems() {
     checkIterator(newList.iterator());
     TodoItem item1 = newList.createTodoItem(), item2 = newList.createTodoItem(), item3 = newList.createTodoItem();
+    // sikre at de ikke er equals
+    item1.setText("Item 1");
+    item2.setText("Item 2");
+    item3.setText("Item 3");
     newList.addTodoItem(item1);
     checkIterator(newList.iterator(), item1);
     newList.addTodoItem(item2);
