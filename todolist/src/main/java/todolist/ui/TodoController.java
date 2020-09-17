@@ -1,7 +1,22 @@
 package todolist.ui;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.io.StringReader;
+import java.io.Writer;
+import java.net.URL;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Paths;
 import java.util.Collection;
 import java.util.List;
 import javafx.fxml.FXML;
@@ -15,7 +30,7 @@ import todolist.json.TodoModule;
 public class TodoController {
 
   private static final String todoListWithTwoItems =
-      "{\"items\":[{\"text\":\"item1\",\"checked\":false},{\"text\":\"item2\",\"checked\":true}]}";
+      "{\"items\":[{\"text\":\"Øl\",\"checked\":false},{\"text\":\"Pizza\",\"checked\":true}]}";
 
   private TodoList todoList;
   private ObjectMapper mapper = new ObjectMapper();
@@ -26,10 +41,41 @@ public class TodoController {
   public TodoController() {
     // setter opp data
     mapper.registerModule(new TodoModule());
+    Reader reader = null;
     try {
-      todoList = mapper.readValue(todoListWithTwoItems, TodoList.class);
-    } catch (JsonProcessingException e) {
+      // try to read file from home folder first
+      try {
+        reader = new FileReader(Paths.get(System.getProperty("user.home"), "todolist.json").toFile(),
+            StandardCharsets.UTF_8);
+      } catch (IOException ioex) {
+        System.err.println("Fant ingen todolist.json på hjemmeområdet, prøver eksempelfil i stedet");
+        // try sample-todolist.json from resources source folder instead
+        URL url = getClass().getResource("sample-todolist.json");
+        if (url != null) {
+          reader = new InputStreamReader(url.openStream(), StandardCharsets.UTF_8);
+        } else {
+          System.err.println("Fant ikke eksempelfil, bruker innebygget json-string");
+          // use embedded String
+          reader = new StringReader(todoListWithTwoItems);
+        }
+      }
+      todoList = mapper.readValue(reader, TodoList.class);
+    } catch (IOException e) {
       todoList = new TodoList();
+      TodoItem item1 = todoList.createTodoItem();
+      item1.setText("Øl");
+      TodoItem item2 = todoList.createTodoItem();
+      item1.setText("Pizza");
+      todoList.addTodoItem(item1);
+      todoList.addTodoItem(item2);
+    } finally {
+      try {
+        if (reader != null) {
+          reader.close();
+        }
+      } catch (IOException e) {
+        // ignore
+      }
     }
   }
 
@@ -78,6 +124,7 @@ public class TodoController {
     TodoItem item = todoList.createTodoItem();
     item.setText(newTodoItemText.getText());
     todoList.addTodoItem(item);
+    saveTodoList();
   }
 
 
@@ -87,6 +134,7 @@ public class TodoController {
     TodoItem item = todoListView.getSelectionModel().getSelectedItem();
     if (item != null) {
       todoList.removeTodoItem(item);
+      saveTodoList();
     }
   }
 
@@ -95,6 +143,17 @@ public class TodoController {
     TodoItem item = todoListView.getSelectionModel().getSelectedItem();
     if (item != null) {
       item.setChecked(true);
+      saveTodoList();
+    }
+  }
+
+  public void saveTodoList() {
+    try {
+      Writer writer =
+          new FileWriter(Paths.get(System.getProperty("user.home"), "todolist.json").toFile(), StandardCharsets.UTF_8);
+      mapper.writeValue(writer, todoList);
+    } catch (IOException e) {
+      System.err.println("Fikk ikke skrevet til todolist.json på hjemmeområdet");
     }
   }
 }
