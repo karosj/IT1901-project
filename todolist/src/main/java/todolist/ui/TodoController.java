@@ -1,20 +1,14 @@
 package todolist.ui;
 
-import com.fasterxml.jackson.core.JsonGenerationException;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.StringReader;
 import java.io.Writer;
 import java.net.URL;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
 import java.util.Collection;
@@ -127,8 +121,6 @@ public class TodoController {
     saveTodoList();
   }
 
-
-
   @FXML
   void handleDeleteItemAction() {
     TodoItem item = todoListView.getSelectionModel().getSelectedItem();
@@ -151,7 +143,7 @@ public class TodoController {
     try {
       Writer writer =
           new FileWriter(Paths.get(System.getProperty("user.home"), "todolist.json").toFile(), StandardCharsets.UTF_8);
-      mapper.writeValue(writer, todoList);
+      mapper.writerWithDefaultPrettyPrinter().writeValue(writer, todoList);
     } catch (IOException e) {
       System.err.println("Fikk ikke skrevet til todolist.json på hjemmeområdet");
     }
