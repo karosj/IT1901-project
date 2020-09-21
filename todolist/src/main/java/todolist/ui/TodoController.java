@@ -97,6 +97,7 @@ public class TodoController {
     todoListView.setCellFactory(listView -> new TodoItemListCell());
     todoListView.getSelectionModel().selectedItemProperty()
         .addListener((prop, oldValue, newValue) -> updateTodoListButtons());
+    todoListView.setEditable(true);
   }
 
   protected void updateTodoListView() {
