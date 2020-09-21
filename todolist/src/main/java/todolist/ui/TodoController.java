@@ -10,6 +10,7 @@ import java.io.StringReader;
 import java.io.Writer;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Collection;
 import java.util.List;
@@ -39,8 +40,8 @@ public class TodoController {
     try {
       // try to read file from home folder first
       try {
-        reader = new FileReader(Paths.get(System.getProperty("user.home"), "todolist.json").toFile(),
-            StandardCharsets.UTF_8);
+        reader = new FileReader(Paths.get(System.getProperty("user.home"), "todolist.json")
+            .toFile(), StandardCharsets.UTF_8);
       } catch (IOException ioex) {
         System.err.println("Fant ingen todolist.json på hjemmeområdet, prøver eksempelfil i stedet");
         // try sample-todolist.json from resources source folder instead
@@ -140,10 +141,10 @@ public class TodoController {
     }
   }
 
-  public void saveTodoList() {
-    try {
-      Writer writer =
-          new FileWriter(Paths.get(System.getProperty("user.home"), "todolist.json").toFile(), StandardCharsets.UTF_8);
+  void saveTodoList() {
+    Path path = Paths.get(System.getProperty("user.home"), "todolist.json");
+    try (Writer writer =
+          new FileWriter(path.toFile(), StandardCharsets.UTF_8)) {
       mapper.writerWithDefaultPrettyPrinter().writeValue(writer, todoList);
     } catch (IOException e) {
       System.err.println("Fikk ikke skrevet til todolist.json på hjemmeområdet");

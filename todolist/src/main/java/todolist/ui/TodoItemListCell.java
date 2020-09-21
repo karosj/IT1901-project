@@ -28,6 +28,7 @@ public class TodoItemListCell extends ListCell<TodoItem> {
     if (empty || item == null) {
       setGraphic(null);
     } else {
+      // ensure we have created controls common for view and editor
       if (todoItemControl == null) {
         todoItemControl = new HBox();
         checkedView = new CheckBox();
@@ -36,6 +37,7 @@ public class TodoItemListCell extends ListCell<TodoItem> {
         });
         todoItemControl.getChildren().add(checkedView);
       }
+      // choose between editor and view
       if (isEditing()) {
         configureEditor();
       } else {
@@ -45,6 +47,7 @@ public class TodoItemListCell extends ListCell<TodoItem> {
     }
   }
   
+  // helper method
   private void useSpecificChild(Control use, Control useNot) {
     Collection<Node> children = todoItemControl.getChildren();
     children.remove(useNot);
