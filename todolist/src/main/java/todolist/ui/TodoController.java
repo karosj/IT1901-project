@@ -83,14 +83,11 @@ public class TodoController {
   @FXML
   Button deleteTodoItemButton;
 
-  @FXML
-  Button checkTodoItemButton;
-
   private Collection<Button> selectionButtons;
 
   @FXML
   void initialize() {
-    selectionButtons = List.of(deleteTodoItemButton, checkTodoItemButton);
+    selectionButtons = List.of(deleteTodoItemButton);
     // kobler data til list-controll
     updateTodoListView();
     updateTodoListButtons();

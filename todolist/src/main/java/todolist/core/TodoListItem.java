@@ -25,4 +25,13 @@ public class TodoListItem extends TodoItem {
       todoList.fireTodoListChanged(this);
     }
   }
+  
+  public void updateWith(TodoItem other) {
+    boolean oldChecked = isChecked();
+    String oldText = getText();
+    super.updateWith(other);
+    if (oldChecked != other.isChecked() || oldText != other.getText() || oldText != null && !(oldText.equals(other.getText()))) {
+      todoList.fireTodoListChanged(this);
+    }
+  }
 }

@@ -29,4 +29,9 @@ public class TodoItem {
   public void toggleChecked() {
     setChecked(!checked);
   }
+
+  public void updateWith(TodoItem other) {
+    setChecked(other.checked);
+    setText(other.text);
+  }
 }
