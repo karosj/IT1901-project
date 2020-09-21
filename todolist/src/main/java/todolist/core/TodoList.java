@@ -69,6 +69,16 @@ public class TodoList implements Iterable<TodoItem> {
     return getTodoItems(false);
   }
 
+  public int indexOf(TodoItem item) {
+    return items.indexOf(item);
+  }
+
+  public void moveTodoItem(TodoItem item, int newIndex) {
+    items.remove(item);
+    items.add(newIndex, item);
+    fireTodoListChanged();
+  }
+
   // støtte for lytting
 
   private Collection<TodoListListener> todoListListeners = new ArrayList<>();

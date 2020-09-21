@@ -8,6 +8,10 @@ public class TodoListItem extends TodoItem {
     this.todoList = todoList;
   }
 
+  public TodoList getTodoList() {
+    return todoList;
+  }
+
   @Override
   public void setText(String text) {
     String oldText = getText();

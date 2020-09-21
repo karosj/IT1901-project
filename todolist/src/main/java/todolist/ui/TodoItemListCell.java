@@ -7,8 +7,15 @@ import javafx.scene.control.Control;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.TextField;
+import javafx.scene.input.ClipboardContent;
+import javafx.scene.input.DragEvent;
+import javafx.scene.input.Dragboard;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.input.TransferMode;
 import javafx.scene.layout.HBox;
 import todolist.core.TodoItem;
+import todolist.core.TodoList;
+import todolist.core.TodoListItem;
 
 public class TodoItemListCell extends ListCell<TodoItem> {
 
@@ -26,6 +33,9 @@ public class TodoItemListCell extends ListCell<TodoItem> {
     super.updateItem(item, empty);
     setText(null);
     if (empty || item == null) {
+      setOnDragDetected(null);
+      setOnDragOver(null);
+      setOnDragDropped(null);
       setGraphic(null);
     } else {
       // ensure we have created controls common for view and editor
@@ -35,7 +45,9 @@ public class TodoItemListCell extends ListCell<TodoItem> {
         checkedView.selectedProperty().addListener((prop, oldValue, newValue) -> {
           TodoItem newItem = new TodoItem();
           newItem.setChecked(checkedView.isSelected());
-          newItem.setText(textEditor.getText());
+          if (isEditing()) {
+            newItem.setText(textEditor.getText());
+          }
           getItem().updateWith(newItem);
         });
         todoItemControl.getChildren().add(checkedView);
@@ -44,6 +56,9 @@ public class TodoItemListCell extends ListCell<TodoItem> {
       if (isEditing()) {
         configureEditor();
       } else {
+        setOnDragDetected(this::handleDragStart);
+        setOnDragOver(this::handleDragOver);
+        setOnDragDropped(this::handleDragEnd);
         configureViewer();
       }
       setGraphic(todoItemControl);
@@ -98,5 +113,38 @@ public class TodoItemListCell extends ListCell<TodoItem> {
   public void cancelEdit() {
     super.cancelEdit();
     configureViewer();
+  }
+
+  private void handleDragStart(MouseEvent event) {
+    Dragboard dragboard = startDragAndDrop(TransferMode.MOVE);
+    ClipboardContent content = new ClipboardContent();
+    content.putString(getItem().getText());
+    dragboard.setContent(content);
+    event.consume();
+  }
+
+  private void handleDragOver(DragEvent event) {
+    if (event.getGestureSource() instanceof TodoItemListCell) {
+      event.acceptTransferModes(TransferMode.MOVE);
+    }
+    event.consume();
+  }
+
+  private void handleDragEnd(DragEvent event) {
+    boolean success = false;
+    if (event.getGestureSource() instanceof TodoItemListCell) {
+      TodoItem sourceItem = ((TodoItemListCell) event.getGestureSource()).getItem();
+      TodoItem targetItem = getItem();
+      TodoList todoList = ((TodoListItem) sourceItem).getTodoList();
+      if (todoList.indexOf(sourceItem) >= 0) {
+        int newIndex = todoList.indexOf(targetItem);
+        if (newIndex >= 0) {
+          todoList.moveTodoItem(sourceItem, newIndex);
+          success = true;
+        }
+      }
+    }
+    event.setDropCompleted(success);
+    event.consume();
   }
 }
