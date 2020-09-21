@@ -15,6 +15,5 @@
     </ListView>
     <HBox>
         <Button fx:id="deleteTodoItemButton" text="Delete Item" onAction="#handleDeleteItemAction"/>
-        <Button fx:id="checkTodoItemButton" text="Check Item" onAction="#handleCheckItemAction"/>
     </HBox>
 </VBox>
