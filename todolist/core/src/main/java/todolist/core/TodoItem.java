@@ -26,12 +26,25 @@ public class TodoItem {
     this.checked = checked;
   }
 
-  public void toggleChecked() {
-    setChecked(!checked);
+  public void set(TodoItem other) {
+    this.checked = other.checked;
+    this.text = other.text;
   }
 
-  public void updateWith(TodoItem other) {
-    setChecked(other.checked);
-    setText(other.text);
+  // fluent API
+
+  public TodoItem checked(boolean checked) {
+    setChecked(checked);
+    return this;
+  }
+
+  public TodoItem text(String text) {
+    setText(text);
+    return this;
+  }
+
+  public TodoItem as(TodoItem other) {
+    set(other);
+    return this;
   }
 }

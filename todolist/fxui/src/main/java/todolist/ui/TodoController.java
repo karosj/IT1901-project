@@ -12,6 +12,7 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import javafx.fxml.FXML;
@@ -28,41 +29,66 @@ public class TodoController {
       "{\"items\":[{\"text\":\"Øl\",\"checked\":false},{\"text\":\"Pizza\",\"checked\":true}]}";
 
   private TodoList todoList;
+
+  // makes class more testable
+  TodoList getTodoList() {
+    return todoList;
+  }
+
   private ObjectMapper mapper = new ObjectMapper();
 
-  /**
-   * Initializes the TodoController by filling a TodoList with default contents.
-   */
-  public TodoController() {
+  @FXML
+  String userTodoListPath;
+
+  @FXML
+  String sampleTodoListResource;
+
+  @FXML
+  TextField newTodoItemText;
+
+  @FXML
+  ListView<TodoItem> todoListView;
+
+  @FXML
+  Button deleteTodoItemButton;
+
+  private void initializeTodoList() {
     // setter opp data
     mapper.registerModule(new TodoModule());
     Reader reader = null;
-    try {
-      // try to read file from home folder first
+    // try to read file from home folder first
+    if (userTodoListPath != null) {
       try {
-        reader = new FileReader(Paths.get(System.getProperty("user.home"), "todolist.json")
+        reader = new FileReader(Paths.get(System.getProperty("user.home"), userTodoListPath)
             .toFile(), StandardCharsets.UTF_8);
       } catch (IOException ioex) {
-        System.err.println("Fant ingen todolist.json på hjemmeområdet, prøver eksempelfil i stedet");
-        // try sample-todolist.json from resources source folder instead
-        URL url = getClass().getResource("sample-todolist.json");
-        if (url != null) {
-          reader = new InputStreamReader(url.openStream(), StandardCharsets.UTF_8);
-        } else {
-          System.err.println("Fant ikke eksempelfil, bruker innebygget json-string");
-          // use embedded String
-          reader = new StringReader(todoListWithTwoItems);
-        }
+        System.err.println("Fant ingen " + userTodoListPath + " på hjemmeområdet");
       }
+    }
+    if (reader == null && sampleTodoListResource != null) {
+      // try sample-todolist.json from resources source folder instead
+      URL url = getClass().getResource(sampleTodoListResource);
+      if (url != null) {
+        try {
+          reader = new InputStreamReader(url.openStream(), StandardCharsets.UTF_8);
+        } catch (IOException e) {
+          System.err.println("Kunne ikke lese innebygget " + sampleTodoListResource);
+        }
+      } else {
+        System.err.println("Fant ikke innebygget " + sampleTodoListResource);
+      }
+    }
+    if (reader == null) {
+      // use embedded String
+      reader = new StringReader(todoListWithTwoItems);
+    }
+    try {
       todoList = mapper.readValue(reader, TodoList.class);
     } catch (IOException e) {
-      todoList = new TodoList();
-      TodoItem item1 = todoList.createTodoItem();
-      item1.setText("Øl");
-      TodoItem item2 = todoList.createTodoItem();
-      item1.setText("Pizza");
-      todoList.addTodoItem(item1);
-      todoList.addTodoItem(item2);
+      todoList = new TodoList(
+        todoList.createTodoItem().text("Øl"),
+        todoList.createTodoItem().text("Pizza")
+      );
     } finally {
       try {
         if (reader != null) {
@@ -74,19 +100,11 @@ public class TodoController {
     }
   }
 
-  @FXML
-  TextField newTodoItemText;
-
-  @FXML
-  ListView<TodoItem> todoListView;
-
-  @FXML
-  Button deleteTodoItemButton;
-
   private Collection<Button> selectionButtons;
 
   @FXML
   void initialize() {
+    initializeTodoList();
     selectionButtons = List.of(deleteTodoItemButton);
     // kobler data til list-controll
     updateTodoListView();
@@ -99,10 +117,10 @@ public class TodoController {
   }
 
   protected void updateTodoListView() {
-    List<TodoItem> viewList = todoListView.getItems();
-    viewList.clear();
-    viewList.addAll(todoList.getUncheckedTodoItems());
-    viewList.addAll(todoList.getCheckedTodoItems());
+    List<TodoItem> items = new ArrayList<>();
+    items.addAll(todoList.getUncheckedTodoItems());
+    items.addAll(todoList.getCheckedTodoItems());
+    todoListView.getItems().setAll(items);
   }
 
   private void updateTodoListButtons() {
@@ -139,12 +157,14 @@ public class TodoController {
   }
 
   void saveTodoList() {
-    Path path = Paths.get(System.getProperty("user.home"), "todolist.json");
-    try (Writer writer =
-          new FileWriter(path.toFile(), StandardCharsets.UTF_8)) {
-      mapper.writerWithDefaultPrettyPrinter().writeValue(writer, todoList);
-    } catch (IOException e) {
-      System.err.println("Fikk ikke skrevet til todolist.json på hjemmeområdet");
+    if (userTodoListPath != null) {
+      Path path = Paths.get(System.getProperty("user.home"), userTodoListPath);
+      try (Writer writer =
+      new FileWriter(path.toFile(), StandardCharsets.UTF_8)) {
+        mapper.writerWithDefaultPrettyPrinter().writeValue(writer, todoList);
+      } catch (IOException e) {
+        System.err.println("Fikk ikke skrevet til todolist.json på hjemmeområdet");
+      }
     }
   }
 }

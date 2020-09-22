@@ -9,8 +9,34 @@ public class TodoList implements Iterable<TodoItem> {
 
   private List<TodoItem> items = new ArrayList<>();
 
+  public TodoList(TodoItem...items) {
+    addTodoItems(items);
+  }
+
   public TodoItem createTodoItem() {
     return new TodoListItem(this);
+  }
+
+    /**
+   * Adds the provided TodoItem to this TodoList.
+   * If the TodoItem is not an instance of TodoListItem,
+   * its contents is copied in to a new TodoListItem and that is added instead.
+   *
+   * @param item the TodoItem to add
+   */
+  public void addTodoItems(TodoItem...items) {
+    for (TodoItem item : items) {
+      TodoListItem todoListItem = null;
+      if (item instanceof TodoListItem) {
+        todoListItem = (TodoListItem) item;
+      } else {
+        todoListItem = new TodoListItem(this);
+        todoListItem.setText(item.getText());
+        todoListItem.setChecked(item.isChecked());
+      }
+      this.items.add(todoListItem);
+    }
+    fireTodoListChanged();
   }
 
   /**
@@ -21,16 +47,7 @@ public class TodoList implements Iterable<TodoItem> {
    * @param item the TodoItem to add
    */
   public void addTodoItem(TodoItem item) {
-    TodoListItem todoListItem = null;
-    if (item instanceof TodoListItem) {
-      todoListItem = (TodoListItem) item;
-    } else {
-      todoListItem = new TodoListItem(this);
-      todoListItem.setText(item.getText());
-      todoListItem.setChecked(item.isChecked());
-    }
-    items.add(todoListItem);
-    fireTodoListChanged();
+    addTodoItems(item);
   }
 
   public void removeTodoItem(TodoItem item) {

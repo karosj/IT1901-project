@@ -43,12 +43,11 @@ public class TodoItemListCell extends ListCell<TodoItem> {
         todoItemControl = new HBox();
         checkedView = new CheckBox();
         checkedView.selectedProperty().addListener((prop, oldValue, newValue) -> {
-          TodoItem newItem = new TodoItem();
-          newItem.setChecked(checkedView.isSelected());
-          if (isEditing()) {
-            newItem.setText(textEditor.getText());
-          }
-          getItem().updateWith(newItem);
+          getItem().set(new TodoItem()
+            .checked(checkedView.isSelected())
+            // use editor text if it's active, otherwise existing text
+            .text(isEditing() ? textEditor.getText() : getItem().getText())
+          );
         });
         todoItemControl.getChildren().add(checkedView);
       }

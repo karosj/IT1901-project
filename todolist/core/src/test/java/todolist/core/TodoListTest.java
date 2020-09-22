@@ -29,16 +29,15 @@ public class TodoListTest {
 
   @Test
   public void testGetCheckedTodoItems_oneUncheckedItem() {
-    TodoItem item = newList.createTodoItem();
+    TodoItem item = newList.createTodoItem().text("item");
     newList.addTodoItem(item);
     assertTrue(newList.getCheckedTodoItems().isEmpty());
   }
 
   @Test
   public void testGetCheckedTodoItems_oneCheckedItem() {
-    TodoItem item = newList.createTodoItem();
+    TodoItem item = newList.createTodoItem().checked(true);
     newList.addTodoItem(item);
-    item.setChecked(true);
     Collection<TodoItem> items = newList.getCheckedTodoItems();
     assertEquals(1, items.size());
     assertSame(item, items.iterator().next());
@@ -102,8 +101,7 @@ public class TodoListTest {
     TodoItem item = newList.createTodoItem();
     newList.addTodoItem(item);
     Collection<TodoItem> items = newList.getTodoItems();
-    assertEquals(1, items.size());
-    assertSame(item, items.iterator().next());
+    checkItems(items, item);
   }
 
   @Test
@@ -112,8 +110,7 @@ public class TodoListTest {
     item.setChecked(true);
     newList.addTodoItem(item);
     Collection<TodoItem> items = newList.getTodoItems();
-    assertEquals(1, items.size());
-    assertSame(item, items.iterator().next());
+    checkItems(items, item);
   }
 
   @Test
@@ -121,15 +118,17 @@ public class TodoListTest {
     TodoItem item = newList.createTodoItem();
     newList.addTodoItem(item);
     Collection<TodoItem> items1 = newList.getTodoItems();
-    assertEquals(1, items1.size());
-    assertEquals(item, items1.iterator().next());
+    checkItems(items1, item);
     item.setChecked(true);
     Collection<TodoItem> items2 = newList.getTodoItems();
-    assertEquals(1, items2.size());
-    assertSame(item, items2.iterator().next());
+    checkItems(items2, item);
   }
 
   // test iterator
+
+  private void checkItems(Iterable<TodoItem> it, TodoItem... items) {
+    checkIterator(it.iterator(), items);
+  }
 
   private void checkIterator(Iterator<TodoItem> it, TodoItem... items) {
     int i = 0;
@@ -181,9 +180,14 @@ public class TodoListTest {
     assertEquals(3, receivedNotificationCount);
     item.setChecked(true);
     assertEquals(4, receivedNotificationCount);
+    item.set(new TodoItem().checked(true).text("enda en endret verdi"));
+    assertEquals(5, receivedNotificationCount);
+    item.set(new TodoItem().checked(true).text("enda en endret verdi"));
+    assertEquals(5, receivedNotificationCount);
+    // test removeTodoListListener, too
     newList.removeTodoListListener(listener);
     item.setChecked(false);
-    assertEquals(4, receivedNotificationCount);
+    assertEquals(5, receivedNotificationCount);
   }
 
   @Test

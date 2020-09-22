@@ -1,0 +1,12 @@
+{
+    "items": [
+        {
+            "text": "Øl",
+            "checked": false
+        },
+        {
+            "text": "Pizza",
+            "checked": false
+        }
+    ]
+}

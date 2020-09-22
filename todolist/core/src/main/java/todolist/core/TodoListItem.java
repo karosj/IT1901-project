@@ -30,10 +30,10 @@ public class TodoListItem extends TodoItem {
     }
   }
   
-  public void updateWith(TodoItem other) {
+  public void set(TodoItem other) {
     boolean oldChecked = isChecked();
     String oldText = getText();
-    super.updateWith(other);
+    super.set(other);
     if (oldChecked != other.isChecked() || oldText != other.getText() || oldText != null && !(oldText.equals(other.getText()))) {
       todoList.fireTodoListChanged(this);
     }

@@ -9,8 +9,10 @@
 
 <VBox xmlns:fx="http://javafx.com/fxml/1" fx:controller="todolist.ui.TodoController">
     <fx:define>
-        <String fx:id="userTodoListPath" fx:value="todolist.json"/>
-        <String fx:id="sampleTodoListResource" fx:value="sample-todolist.json"/>
+        <!--
+        <String fx:id="todoListUserHomePath" fx:value="todolist.json"/>
+        -->
+        <String fx:id="sampleTodoListResource" fx:value="test-todolist.json"/>
     </fx:define>
     <HBox>
         <Button fx:id="newTodoItemButton" text="New Item" onAction="#handleNewTodoItemAction"/>
