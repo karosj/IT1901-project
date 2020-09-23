@@ -29,12 +29,14 @@ public class TodoListItem extends TodoItem {
       todoList.fireTodoListChanged(this);
     }
   }
-  
+
+  @Override
   public void set(TodoItem other) {
     boolean oldChecked = isChecked();
     String oldText = getText();
     super.set(other);
-    if (oldChecked != other.isChecked() || oldText != other.getText() || oldText != null && !(oldText.equals(other.getText()))) {
+    if (oldChecked != other.isChecked() || oldText != other.getText()
+        || oldText != null && !(oldText.equals(other.getText()))) {
       todoList.fireTodoListChanged(this);
     }
   }

@@ -93,16 +93,16 @@
                         <consoleOutput>true</consoleOutput>
                         <failsOnError>true</failsOnError>
                         <linkXRef>false</linkXRef>
-                        <executions>
-                            <execution>
-                            <id>checkstyle-check</id>
-                            <phase>verify</phase>
-                            <goals>
-                                <goal>check</goal>
-                            </goals>
-                            </execution>
-                        </executions>
                     </configuration>
+                    <executions>
+                        <execution>
+                        <id>checkstyle-check</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                        </execution>
+                    </executions>
                 </plugin>
                 <!-- Run the spotbugs code quality tool -->
                 <plugin>
@@ -116,7 +116,7 @@
                     <executions>
                         <execution>
                         <id>spotbugs-check</id>
-                            <phase>verify</phase>
+                        <phase>verify</phase>
                         <goals>
                             <goal>check</goal>
                         </goals>

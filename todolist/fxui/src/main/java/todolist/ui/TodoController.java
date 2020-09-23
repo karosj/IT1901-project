@@ -66,7 +66,7 @@ public class TodoController {
       }
     }
     if (reader == null && sampleTodoListResource != null) {
-      // try sample-todolist.json from resources source folder instead
+      // try sample todo list from resources instead
       URL url = getClass().getResource(sampleTodoListResource);
       if (url != null) {
         try {
@@ -109,8 +109,16 @@ public class TodoController {
     // kobler data til list-controll
     updateTodoListView();
     updateTodoListButtons();
-    todoList.addTodoListListener(todoList -> updateTodoListView());
-    todoListView.setCellFactory(listView -> new TodoItemListCell());
+    todoList.addTodoListListener(todoList -> {
+      autoSaveTodoList();
+      updateTodoListView();
+    });
+    TodoItemListCellDragHandler dragHandler = new TodoItemListCellDragHandler(todoList);
+    todoListView.setCellFactory(listView -> {
+      TodoItemListCell listCell = new TodoItemListCell();
+      dragHandler.registerHandlers(listCell);
+      return listCell;
+    });
     todoListView.getSelectionModel().selectedItemProperty()
         .addListener((prop, oldValue, newValue) -> updateTodoListButtons());
     todoListView.setEditable(true);
@@ -135,7 +143,6 @@ public class TodoController {
     TodoItem item = todoList.createTodoItem();
     item.setText(newTodoItemText.getText());
     todoList.addTodoItem(item);
-    saveTodoList();
   }
 
   @FXML
@@ -143,7 +150,6 @@ public class TodoController {
     TodoItem item = todoListView.getSelectionModel().getSelectedItem();
     if (item != null) {
       todoList.removeTodoItem(item);
-      saveTodoList();
     }
   }
 
@@ -152,15 +158,13 @@ public class TodoController {
     TodoItem item = todoListView.getSelectionModel().getSelectedItem();
     if (item != null) {
       item.setChecked(true);
-      saveTodoList();
     }
   }
 
-  void saveTodoList() {
+  void autoSaveTodoList() {
     if (userTodoListPath != null) {
       Path path = Paths.get(System.getProperty("user.home"), userTodoListPath);
-      try (Writer writer =
-      new FileWriter(path.toFile(), StandardCharsets.UTF_8)) {
+      try (Writer writer = new FileWriter(path.toFile(), StandardCharsets.UTF_8)) {
         mapper.writerWithDefaultPrettyPrinter().writeValue(writer, todoList);
       } catch (IOException e) {
         System.err.println("Fikk ikke skrevet til todolist.json på hjemmeområdet");

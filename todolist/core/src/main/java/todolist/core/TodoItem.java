@@ -26,6 +26,11 @@ public class TodoItem {
     this.checked = checked;
   }
 
+  /**
+   * Copies all properties of other TodoItem into this TodoItem.
+   *
+   * @param other the other TodoItem, from which properties are copied
+   */
   public void set(TodoItem other) {
     this.checked = other.checked;
     this.text = other.text;
@@ -46,5 +51,13 @@ public class TodoItem {
   public TodoItem as(TodoItem other) {
     set(other);
     return this;
+  }
+
+  public TodoItem withChecked(boolean checked) {
+    return new TodoItem().as(this).checked(checked);
+  }
+
+  public TodoItem withText(String text) {
+    return new TodoItem().as(this).text(text);
   }
 }

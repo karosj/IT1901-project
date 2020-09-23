@@ -1,11 +1,11 @@
 {
     "items": [
         {
-            "text": "Øl",
-            "checked": false
+            "text": "Item 1",
+            "checked": true
         },
         {
-            "text": "Pizza",
+            "text": "Item 2",
             "checked": false
         }
     ]

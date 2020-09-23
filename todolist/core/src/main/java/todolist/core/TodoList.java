@@ -17,12 +17,10 @@ public class TodoList implements Iterable<TodoItem> {
     return new TodoListItem(this);
   }
 
-    /**
-   * Adds the provided TodoItem to this TodoList.
-   * If the TodoItem is not an instance of TodoListItem,
-   * its contents is copied in to a new TodoListItem and that is added instead.
+  /**
+   * Adds the provided TodoItems to this TodoList.
    *
-   * @param item the TodoItem to add
+   * @param items the TodoItems to add
    */
   public void addTodoItems(TodoItem...items) {
     for (TodoItem item : items) {
@@ -90,6 +88,13 @@ public class TodoList implements Iterable<TodoItem> {
     return items.indexOf(item);
   }
 
+  /**
+   * Moves the provided TodoItem to a new position given by newIndex.
+   * Items in-betweem the old and new positions are shifted.
+   *
+   * @param item the item to move
+   * @param newIndex the new position
+   */
   public void moveTodoItem(TodoItem item, int newIndex) {
     items.remove(item);
     items.add(newIndex, item);
