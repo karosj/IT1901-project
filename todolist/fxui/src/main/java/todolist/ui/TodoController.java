@@ -15,8 +15,11 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.function.Predicate;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import todolist.core.TodoItem;
@@ -136,6 +139,34 @@ public class TodoController {
     for (Button button : selectionButtons) {
       button.setDisable(disable);
     }
+    double rowLayoutY = getRowLayoutY(todoListView, listCell -> isSelected(todoListView, listCell), 0);
+    System.out.println(rowLayoutY);
+  }
+
+  private boolean isSelected(ListView<?> listView, ListCell<?> listCell) {
+    return isSelected(listView, listCell.getItem());
+  }
+  private boolean isSelected(ListView<?> listView, Object item) {
+    return todoListView.getSelectionModel().getSelectedItems().contains(item);
+  }
+
+  @SuppressWarnings("unchecked")
+  private <T> double getRowLayoutY(ListView<T> listView, Predicate<ListCell<T>> test, int num) {
+    for (Node child : listView.lookupAll(".list-cell")) {
+      if (child instanceof ListCell) {
+        ListCell<T> listCell = (ListCell<T>) child;
+        if (test.test(listCell) && num-- == 0) {
+          double dy = 0;
+          Node node = listCell;
+          while (node != todoListView) {
+            dy += node.getLayoutY();
+            node = node.getParent();
+          }
+          return dy;
+        }
+      }
+    }
+    return -1;
   }
 
   @FXML
