@@ -7,8 +7,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.ListView;
 import javafx.stage.Stage;
-import todolist.core.TodoItem;
-import todolist.core.TodoList;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -16,6 +14,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.testfx.framework.junit5.ApplicationTest;
+import todolist.core.TodoItem;
+import todolist.core.TodoList;
 
 public class TodoAppTest extends ApplicationTest {
 
@@ -66,7 +66,21 @@ public class TodoAppTest extends ApplicationTest {
     // item is last of the unchecked items in list view
     checkTodoListViewItems(item2, newItem, item1);
   }
-  
+
+  @Test
+  public void testDeleteTodoItem() {
+    // final ListView<TodoItem> todoListView = lookup("#todoListView").query();
+    // todoListView.getSelectionModel().select(1);
+    TodoItemListCell todoItemListCell = findTodoItemListCell(1);
+    clickOn(todoItemListCell.lookup(".label"));
+
+    clickOn("#deleteTodoItemButton");
+    // item2 is removed, only item1 is left
+    checkTodoListItems(item1);
+    // item2 is removed, only item1 is left
+    checkTodoListViewItems(item1);
+  }
+
   @Test
   public void testCheckTodoItem() {
     TodoItemListCell todoItemListCell = findTodoItemListCell(cell -> ! cell.getItem().isChecked());
@@ -78,7 +92,7 @@ public class TodoAppTest extends ApplicationTest {
     checkTodoListViewItems(item1, newItem2);
   }
 
-    @Test
+  @Test
   public void testDragTodoItem() {
     TodoItemListCell sourceTodoItemListCell = findTodoItemListCell(0);
     TodoItemListCell targetTodoItemListCell = findTodoItemListCell(1);

@@ -31,10 +31,10 @@ public class TodoListItem extends TodoItem {
   }
 
   @Override
-  public void set(TodoItem other) {
+  public void setAs(TodoItem other) {
     boolean oldChecked = isChecked();
     String oldText = getText();
-    super.set(other);
+    super.setAs(other);
     if (oldChecked != other.isChecked() || oldText != other.getText()
         || oldText != null && !(oldText.equals(other.getText()))) {
       todoList.fireTodoListChanged(this);

@@ -180,9 +180,9 @@ public class TodoListTest {
     assertEquals(3, receivedNotificationCount);
     item.setChecked(true);
     assertEquals(4, receivedNotificationCount);
-    item.set(new TodoItem().checked(true).text("enda en endret verdi"));
+    item.setAs(new TodoItem().checked(true).text("enda en endret verdi"));
     assertEquals(5, receivedNotificationCount);
-    item.set(new TodoItem().checked(true).text("enda en endret verdi"));
+    item.setAs(new TodoItem().checked(true).text("enda en endret verdi"));
     assertEquals(5, receivedNotificationCount);
     // test removeTodoListListener, too
     newList.removeTodoListListener(listener);

@@ -31,7 +31,7 @@ public class TodoItem {
    *
    * @param other the other TodoItem, from which properties are copied
    */
-  public void set(TodoItem other) {
+  public void setAs(TodoItem other) {
     this.checked = other.checked;
     this.text = other.text;
   }
@@ -49,7 +49,7 @@ public class TodoItem {
   }
 
   public TodoItem as(TodoItem other) {
-    set(other);
+    setAs(other);
     return this;
   }
 
