@@ -11,17 +11,7 @@
 
     <artifactId>fxui</artifactId>
 
-    <!-- 
-        <repositories>
-            <repository>
-                <id>bintray</id>
-                <url>https://dl.bintray.com/jerady/maven</url>
-            </repository>
-        </repositories>
-    -->
-
     <dependencies>
-
         <dependency>
             <groupId>it1901.todolist</groupId>
             <artifactId>core</artifactId>
@@ -45,14 +35,6 @@
             <artifactId>javafx-fxml</artifactId>
             <version>14.0.2</version>
         </dependency>
-
-        <!-- 
-            <dependency>
-                <groupId>de.jensd</groupId>
-                <artifactId>fontawesomefx-fontawesome</artifactId>
-                <version>4.7.0-11</version>
-            </dependency>
-        -->
 
         <!-- https://mvnrepository.com/artifact/de.jensd/fontawesomefx-controls -->
         <dependency>
