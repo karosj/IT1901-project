@@ -12,7 +12,7 @@ import com.fasterxml.jackson.databind.node.TextNode;
 import java.io.IOException;
 import todolist.core.TodoItem;
 
-public class TodoItemDeserializer extends JsonDeserializer<TodoItem> {
+class TodoItemDeserializer extends JsonDeserializer<TodoItem> {
 
   @Override
   public TodoItem deserialize(JsonParser parser, DeserializationContext ctxt)

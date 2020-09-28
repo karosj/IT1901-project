@@ -1,6 +1,5 @@
 package todolist.ui;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -24,7 +23,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import todolist.core.TodoItem;
 import todolist.core.TodoList;
-import todolist.json.TodoModule;
+import todolist.json.TodoPersistence;
 
 public class TodoController {
 
@@ -38,7 +37,7 @@ public class TodoController {
     return todoList;
   }
 
-  private ObjectMapper mapper = new ObjectMapper();
+  private TodoPersistence todoPersistence = new TodoPersistence();
 
   @FXML
   String userTodoListPath;
@@ -57,7 +56,6 @@ public class TodoController {
 
   private void initializeTodoList() {
     // setter opp data
-    mapper.registerModule(new TodoModule());
     Reader reader = null;
     // try to read file from home folder first
     if (userTodoListPath != null) {
@@ -86,7 +84,7 @@ public class TodoController {
       reader = new StringReader(todoListWithTwoItems);
     }
     try {
-      todoList = mapper.readValue(reader, TodoList.class);
+      todoList = todoPersistence.readTodoList(reader);
     } catch (IOException e) {
       todoList = new TodoList(
         todoList.createTodoItem().text("Øl"),
@@ -139,8 +137,9 @@ public class TodoController {
     for (Button button : selectionButtons) {
       button.setDisable(disable);
     }
+    // TODO in progress...
     double rowLayoutY = getRowLayoutY(todoListView, listCell -> isSelected(todoListView, listCell), 0);
-    System.out.println(rowLayoutY);
+    // System.out.println(rowLayoutY);
   }
 
   private boolean isSelected(ListView<?> listView, ListCell<?> listCell) {
@@ -196,7 +195,7 @@ public class TodoController {
     if (userTodoListPath != null) {
       Path path = Paths.get(System.getProperty("user.home"), userTodoListPath);
       try (Writer writer = new FileWriter(path.toFile(), StandardCharsets.UTF_8)) {
-        mapper.writerWithDefaultPrettyPrinter().writeValue(writer, todoList);
+        todoPersistence.writeTodoList(todoList, writer);
       } catch (IOException e) {
         System.err.println("Fikk ikke skrevet til todolist.json på hjemmeområdet");
       }

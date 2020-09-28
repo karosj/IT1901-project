@@ -6,7 +6,7 @@ import com.fasterxml.jackson.databind.SerializerProvider;
 import java.io.IOException;
 import todolist.core.TodoItem;
 
-public class TodoItemSerializer extends JsonSerializer<TodoItem> {
+class TodoItemSerializer extends JsonSerializer<TodoItem> {
 
   /*
    * format: { "text": "...", "checked": false }

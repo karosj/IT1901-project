@@ -7,7 +7,7 @@ import java.io.IOException;
 import todolist.core.TodoItem;
 import todolist.core.TodoList;
 
-public class TodoListSerializer extends JsonSerializer<TodoList> {
+class TodoListSerializer extends JsonSerializer<TodoList> {
 
   /*
    * format: { "items": [ ... ] }

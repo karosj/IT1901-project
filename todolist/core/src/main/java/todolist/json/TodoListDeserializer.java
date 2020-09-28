@@ -12,7 +12,7 @@ import java.io.IOException;
 import todolist.core.TodoItem;
 import todolist.core.TodoList;
 
-public class TodoListDeserializer extends JsonDeserializer<TodoList> {
+class TodoListDeserializer extends JsonDeserializer<TodoList> {
 
   private TodoItemDeserializer todoItemDeserializer = new TodoItemDeserializer();
   /*
