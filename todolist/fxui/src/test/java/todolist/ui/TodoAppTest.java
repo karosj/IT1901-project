@@ -65,6 +65,8 @@ public class TodoAppTest extends ApplicationTest {
     checkTodoListItems(item1, item2, newItem);
     // item is last of the unchecked items in list view
     checkTodoListViewItems(item2, newItem, item1);
+    // check element is selected
+    checkSelectedTodoItem(1);
   }
 
   @Test
@@ -79,10 +81,12 @@ public class TodoAppTest extends ApplicationTest {
     checkTodoListItems(item1);
     // item2 is removed, only item1 is left
     checkTodoListViewItems(item1);
+    // check remaining item is selected
+    checkSelectedTodoItem(0);
   }
 
   @Test
-  public void testCheckTodoItem() {
+  public void testCheckTodoItemListCell() {
     TodoItemListCell todoItemListCell = findTodoItemListCell(cell -> ! cell.getItem().isChecked());
     clickOn(todoItemListCell.lookup(".check-box"));
     TodoItem newItem2 = item2.withChecked(true);
@@ -152,5 +156,10 @@ public class TodoAppTest extends ApplicationTest {
       i++;
     }
     assertTrue(i == items.length);
+  }
+
+  private void checkSelectedTodoItem(int index) {
+    final ListView<TodoItem> todoListView = lookup("#todoListView").query();
+    assertEquals(index, todoListView.getSelectionModel().getSelectedIndex());
   }
 }

@@ -129,7 +129,12 @@ public class TodoController {
     List<TodoItem> items = new ArrayList<>();
     items.addAll(todoList.getUncheckedTodoItems());
     items.addAll(todoList.getCheckedTodoItems());
+    TodoItem selectedItem = todoListView.getSelectionModel().getSelectedItem();
     todoListView.getItems().setAll(items);
+    // keep selection
+    if (selectedItem != null) {
+      todoListView.getSelectionModel().select(selectedItem);
+    }
   }
 
   private void updateTodoListButtons() {
@@ -138,13 +143,14 @@ public class TodoController {
       button.setDisable(disable);
     }
     // TODO in progress...
-    double rowLayoutY = getRowLayoutY(todoListView, listCell -> isSelected(todoListView, listCell), 0);
+    getRowLayoutY(todoListView, listCell -> isSelected(todoListView, listCell), 0);
     // System.out.println(rowLayoutY);
   }
 
   private boolean isSelected(ListView<?> listView, ListCell<?> listCell) {
     return isSelected(listView, listCell.getItem());
   }
+
   private boolean isSelected(ListView<?> listView, Object item) {
     return todoListView.getSelectionModel().getSelectedItems().contains(item);
   }
@@ -173,21 +179,37 @@ public class TodoController {
     TodoItem item = todoList.createTodoItem();
     item.setText(newTodoItemText.getText());
     todoList.addTodoItem(item);
+    todoListView.getSelectionModel().select(item);
   }
 
   @FXML
   void handleDeleteItemAction() {
-    TodoItem item = todoListView.getSelectionModel().getSelectedItem();
+    int index = todoListView.getSelectionModel().getSelectedIndex();
+    TodoItem item = todoListView.getItems().get(index);
     if (item != null) {
       todoList.removeTodoItem(item);
+      selectWithinBounds(index);
     }
+  }
+
+  private int selectWithinBounds(int index) {
+    int maxIndex = todoListView.getItems().size() - 1;
+    if (index > maxIndex) {
+      index = maxIndex;
+    }
+    if (index >= 0) {
+      todoListView.getSelectionModel().select(index);
+      return index;
+    }
+    return -1;
   }
 
   @FXML
   void handleCheckItemAction() {
     TodoItem item = todoListView.getSelectionModel().getSelectedItem();
     if (item != null) {
-      item.setChecked(true);
+      // toggle checked flag
+      item.setChecked(! item.isChecked());
     }
   }
 
