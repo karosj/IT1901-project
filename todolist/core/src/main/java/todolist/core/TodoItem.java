@@ -1,9 +1,12 @@
 package todolist.core;
 
+import java.time.LocalDateTime;
+
 public class TodoItem {
 
   private String text;
   private boolean checked;
+  private LocalDateTime deadline;
 
   @Override
   public String toString() {
@@ -24,6 +27,20 @@ public class TodoItem {
 
   public void setChecked(boolean checked) {
     this.checked = checked;
+  }
+
+  /**
+   * @return the deadline
+   */
+  public LocalDateTime getDeadline() {
+    return deadline;
+  }
+
+  /**
+   * @param deadline the deadline to set
+   */
+  public void setDeadline(LocalDateTime deadline) {
+    this.deadline = deadline;
   }
 
   /**

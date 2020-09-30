@@ -1,5 +1,6 @@
 package todolist.core;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -9,8 +10,24 @@ public class TodoList implements Iterable<TodoItem> {
 
   private List<TodoItem> items = new ArrayList<>();
 
+  private LocalDateTime deadline;
+
   public TodoList(TodoItem...items) {
     addTodoItems(items);
+  }
+
+  /**
+   * @return the deadline
+   */
+  public LocalDateTime getDeadline() {
+    return deadline;
+  }
+
+  /**
+   * @param deadline the deadline to set
+   */
+  public void setDeadline(LocalDateTime deadline) {
+    this.deadline = deadline;
   }
 
   public TodoItem createTodoItem() {
