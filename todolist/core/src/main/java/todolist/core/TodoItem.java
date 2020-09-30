@@ -10,7 +10,8 @@ public class TodoItem {
 
   @Override
   public String toString() {
-    return String.format("[TodoItem text=%s checked=%s]", getText(), isChecked());
+    return String.format("[TodoItem text=%s checked=%s deadline=%s]", getText(), isChecked(),
+        getDeadline());
   }
 
   public String getText() {
@@ -29,18 +30,16 @@ public class TodoItem {
     this.checked = checked;
   }
 
-  /**
-   * @return the deadline
-   */
   public LocalDateTime getDeadline() {
     return deadline;
   }
 
-  /**
-   * @param deadline the deadline to set
-   */
   public void setDeadline(LocalDateTime deadline) {
     this.deadline = deadline;
+  }
+
+  public boolean isOverdue() {
+    return deadline != null && deadline.isBefore(LocalDateTime.now()) && (! isChecked());
   }
 
   /**
@@ -65,6 +64,11 @@ public class TodoItem {
     return this;
   }
 
+  public TodoItem deadline(LocalDateTime deadline) {
+    setDeadline(deadline);
+    return this;
+  }
+
   public TodoItem as(TodoItem other) {
     setAs(other);
     return this;
@@ -76,5 +80,9 @@ public class TodoItem {
 
   public TodoItem withText(String text) {
     return new TodoItem().as(this).text(text);
+  }
+
+  public TodoItem withDeadline(LocalDateTime deadline) {
+    return new TodoItem().as(this).deadline(deadline);
   }
 }

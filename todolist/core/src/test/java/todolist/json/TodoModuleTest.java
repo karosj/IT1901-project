@@ -2,6 +2,7 @@ package todolist.json;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.time.LocalDateTime;
 import java.util.Iterator;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -24,7 +25,7 @@ public class TodoModuleTest {
     mapper.registerModule(new TodoModule());
   }
 
-  private final static String todoListWithTwoItems = "{\"items\":[{\"text\":\"item1\",\"checked\":false},{\"text\":\"item2\",\"checked\":true}]}";
+  private final static String todoListWithTwoItems = "{\"items\":[{\"text\":\"item1\",\"checked\":false},{\"text\":\"item2\",\"checked\":true,\"deadline\":\"2020-10-01T14:53:11\"}]}";
 
   @Test
   public void testSerializers() {
@@ -34,6 +35,7 @@ public class TodoModuleTest {
     TodoItem item2 = list.createTodoItem();
     item2.setText("item2");
     item2.setChecked(true);
+    item2.setDeadline(LocalDateTime.parse("2020-10-01T14:53:11"));
     list.addTodoItem(item1);
     list.addTodoItem(item2);
     try {
@@ -43,13 +45,14 @@ public class TodoModuleTest {
     }
   }
 
-  static void checkTodoItem(TodoItem item, String text, boolean checked) {
+  static void checkTodoItem(TodoItem item, String text, boolean checked, LocalDateTime deadline) {
     assertEquals(text, item.getText());
     assertTrue(checked == item.isChecked());
+    assertEquals(deadline, item.getDeadline());
   }
 
   static void checkTodoItem(TodoItem item1, TodoItem item2) {
-    checkTodoItem(item1, item2.getText(), item2.isChecked());
+    checkTodoItem(item1, item2.getText(), item2.isChecked(), item2.getDeadline());
   }
 
   @Test
@@ -58,9 +61,9 @@ public class TodoModuleTest {
       TodoList list = mapper.readValue(todoListWithTwoItems, TodoList.class);
       Iterator<TodoItem> it = list.iterator();
       assertTrue(it.hasNext());
-      checkTodoItem(it.next(), "item1", false);
+      checkTodoItem(it.next(), "item1", false, null);
       assertTrue(it.hasNext());
-      checkTodoItem(it.next(), "item2", true);
+      checkTodoItem(it.next(), "item2", true, LocalDateTime.parse("2020-10-01T14:53:11"));
       assertFalse(it.hasNext());
     } catch (JsonProcessingException e) {
       fail();
@@ -75,6 +78,7 @@ public class TodoModuleTest {
     TodoItem item2 = new TodoItem();
     item2.setText("item2");
     item2.setChecked(true);
+    item2.setDeadline(LocalDateTime.parse("2020-10-01T14:53:11"));
     list.addTodoItem(item1);
     list.addTodoItem(item2);
     try {
