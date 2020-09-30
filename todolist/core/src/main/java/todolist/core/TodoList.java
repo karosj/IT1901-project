@@ -7,10 +7,20 @@ import java.util.List;
 
 public class TodoList implements Iterable<TodoItem> {
 
+  private String name;
+
   private List<TodoItem> items = new ArrayList<>();
 
   public TodoList(TodoItem...items) {
     addTodoItems(items);
+  }
+  
+  public String getName() {
+    return name;
+  }
+
+  public void setName(String name) {
+    this.name = name;
   }
 
   public TodoItem createTodoItem() {

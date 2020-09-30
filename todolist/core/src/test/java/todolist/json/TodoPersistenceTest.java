@@ -1,5 +1,6 @@
 package todolist.json;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -10,6 +11,7 @@ import java.util.Iterator;
 import org.junit.jupiter.api.Test;
 import todolist.core.TodoItem;
 import todolist.core.TodoList;
+import todolist.core.TodoModel;
 
 public class TodoPersistenceTest {
 
@@ -17,7 +19,10 @@ public class TodoPersistenceTest {
 
   @Test
   public void testSerializersDeserializers() {
+    TodoModel model = new TodoModel();
     TodoList list = new TodoList();
+    list.setName("todo");
+    model.addTodoList(list);
     TodoItem item1 = new TodoItem();
     item1.setText("item1");
     TodoItem item2 = new TodoItem();
@@ -27,9 +32,12 @@ public class TodoPersistenceTest {
     list.addTodoItem(item2);
     try {
       StringWriter writer = new StringWriter();
-      todoPersistence.writeTodoList(list, writer);
+      todoPersistence.writeTodoModel(model, writer);
       String json = writer.toString();
-      TodoList list2 = todoPersistence.readTodoList(new StringReader(json));
+      TodoModel model2 = todoPersistence.readTodoModel(new StringReader(json));
+      assertTrue(model2.iterator().hasNext());
+      TodoList list2 = model.iterator().next();
+      assertEquals("todo", list.getName());
       Iterator<TodoItem> it = list2.iterator();
       assertTrue(it.hasNext());
       TodoModuleTest.checkTodoItem(it.next(), item1);

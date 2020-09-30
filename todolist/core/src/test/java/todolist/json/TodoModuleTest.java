@@ -11,10 +11,11 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import todolist.core.TodoItem;
 import todolist.core.TodoList;
+import todolist.core.TodoModel;
 
 public class TodoModuleTest {
 
-  // {"items":[{"text":"item1","checked":false},{"text":"item2","checked":true}]}
+  // {"lists":[{"name": "todo", "items":[{"text":"item1","checked":false},{"text":"item2","checked":true}]}]}
 
   private static ObjectMapper mapper;
 
@@ -24,11 +25,14 @@ public class TodoModuleTest {
     mapper.registerModule(new TodoModule());
   }
 
-  private final static String todoListWithTwoItems = "{\"items\":[{\"text\":\"item1\",\"checked\":false},{\"text\":\"item2\",\"checked\":true}]}";
+  private final static String todoListWithTwoItems = "{\"lists\":[{\"name\":\"todo\",\"items\":[{\"text\":\"item1\",\"checked\":false},{\"text\":\"item2\",\"checked\":true}]}]}";
 
   @Test
   public void testSerializers() {
+    TodoModel model = new TodoModel();
     TodoList list = new TodoList();
+    list.setName("todo");
+    model.addTodoList(list);
     TodoItem item1 = list.createTodoItem();
     item1.setText("item1");
     TodoItem item2 = list.createTodoItem();
@@ -37,7 +41,7 @@ public class TodoModuleTest {
     list.addTodoItem(item1);
     list.addTodoItem(item2);
     try {
-      assertEquals(todoListWithTwoItems.replaceAll("\\s+", ""), mapper.writeValueAsString(list));
+      assertEquals(todoListWithTwoItems.replaceAll("\\s+", ""), mapper.writeValueAsString(model));
     } catch (JsonProcessingException e) {
       fail();
     }
@@ -55,7 +59,10 @@ public class TodoModuleTest {
   @Test
   public void testDeserializers() {
     try {
-      TodoList list = mapper.readValue(todoListWithTwoItems, TodoList.class);
+      TodoModel model = mapper.readValue(todoListWithTwoItems, TodoModel.class);
+      assertTrue(model.iterator().hasNext());
+      TodoList list = model.iterator().next();
+      assertEquals("todo", list.getName());
       Iterator<TodoItem> it = list.iterator();
       assertTrue(it.hasNext());
       checkTodoItem(it.next(), "item1", false);
@@ -69,7 +76,10 @@ public class TodoModuleTest {
 
   @Test
   public void testSerializersDeserializers() {
+    TodoModel model = new TodoModel();
     TodoList list = new TodoList();
+    list.setName("todo");
+    model.addTodoList(list);
     TodoItem item1 = new TodoItem();
     item1.setText("item1");
     TodoItem item2 = new TodoItem();
@@ -78,8 +88,11 @@ public class TodoModuleTest {
     list.addTodoItem(item1);
     list.addTodoItem(item2);
     try {
-      String json = mapper.writeValueAsString(list);
-      TodoList list2 = mapper.readValue(json, TodoList.class);
+      String json = mapper.writeValueAsString(model);
+      TodoModel model2 = mapper.readValue(json, TodoModel.class);
+      assertTrue(model2.iterator().hasNext());
+      TodoList list2 = model.iterator().next();
+      assertEquals("todo", list.getName());
       Iterator<TodoItem> it = list2.iterator();
       assertTrue(it.hasNext());
       checkTodoItem(it.next(), item1);

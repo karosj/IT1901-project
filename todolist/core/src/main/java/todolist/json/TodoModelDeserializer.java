@@ -8,43 +8,38 @@ import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.fasterxml.jackson.databind.node.TextNode;
 import java.io.IOException;
-import todolist.core.TodoItem;
 import todolist.core.TodoList;
+import todolist.core.TodoModel;
 
-class TodoListDeserializer extends JsonDeserializer<TodoList> {
+class TodoModelDeserializer extends JsonDeserializer<TodoModel> {
 
-  private TodoItemDeserializer todoItemDeserializer = new TodoItemDeserializer();
+  private TodoListDeserializer todoListDeserializer = new TodoListDeserializer();
   /*
-   * format: { "items": [ ... ] }
+   * format: { "lists": [ ... ] }
    */
 
   @Override
-  public TodoList deserialize(JsonParser parser, DeserializationContext ctxt)
+  public TodoModel deserialize(JsonParser parser, DeserializationContext ctxt)
       throws IOException, JsonProcessingException {
     TreeNode treeNode = parser.getCodec().readTree(parser);
     return deserialize((JsonNode) treeNode);
   }
 
-  TodoList deserialize(JsonNode treeNode) {
+  TodoModel deserialize(JsonNode treeNode) {
     if (treeNode instanceof ObjectNode) {
       ObjectNode objectNode = (ObjectNode) treeNode;
-      TodoList list = new TodoList();
-      JsonNode nameNode = objectNode.get("name");
-      if (nameNode instanceof TextNode) {
-        list.setName(nameNode.asText());
-      }
-      JsonNode itemsNode = objectNode.get("items");
+      TodoModel model = new TodoModel();
+      JsonNode itemsNode = objectNode.get("lists");
       if (itemsNode instanceof ArrayNode) {
         for (JsonNode elementNode : ((ArrayNode) itemsNode)) {
-          TodoItem item = todoItemDeserializer.deserialize(elementNode);
-          if (item != null) {
-            list.addTodoItem(item);
+          TodoList list = todoListDeserializer.deserialize(elementNode);
+          if (list != null) {
+            model.addTodoList(list);
           }
         }
       }
-      return list;
+      return model;
     }
     return null;
   }   

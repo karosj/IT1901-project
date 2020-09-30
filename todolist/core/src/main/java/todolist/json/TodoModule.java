@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.Version;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import todolist.core.TodoItem;
 import todolist.core.TodoList;
+import todolist.core.TodoModel;
 
 @SuppressWarnings("serial")
 class TodoModule extends SimpleModule {
@@ -17,7 +18,9 @@ class TodoModule extends SimpleModule {
     super(NAME, Version.unknownVersion());
     addSerializer(TodoItem.class, new TodoItemSerializer());
     addSerializer(TodoList.class, new TodoListSerializer());
+    addSerializer(TodoModel.class, new TodoModelSerializer());
     addDeserializer(TodoItem.class, new TodoItemDeserializer());
     addDeserializer(TodoList.class, new TodoListDeserializer());
+    addDeserializer(TodoModel.class, new TodoModelDeserializer());
   }
 }
