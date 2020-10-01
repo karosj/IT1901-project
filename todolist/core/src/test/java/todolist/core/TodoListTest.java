@@ -1,11 +1,13 @@
 package todolist.core;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.junit.jupiter.api.Assertions.assertSame;
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Iterator;
 import org.junit.jupiter.api.BeforeEach;
@@ -18,6 +20,22 @@ public class TodoListTest {
   @BeforeEach
   public void setUp() {
     newList = new TodoList();
+  }
+
+  @Test
+  public void testAddToDoItem() {
+    TodoItem item = new TodoItem();
+    item.setText("an item");
+    item.setChecked(true);
+    LocalDateTime now = LocalDateTime.now();
+    item.setDeadline(now);
+    newList.addTodoItem(item);
+    assertTrue(newList.iterator().hasNext());
+    TodoItem addedItem = newList.iterator().next();
+    // check that values are correctly copied
+    assertEquals(item.getText(), addedItem.getText());
+    assertTrue(item.isOverdue() == addedItem.isOverdue());
+    assertEquals(item.getDeadline(), addedItem.getDeadline());
   }
 
   // tests for getCheckedItems
@@ -162,6 +180,22 @@ public class TodoListTest {
     checkIterator(newList.iterator());
   }
 
+  // test for list and item deadline
+
+  @Test
+  public void testIsOverdue() {
+    assertFalse(newList.isOverdue(), "A list without deadline is not overdue");
+    newList.setDeadline(LocalDateTime.now().plusSeconds(1));
+    assertFalse(newList.isOverdue(), "A list with deadline in the future is not overdue");
+    newList.setDeadline(LocalDateTime.now().minusSeconds(1));
+    assertFalse(newList.isOverdue(), "A list with deadline in the past, but with no overdue items is overdue");
+    TodoItem item = newList.createTodoItem();
+    newList.addTodoItem(item);
+    assertTrue(newList.isOverdue(), "A list with deadline in the past and with overdue item(s) is overdue");
+    item.setChecked(true);
+    assertFalse(newList.isOverdue(), "A list with deadline in the past, but with no overdue items is overdue");
+  }
+
   private int receivedNotificationCount = 0;
 
   @Test
@@ -180,14 +214,21 @@ public class TodoListTest {
     assertEquals(3, receivedNotificationCount);
     item.setChecked(true);
     assertEquals(4, receivedNotificationCount);
-    item.setAs(new TodoItem().checked(true).text("enda en endret verdi"));
+    LocalDateTime now = LocalDateTime.now();
+    item.setDeadline(now);
     assertEquals(5, receivedNotificationCount);
-    item.setAs(new TodoItem().checked(true).text("enda en endret verdi"));
-    assertEquals(5, receivedNotificationCount);
+
+    String altText = "enda en endret verdi";
+    // (at least) one change
+    item.setAs(new TodoItem().checked(true).text(altText).deadline(now));
+    assertEquals(6, receivedNotificationCount);
+    // no change
+    item.setAs(new TodoItem().checked(true).text(altText).deadline(now));
+    assertEquals(6, receivedNotificationCount);
     // test removeTodoListListener, too
     newList.removeTodoListListener(listener);
     item.setChecked(false);
-    assertEquals(5, receivedNotificationCount);
+    assertEquals(6, receivedNotificationCount);
   }
 
   @Test
@@ -204,5 +245,8 @@ public class TodoListTest {
     verify(listener, times(3)).todoListChanged(newList);
     item.setChecked(true);
     verify(listener, times(4)).todoListChanged(newList);
+    LocalDateTime now = LocalDateTime.now();
+    item.setDeadline(now);
+    verify(listener, times(5)).todoListChanged(newList);
   }
 }

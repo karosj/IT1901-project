@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.time.LocalDateTime;
 import java.util.Iterator;
 import org.junit.jupiter.api.Test;
 import todolist.core.TodoItem;
@@ -20,10 +21,11 @@ public class TodoPersistenceTest {
     TodoList list = new TodoList();
     TodoItem item1 = new TodoItem();
     item1.setText("item1");
+    list.addTodoItem(item1);
     TodoItem item2 = new TodoItem();
     item2.setText("item2");
     item2.setChecked(true);
-    list.addTodoItem(item1);
+    item2.setDeadline(LocalDateTime.parse("2020-10-01T14:53:11"));
     list.addTodoItem(item2);
     try {
       StringWriter writer = new StringWriter();

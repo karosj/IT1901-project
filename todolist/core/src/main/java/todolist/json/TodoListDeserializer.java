@@ -8,7 +8,9 @@ import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.fasterxml.jackson.databind.node.TextNode;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import todolist.core.TodoItem;
 import todolist.core.TodoList;
 
@@ -26,6 +28,10 @@ class TodoListDeserializer extends JsonDeserializer<TodoList> {
     if (treeNode instanceof ObjectNode) {
       ObjectNode objectNode = (ObjectNode) treeNode;
       TodoList list = new TodoList();
+      JsonNode deadlineNode = objectNode.get("deadline");
+      if (deadlineNode instanceof TextNode) {
+        list.setDeadline(LocalDateTime.parse(deadlineNode.asText()));
+      }
       JsonNode itemsNode = objectNode.get("items");
       if (itemsNode instanceof ArrayNode) {
         for (JsonNode elementNode : ((ArrayNode) itemsNode)) {

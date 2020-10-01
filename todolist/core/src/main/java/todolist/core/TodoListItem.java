@@ -1,5 +1,8 @@
 package todolist.core;
 
+import java.time.LocalDateTime;
+import java.util.Objects;
+
 public class TodoListItem extends TodoItem {
 
   private final TodoList todoList;
@@ -14,29 +17,35 @@ public class TodoListItem extends TodoItem {
 
   @Override
   public void setText(String text) {
-    String oldText = getText();
-    super.setText(text);
-    if (oldText != text || oldText != null && !(oldText.equals(text))) {
+    if (! Objects.equals(text, getText())) {
+      super.setText(text);
       todoList.fireTodoListChanged(this);
     }
   }
 
   @Override
   public void setChecked(boolean checked) {
-    boolean oldChecked = isChecked();
-    super.setChecked(checked);
-    if (oldChecked != checked) {
+    if (checked != isChecked()) {
+      super.setChecked(checked);
+      todoList.fireTodoListChanged(this);
+    }
+  }
+
+  @Override
+  public void setDeadline(LocalDateTime deadline) {
+    if (! Objects.equals(deadline, getDeadline())) {
+      super.setDeadline(deadline);
       todoList.fireTodoListChanged(this);
     }
   }
 
   @Override
   public void setAs(TodoItem other) {
-    boolean oldChecked = isChecked();
-    String oldText = getText();
-    super.setAs(other);
-    if (oldChecked != other.isChecked() || oldText != other.getText()
-        || oldText != null && !(oldText.equals(other.getText()))) {
+    boolean equals = isChecked() == other.isChecked()
+        && Objects.equals(getText(), other.getText())
+        && Objects.equals(getDeadline(), other.getDeadline());
+    if (! equals) {
+      super.setAs(other);
       todoList.fireTodoListChanged(this);
     }
   }

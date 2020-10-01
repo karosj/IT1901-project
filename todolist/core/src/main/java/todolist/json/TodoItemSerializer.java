@@ -9,7 +9,7 @@ import todolist.core.TodoItem;
 class TodoItemSerializer extends JsonSerializer<TodoItem> {
 
   /*
-   * format: { "text": "...", "checked": false }
+   * format: { "text": "...", "checked": false, "deadline": ... }
    */
 
   @Override
@@ -18,6 +18,9 @@ class TodoItemSerializer extends JsonSerializer<TodoItem> {
     jsonGen.writeStartObject();
     jsonGen.writeStringField("text", item.getText());
     jsonGen.writeBooleanField("checked", item.isChecked());
+    if (item.getDeadline() != null) {
+      jsonGen.writeStringField("deadline", item.getDeadline().toString());
+    }
     jsonGen.writeEndObject();
   }
 }

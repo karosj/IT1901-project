@@ -10,6 +10,7 @@ import com.fasterxml.jackson.databind.node.BooleanNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.node.TextNode;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import todolist.core.TodoItem;
 
 class TodoItemDeserializer extends JsonDeserializer<TodoItem> {
@@ -27,11 +28,15 @@ class TodoItemDeserializer extends JsonDeserializer<TodoItem> {
       TodoItem item = new TodoItem();
       JsonNode textNode = objectNode.get("text");
       if (textNode instanceof TextNode) {
-        item.setText(((TextNode) textNode).asText());
+        item.setText(textNode.asText());
       }
       JsonNode checkedNode = objectNode.get("checked");
       if (checkedNode instanceof BooleanNode) {
-        item.setChecked(((BooleanNode) checkedNode).asBoolean(false));
+        item.setChecked(checkedNode.asBoolean(false));
+      }
+      JsonNode deadlineNode = objectNode.get("deadline");
+      if (deadlineNode instanceof TextNode) {
+        item.setDeadline(LocalDateTime.parse(deadlineNode.asText()));
       }
       return item;
     }

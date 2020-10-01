@@ -17,6 +17,9 @@ class TodoListSerializer extends JsonSerializer<TodoList> {
   public void serialize(TodoList list, JsonGenerator jsonGen, SerializerProvider serializerProvider)
       throws IOException {
     jsonGen.writeStartObject();
+    if (list.getDeadline() != null) {
+      jsonGen.writeStringField("deadline", list.getDeadline().toString());
+    }
     jsonGen.writeArrayFieldStart("items");
     for (TodoItem item : list) {
       jsonGen.writeObject(item);

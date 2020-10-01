@@ -1,16 +1,28 @@
 package todolist.core;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class TodoList implements Iterable<TodoItem> {
 
   private List<TodoItem> items = new ArrayList<>();
 
-  public TodoList(TodoItem...items) {
+  private LocalDateTime deadline;
+
+  public TodoList(TodoItem... items) {
     addTodoItems(items);
+  }
+
+  public LocalDateTime getDeadline() {
+    return deadline;
+  }
+
+  public void setDeadline(LocalDateTime deadline) {
+    this.deadline = deadline;
   }
 
   public TodoItem createTodoItem() {
@@ -19,10 +31,12 @@ public class TodoList implements Iterable<TodoItem> {
 
   /**
    * Adds the provided TodoItems to this TodoList.
+   * If a TodoItem is not an instance of TodoListItem,
+   * its contents is copied in to a new TodoListItem and that is added instead.
    *
    * @param items the TodoItems to add
    */
-  public void addTodoItems(TodoItem...items) {
+  public void addTodoItems(TodoItem... items) {
     for (TodoItem item : items) {
       TodoListItem todoListItem = null;
       if (item instanceof TodoListItem) {
@@ -31,6 +45,7 @@ public class TodoList implements Iterable<TodoItem> {
         todoListItem = new TodoListItem(this);
         todoListItem.setText(item.getText());
         todoListItem.setChecked(item.isChecked());
+        todoListItem.setDeadline(item.getDeadline());
       }
       this.items.add(todoListItem);
     }
@@ -68,8 +83,8 @@ public class TodoList implements Iterable<TodoItem> {
     return result;
     // same as
     // return items.stream()
-    //  .filter(item -> checked == null || item.isChecked() == checked)
-    //  .collect(Collectors.toList());
+    // .filter(item -> checked == null || item.isChecked() == checked)
+    // .collect(Collectors.toList());
   }
 
   public Collection<TodoItem> getTodoItems() {
@@ -84,6 +99,19 @@ public class TodoList implements Iterable<TodoItem> {
     return getTodoItems(false);
   }
 
+  // methods related to deadlines
+
+  public boolean isOverdue() {
+    return deadline != null && deadline.isBefore(LocalDateTime.now())
+        && (!getUncheckedTodoItems().isEmpty());
+  }
+
+  public Collection<TodoItem> getOverdueTodoItems() {
+    return items.stream().filter(TodoItem::isOverdue).collect(Collectors.toList());
+  }
+
+  // index-oriented methods
+
   public int indexOf(TodoItem item) {
     return items.indexOf(item);
   }
@@ -92,7 +120,7 @@ public class TodoList implements Iterable<TodoItem> {
    * Moves the provided TodoItem to a new position given by newIndex.
    * Items in-betweem the old and new positions are shifted.
    *
-   * @param item the item to move
+   * @param item     the item to move
    * @param newIndex the new position
    */
   public void moveTodoItem(TodoItem item, int newIndex) {
