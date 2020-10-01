@@ -1,12 +1,17 @@
 {
-    "items": [
+    "lists": [
         {
-            "text": "Øl",
-            "checked": false
-        },
-        {
-            "text": "Pizza",
-            "checked": false
+            "name": "todo",
+            "items": [
+                {
+                    "text": "Øl",
+                    "checked": false
+                },
+                {
+                    "text": "Pizza",
+                    "checked": false
+                }
+            ]
         }
     ]
 }

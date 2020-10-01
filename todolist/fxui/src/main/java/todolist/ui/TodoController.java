@@ -23,18 +23,19 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import todolist.core.TodoItem;
 import todolist.core.TodoList;
+import todolist.core.TodoModel;
 import todolist.json.TodoPersistence;
 
 public class TodoController {
 
   private static final String todoListWithTwoItems =
-      "{\"items\":[{\"text\":\"Øl\",\"checked\":false},{\"text\":\"Pizza\",\"checked\":true}]}";
+      "{\"lists\":[{\"name\":\"todo\",\"items\":[{\"text\":\"item1\",\"checked\":false},{\"text\":\"item2\",\"checked\":true,\"deadline\":\"2020-10-01T14:53:11\"}]}]}";
 
-  private TodoList todoList;
+  private TodoModel todoModel;
 
   // makes class more testable
   TodoList getTodoList() {
-    return todoList;
+    return todoModel.iterator().next();
   }
 
   private TodoPersistence todoPersistence = new TodoPersistence();
@@ -84,12 +85,14 @@ public class TodoController {
       reader = new StringReader(todoListWithTwoItems);
     }
     try {
-      todoList = todoPersistence.readTodoList(reader);
+      todoModel = todoPersistence.readTodoModel(reader);
     } catch (IOException e) {
-      todoList = new TodoList(
-        todoList.createTodoItem().text("Øl"),
-        todoList.createTodoItem().text("Pizza")
+      todoModel = new TodoModel();
+      TodoList todoList = new TodoList(
+        new TodoItem().text("Øl"),
+         new TodoItem().text("Pizza")
       );
+      todoModel.addTodoList(todoList);
     } finally {
       try {
         if (reader != null) {
@@ -110,11 +113,11 @@ public class TodoController {
     // kobler data til list-controll
     updateTodoListView();
     updateTodoListButtons();
-    todoList.addTodoListListener(todoList -> {
+    getTodoList().addTodoListListener(todoList -> {
       autoSaveTodoList();
       updateTodoListView();
     });
-    TodoItemListCellDragHandler dragHandler = new TodoItemListCellDragHandler(todoList);
+    TodoItemListCellDragHandler dragHandler = new TodoItemListCellDragHandler(getTodoList());
     todoListView.setCellFactory(listView -> {
       TodoItemListCell listCell = new TodoItemListCell();
       dragHandler.registerHandlers(listCell);
@@ -127,8 +130,8 @@ public class TodoController {
 
   protected void updateTodoListView() {
     List<TodoItem> items = new ArrayList<>();
-    items.addAll(todoList.getUncheckedTodoItems());
-    items.addAll(todoList.getCheckedTodoItems());
+    items.addAll(getTodoList().getUncheckedTodoItems());
+    items.addAll(getTodoList().getCheckedTodoItems());
     TodoItem selectedItem = todoListView.getSelectionModel().getSelectedItem();
     todoListView.getItems().setAll(items);
     // keep selection
@@ -176,9 +179,9 @@ public class TodoController {
 
   @FXML
   void handleNewTodoItemAction() {
-    TodoItem item = todoList.createTodoItem();
+    TodoItem item = getTodoList().createTodoItem();
     item.setText(newTodoItemText.getText());
-    todoList.addTodoItem(item);
+    getTodoList().addTodoItem(item);
     todoListView.getSelectionModel().select(item);
   }
 
@@ -187,7 +190,7 @@ public class TodoController {
     int index = todoListView.getSelectionModel().getSelectedIndex();
     TodoItem item = todoListView.getItems().get(index);
     if (item != null) {
-      todoList.removeTodoItem(item);
+      getTodoList().removeTodoItem(item);
       selectWithinBounds(index);
     }
   }
@@ -217,7 +220,7 @@ public class TodoController {
     if (userTodoListPath != null) {
       Path path = Paths.get(System.getProperty("user.home"), userTodoListPath);
       try (Writer writer = new FileWriter(path.toFile(), StandardCharsets.UTF_8)) {
-        todoPersistence.writeTodoList(todoList, writer);
+        todoPersistence.writeTodoModel(todoModel, writer);
       } catch (IOException e) {
         System.err.println("Fikk ikke skrevet til todolist.json på hjemmeområdet");
       }
