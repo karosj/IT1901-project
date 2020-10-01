@@ -25,9 +25,17 @@ class TodoListDeserializer extends JsonDeserializer<TodoList> {
   public TodoList deserialize(JsonParser parser, DeserializationContext ctxt)
       throws IOException, JsonProcessingException {
     TreeNode treeNode = parser.getCodec().readTree(parser);
+    return deserialize((JsonNode) treeNode);
+  }
+
+  TodoList deserialize(JsonNode treeNode) {
     if (treeNode instanceof ObjectNode) {
       ObjectNode objectNode = (ObjectNode) treeNode;
       TodoList list = new TodoList();
+      JsonNode nameNode = objectNode.get("name");
+      if (nameNode instanceof TextNode) {
+        list.setName(nameNode.asText());
+      }
       JsonNode deadlineNode = objectNode.get("deadline");
       if (deadlineNode instanceof TextNode) {
         list.setDeadline(LocalDateTime.parse(deadlineNode.asText()));

@@ -9,12 +9,22 @@ import java.util.stream.Collectors;
 
 public class TodoList implements Iterable<TodoItem> {
 
+  private String name;
+
   private List<TodoItem> items = new ArrayList<>();
 
   private LocalDateTime deadline;
 
   public TodoList(TodoItem... items) {
     addTodoItems(items);
+  }
+  
+  public String getName() {
+    return name;
+  }
+
+  public void setName(String name) {
+    this.name = name;
   }
 
   public LocalDateTime getDeadline() {
