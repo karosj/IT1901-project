@@ -28,7 +28,7 @@ public class TodoAppTest extends ApplicationTest {
     final FXMLLoader loader = new FXMLLoader(getClass().getResource("TodoTest.fxml"));
     final Parent root = loader.load();
     this.controller = loader.getController();
-    this.todoList = this.controller.getTodoList();
+    this.todoList = this.controller.getSelectedTodoList();
     stage.setScene(new Scene(root));
     stage.show();
   }
@@ -50,7 +50,7 @@ public class TodoAppTest extends ApplicationTest {
 
   @Test
   public void testTodoListView_initialItems() {
-    final ListView<TodoItem> todoListView = lookup("#todoListView").query();
+    final ListView<TodoItem> todoListView = lookup("#todoItemsView").query();
     // initial todo items, note the unchecked one comes first
     checkTodoItems(todoListView.getItems(), item2, item1);
   }
@@ -71,7 +71,7 @@ public class TodoAppTest extends ApplicationTest {
 
   @Test
   public void testDeleteTodoItem() {
-    // final ListView<TodoItem> todoListView = lookup("#todoListView").query();
+    // final ListView<TodoItem> todoListView = lookup("#todoItemsView").query();
     // todoListView.getSelectionModel().select(1);
     TodoItemListCell todoItemListCell = findTodoItemListCell(1);
     clickOn(todoItemListCell.lookup(".label"));
@@ -144,7 +144,7 @@ public class TodoAppTest extends ApplicationTest {
   }
 
   private void checkTodoListViewItems(TodoItem... items) {
-    final ListView<TodoItem> todoListView = lookup("#todoListView").query();
+    final ListView<TodoItem> todoListView = lookup("#todoItemsView").query();
     checkTodoItems(todoListView.getItems(), items);
   }
 
@@ -159,7 +159,7 @@ public class TodoAppTest extends ApplicationTest {
   }
 
   private void checkSelectedTodoItem(int index) {
-    final ListView<TodoItem> todoListView = lookup("#todoListView").query();
+    final ListView<TodoItem> todoListView = lookup("#todoItemsView").query();
     assertEquals(index, todoListView.getSelectionModel().getSelectedIndex());
   }
 }

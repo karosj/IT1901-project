@@ -18,7 +18,12 @@ public class TodoList implements Iterable<TodoItem> {
   public TodoList(TodoItem... items) {
     addTodoItems(items);
   }
-  
+
+  @Override
+  public String toString() {
+    return String.format("[TodoList name=%s deadline=%s]", getName(), getDeadline());
+  }
+
   public String getName() {
     return name;
   }

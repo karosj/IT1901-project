@@ -3,6 +3,7 @@
 <?import java.lang.String?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.control.TextField?>
@@ -16,6 +17,9 @@
         <String fx:id="sampleTodoListResource" fx:value="sample-todolist.json"/>
     </fx:define>
     <HBox>
+        <ComboBox fx:id="todoListsView"/>
+    </HBox>
+    <HBox>
         <Button fx:id="newTodoItemButton" onAction="#handleNewTodoItemAction">
             <graphic>
                 <FontAwesomeIconView glyphName="PLUS" size="18px" glyphStyle="-fx-fill: green" />
@@ -26,7 +30,7 @@
         </Button>
         <TextField fx:id="newTodoItemText" promptText="Skriv inn tekst her" onAction="#handleNewTodoItemAction"/>
     </HBox>
-    <ListView fx:id="todoListView">
+    <ListView fx:id="todoItemsView">
     </ListView>
     <HBox>
         <Button fx:id="deleteTodoItemButton" onAction="#handleDeleteItemAction">

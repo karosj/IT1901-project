@@ -18,11 +18,14 @@ import java.util.function.Predicate;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.util.StringConverter;
 import todolist.core.TodoItem;
 import todolist.core.TodoList;
+import todolist.core.TodoListListener;
 import todolist.core.TodoModel;
 import todolist.json.TodoPersistence;
 
@@ -33,11 +36,6 @@ public class TodoController {
 
   private TodoModel todoModel;
 
-  // makes class more testable
-  TodoList getTodoList() {
-    return todoModel.iterator().next();
-  }
-
   private TodoPersistence todoPersistence = new TodoPersistence();
 
   @FXML
@@ -47,15 +45,18 @@ public class TodoController {
   String sampleTodoListResource;
 
   @FXML
+  ComboBox<TodoList> todoListsView;
+
+  @FXML
   TextField newTodoItemText;
 
   @FXML
-  ListView<TodoItem> todoListView;
+  ListView<TodoItem> todoItemsView;
 
   @FXML
   Button deleteTodoItemButton;
 
-  private void initializeTodoList() {
+  private void initializeTodoModel() {
     // setter opp data
     Reader reader = null;
     // try to read file from home folder first
@@ -108,45 +109,131 @@ public class TodoController {
 
   @FXML
   void initialize() {
-    initializeTodoList();
+    initializeTodoModel();
     selectionButtons = List.of(deleteTodoItemButton);
     // kobler data til list-controll
-    updateTodoListView();
-    updateTodoListButtons();
-    getTodoList().addTodoListListener(todoList -> {
-      autoSaveTodoList();
-      updateTodoListView();
+    initializeTodoListsView();
+    initializeTodoItemsView();
+    updateTodoListsView(null);
+  }
+
+  private void initializeTodoListsView() {
+    todoListsView.setCellFactory(listView  -> {
+      ListCell<TodoList> listCell = new ListCell<TodoList>() {
+        @Override
+        protected void updateItem(TodoList item, boolean empty) {
+          super.updateItem(item, empty);
+          if (empty || item == null) {
+            setText(null);
+          } else if (item.getName() == null) {
+            setText("<create new list>");
+          } else {
+            setText(item.getName());
+          }
+        }
+      };
+      return listCell;
     });
-    TodoItemListCellDragHandler dragHandler = new TodoItemListCellDragHandler(getTodoList());
-    todoListView.setCellFactory(listView -> {
+    todoListsView.setConverter(new StringConverter<TodoList>() {
+      @Override
+      public String toString(TodoList todoList) {
+        return todoList.getName();
+      }
+      @Override
+      public TodoList fromString(String newName) {
+        TodoList todoList = new TodoList(); // getTodoList()
+        todoList.setName(newName);
+        return todoList;
+      }
+    });
+    todoListsView.setEditable(true);
+    todoListsView.valueProperty().addListener((prop, oldTodoList, newTodoList) -> {
+      // must identify the case where newTodoList represents an edited name
+      if (oldTodoList != null && newTodoList != null && (! todoListsView.getItems().contains(newTodoList))) {
+        // either new name of dummy item or existing item
+        if (oldTodoList.getName() == null) {
+          // add as new list
+          todoModel.addTodoList(newTodoList);
+          updateTodoListsView(newTodoList);
+        } else {
+          // update name
+          oldTodoList.setName(newTodoList.getName());
+          updateTodoListsView(oldTodoList);
+        }
+      }
+    });
+    todoListsView.getSelectionModel().selectedItemProperty().addListener((prop, oldTodoList, newTodoList) -> {
+      updateTodoItemsView();
+    });
+  }
+
+  protected void updateTodoListsView(TodoList newSelection) {
+    List<TodoList> items = new ArrayList<>();
+    // dummy element used for creating new ones, with null name
+    items.add(new TodoList());
+    todoModel.forEach(items::add);
+    todoListsView.getItems().setAll(items);
+    if (newSelection != null) {
+      todoListsView.setValue(newSelection);
+    } else {
+      todoListsView.getSelectionModel().select(todoListsView.getItems().size() > 1 ? 1 : 0);
+    }
+    System.out.println("TodoLists: " + todoListsView.getItems());
+  }
+
+  private TodoListListener todoListListener = todoList -> {
+    autoSaveTodoList();
+    updateTodoItemsView();
+  };
+  
+  // makes class more testable
+  TodoList getSelectedTodoList() {
+    return todoListsView.getValue();
+  }
+
+  private void initializeTodoItemsView() {
+    TodoItemListCellDragHandler dragHandler = new TodoItemListCellDragHandler(getSelectedTodoList());
+    todoItemsView.setCellFactory(listView -> {
       TodoItemListCell listCell = new TodoItemListCell();
       dragHandler.registerHandlers(listCell);
       return listCell;
     });
-    todoListView.getSelectionModel().selectedItemProperty()
+    todoItemsView.getSelectionModel().selectedItemProperty()
         .addListener((prop, oldValue, newValue) -> updateTodoListButtons());
-    todoListView.setEditable(true);
+    todoItemsView.setEditable(true);
   }
 
-  protected void updateTodoListView() {
+  private TodoList currenTodoList = null;
+
+  protected void updateTodoItemsView() {
+    if (currenTodoList != null) {
+      currenTodoList.removeTodoListListener(todoListListener);
+    }
     List<TodoItem> items = new ArrayList<>();
-    items.addAll(getTodoList().getUncheckedTodoItems());
-    items.addAll(getTodoList().getCheckedTodoItems());
-    TodoItem selectedItem = todoListView.getSelectionModel().getSelectedItem();
-    todoListView.getItems().setAll(items);
+    currenTodoList = getSelectedTodoList();
+    if (currenTodoList != null) {
+      items.addAll(getSelectedTodoList().getUncheckedTodoItems());
+      items.addAll(getSelectedTodoList().getCheckedTodoItems());
+    }
+    TodoItem selectedItem = todoItemsView.getSelectionModel().getSelectedItem();
+    todoItemsView.getItems().setAll(items);
+    if (currenTodoList != null) {
+      currenTodoList.addTodoListListener(todoListListener);
+    }
     // keep selection
     if (selectedItem != null) {
-      todoListView.getSelectionModel().select(selectedItem);
+      todoItemsView.getSelectionModel().select(selectedItem);
     }
+    newTodoItemText.setText(null);
   }
 
   private void updateTodoListButtons() {
-    boolean disable = todoListView.getSelectionModel().getSelectedItem() == null;
+    boolean disable = todoItemsView.getSelectionModel().getSelectedItem() == null;
     for (Button button : selectionButtons) {
       button.setDisable(disable);
     }
     // TODO in progress...
-    getRowLayoutY(todoListView, listCell -> isSelected(todoListView, listCell), 0);
+    getRowLayoutY(todoItemsView, listCell -> isSelected(todoItemsView, listCell), 0);
     // System.out.println(rowLayoutY);
   }
 
@@ -155,7 +242,7 @@ public class TodoController {
   }
 
   private boolean isSelected(ListView<?> listView, Object item) {
-    return todoListView.getSelectionModel().getSelectedItems().contains(item);
+    return todoItemsView.getSelectionModel().getSelectedItems().contains(item);
   }
 
   @SuppressWarnings("unchecked")
@@ -166,7 +253,7 @@ public class TodoController {
         if (test.test(listCell) && num-- == 0) {
           double dy = 0;
           Node node = listCell;
-          while (node != todoListView) {
+          while (node != todoItemsView) {
             dy += node.getLayoutY();
             node = node.getParent();
           }
@@ -179,29 +266,29 @@ public class TodoController {
 
   @FXML
   void handleNewTodoItemAction() {
-    TodoItem item = getTodoList().createTodoItem();
+    TodoItem item = getSelectedTodoList().createTodoItem();
     item.setText(newTodoItemText.getText());
-    getTodoList().addTodoItem(item);
-    todoListView.getSelectionModel().select(item);
+    getSelectedTodoList().addTodoItem(item);
+    todoItemsView.getSelectionModel().select(item);
   }
 
   @FXML
   void handleDeleteItemAction() {
-    int index = todoListView.getSelectionModel().getSelectedIndex();
-    TodoItem item = todoListView.getItems().get(index);
+    int index = todoItemsView.getSelectionModel().getSelectedIndex();
+    TodoItem item = todoItemsView.getItems().get(index);
     if (item != null) {
-      getTodoList().removeTodoItem(item);
+      getSelectedTodoList().removeTodoItem(item);
       selectWithinBounds(index);
     }
   }
 
   private int selectWithinBounds(int index) {
-    int maxIndex = todoListView.getItems().size() - 1;
+    int maxIndex = todoItemsView.getItems().size() - 1;
     if (index > maxIndex) {
       index = maxIndex;
     }
     if (index >= 0) {
-      todoListView.getSelectionModel().select(index);
+      todoItemsView.getSelectionModel().select(index);
       return index;
     }
     return -1;
@@ -209,7 +296,7 @@ public class TodoController {
 
   @FXML
   void handleCheckItemAction() {
-    TodoItem item = todoListView.getSelectionModel().getSelectedItem();
+    TodoItem item = todoItemsView.getSelectionModel().getSelectedItem();
     if (item != null) {
       // toggle checked flag
       item.setChecked(! item.isChecked());
