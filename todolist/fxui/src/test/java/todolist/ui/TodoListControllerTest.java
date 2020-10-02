@@ -2,8 +2,9 @@ package todolist.ui;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Collection;
 import java.util.Iterator;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 import java.util.function.Predicate;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -18,6 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.testfx.framework.junit5.ApplicationTest;
+import org.testfx.util.WaitForAsyncUtils;
 import todolist.core.TodoItem;
 import todolist.core.TodoList;
 import todolist.core.TodoModel;
@@ -53,11 +55,6 @@ public class TodoListControllerTest extends ApplicationTest {
     assertTrue(todoModel.iterator().hasNext());
     this.todoList = todoModel.iterator().next();
     this.controller.setTodoList(this.todoList);
-    try {
-      Thread.sleep(100);
-    } catch (InterruptedException e) {
-      // ignore
-    }
     // same as in test-todomodel.json
     Iterator<TodoItem> todoItems = todoList.iterator();
     item1 = new TodoItem().as(todoItems.next());
@@ -78,7 +75,7 @@ public class TodoListControllerTest extends ApplicationTest {
     // initial todo items, note the unchecked one comes first
     checkTodoItems(todoListView.getItems(), item2, item1);
   }
-  
+
   @Test
   public void testNewTodoItem() {
     String newItemText = "New item";
@@ -97,9 +94,7 @@ public class TodoListControllerTest extends ApplicationTest {
   public void testDeleteTodoItem() {
     // final ListView<TodoItem> todoListView = lookup("#todoItemsView").query();
     // todoListView.getSelectionModel().select(1);
-    TodoItemListCell todoItemListCell = findTodoItemListCell(1);
-    clickOn(todoItemListCell.lookup(".label"));
-
+    clickOn(findTodoItemListCellNode(cell -> true, ".label", 1));
     clickOn("#deleteTodoItemButton");
     // item2 is removed, only item1 is left
     checkTodoListItems(item1);
@@ -111,8 +106,7 @@ public class TodoListControllerTest extends ApplicationTest {
 
   @Test
   public void testCheckTodoItemListCell() {
-    TodoItemListCell todoItemListCell = findTodoItemListCell(cell -> ! cell.getItem().isChecked());
-    clickOn(todoItemListCell.lookup(".check-box"));
+    clickOn(findTodoItemListCellNode(cell -> !cell.getItem().isChecked(), ".check-box", 0));
     TodoItem newItem2 = item2.withChecked(true);
     // item is changed
     checkTodoListItems(item1, newItem2);
@@ -137,22 +131,42 @@ public class TodoListControllerTest extends ApplicationTest {
     return findTodoItemListCell(cell -> true, num);
   }
 
-  private TodoItemListCell findTodoItemListCell(Predicate<TodoItemListCell> test) {
-    return findTodoItemListCell(test, 0);
+  private Node findNode(Predicate<Node> nodeTest, int num) {
+    int count = 0;
+    for (Node node : lookup(nodeTest).queryAll()) {
+      if (nodeTest.test(node) && count++ == num) {
+        return node;
+      }
+    }
+    return null;
+  }
+
+  private Node waitForNode(Predicate<Node> nodeTest, int num) {
+    Node[] nodes = new Node[1];
+    try {
+      WaitForAsyncUtils.waitFor(500, TimeUnit.MILLISECONDS,
+          () -> {
+            while (true) {
+              if ((nodes[0] = findNode(nodeTest, num)) != null) {
+                return true;
+              }
+              Thread.sleep(10);
+            }
+          }
+      );
+    } catch (TimeoutException e) {
+      fail("No appropriate node available");
+    }
+    return nodes[0];
   }
 
   private TodoItemListCell findTodoItemListCell(Predicate<TodoItemListCell> test, int num) {
-    Collection<Node> nodes = lookup(node -> node instanceof TodoItemListCell).queryAll(); // ".list-cell").queryAll();
-    for (Node node : nodes) {
-      if (node instanceof TodoItemListCell) {
-        TodoItemListCell todoItemListCell = (TodoItemListCell) node;
-        if (test.test(todoItemListCell) && num-- == 0) {
-          return todoItemListCell;
-        }
-      }
-    }
-    fail("Didn't find TodoItemListCell #" + num + " in " + nodes);
-    return null;
+    return (TodoItemListCell) waitForNode(node -> node instanceof TodoItemListCell && test.test((TodoItemListCell) node), num);
+  }
+
+  private Node findTodoItemListCellNode(Predicate<TodoItemListCell> test, String selector, int num) {
+    Node listCell = waitForNode(node -> node instanceof TodoItemListCell && (selector == null || node.lookup(selector) != null) && test.test((TodoItemListCell) node), num);
+    return listCell.lookup(selector);
   }
 
   private void checkTodoItem(TodoItem item, Boolean checked, String text) {
