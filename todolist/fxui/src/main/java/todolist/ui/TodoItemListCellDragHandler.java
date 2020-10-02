@@ -10,9 +10,9 @@ import todolist.core.TodoList;
 
 public class TodoItemListCellDragHandler {
 
-  private final TodoList todoList;
+  private TodoList todoList;
 
-  public TodoItemListCellDragHandler(TodoList todoList) {
+  public void setTodoList(TodoList todoList) {
     this.todoList = todoList;
   }
 

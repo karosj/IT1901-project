@@ -11,14 +11,7 @@
 
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
 
-<VBox xmlns:fx="http://javafx.com/fxml/1" fx:controller="todolist.ui.TodoController">
-    <fx:define>
-        <String fx:id="userTodoListPath" fx:value="todolist.json"/>
-        <String fx:id="sampleTodoListResource" fx:value="sample-todolist.json"/>
-    </fx:define>
-    <HBox>
-        <ComboBox fx:id="todoListsView"/>
-    </HBox>
+<VBox xmlns:fx="http://javafx.com/fxml/1" fx:controller="todolist.ui.TodoListController">
     <HBox>
         <Button fx:id="newTodoItemButton" onAction="#handleNewTodoItemAction">
             <graphic>

@@ -10,7 +10,7 @@ public class TodoApp extends Application {
 
   @Override
   public void start(Stage stage) throws Exception {
-    Parent parent = FXMLLoader.load(getClass().getResource("Todo.fxml"));
+    Parent parent = FXMLLoader.load(getClass().getResource("TodoModel.fxml"));
     stage.setScene(new Scene(parent));
     stage.show();
   }
