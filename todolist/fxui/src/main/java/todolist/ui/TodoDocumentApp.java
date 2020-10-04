@@ -6,16 +6,16 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-public class TodoApp extends Application {
+public class TodoDocumentApp extends Application {
 
   @Override
   public void start(Stage stage) throws Exception {
-    Parent parent = FXMLLoader.load(getClass().getResource("TodoApp.fxml"));
+    Parent parent = FXMLLoader.load(getClass().getResource("TodoDocumentApp.fxml"));
     stage.setScene(new Scene(parent));
     stage.show();
   }
 
   public static void main(String[] args) {
-    launch(TodoApp.class, args);
+    launch(TodoDocumentApp.class, args);
   }
 }

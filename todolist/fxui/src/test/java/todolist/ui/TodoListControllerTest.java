@@ -116,8 +116,9 @@ public class TodoListControllerTest extends ApplicationTest {
 
   @Test
   public void testDragTodoItem() {
-    TodoItemListCell sourceTodoItemListCell = findTodoItemListCell(0);
-    TodoItemListCell targetTodoItemListCell = findTodoItemListCell(1);
+    Predicate<TodoItemListCell> draggableCell = cell -> cell.lookup(".label") != null;
+    TodoItemListCell sourceTodoItemListCell = findTodoItemListCell(draggableCell, 0);
+    TodoItemListCell targetTodoItemListCell = findTodoItemListCell(draggableCell, 1);
     drag(sourceTodoItemListCell).dropTo(targetTodoItemListCell);
     // item order is changed
     checkTodoListItems(item2, item1);
@@ -126,10 +127,6 @@ public class TodoListControllerTest extends ApplicationTest {
   }
 
   // utility methods
-
-  private TodoItemListCell findTodoItemListCell(int num) {
-    return findTodoItemListCell(cell -> true, num);
-  }
 
   private Node findNode(Predicate<Node> nodeTest, int num) {
     int count = 0;

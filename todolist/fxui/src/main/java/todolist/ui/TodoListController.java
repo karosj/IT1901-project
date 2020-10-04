@@ -38,7 +38,7 @@ public class TodoListController {
    * Sets the TodoList managed by this controller.
    * The corresponding views will be updated.
    *
-   * @param todoList
+   * @param todoList the TodoList
    */
   public void setTodoList(TodoList todoList) {
     if (this.todoList != null) {

@@ -138,6 +138,7 @@
 
     <modules>
         <module>core</module>
+        <module>fxutil</module>
         <module>fxui</module>
     </modules>
 </project>

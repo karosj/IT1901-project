@@ -1,13 +1,8 @@
 package todolist.ui;
 
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.io.StringReader;
 import java.io.Writer;
-import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -17,15 +12,11 @@ import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListCell;
 import javafx.util.StringConverter;
-import todolist.core.TodoItem;
 import todolist.core.TodoList;
 import todolist.core.TodoModel;
 import todolist.json.TodoPersistence;
 
 public class TodoModelController {
-
-  private static final String todoListWithTwoItems =
-      "{\"lists\":[{\"name\":\"todo\",\"items\":[{\"text\":\"item1\",\"checked\":false},{\"text\":\"item2\",\"checked\":true,\"deadline\":\"2020-10-01T14:53:11\"}]}]}";
 
   private TodoModel todoModel;
 
@@ -43,65 +34,19 @@ public class TodoModelController {
   @FXML
   TodoListController todoListViewController;
 
-  private void initializeTodoModel() {
-    // setter opp data
-    Reader reader = null;
-    // try to read file from home folder first
-    if (userTodoListPath != null) {
-      try {
-        reader = new FileReader(Paths.get(System.getProperty("user.home"), userTodoListPath)
-            .toFile(), StandardCharsets.UTF_8);
-      } catch (IOException ioex) {
-        System.err.println("Fant ingen " + userTodoListPath + " på hjemmeområdet");
-      }
-    }
-    if (reader == null && sampleTodoListResource != null) {
-      // try sample todo list from resources instead
-      URL url = getClass().getResource(sampleTodoListResource);
-      if (url != null) {
-        try {
-          reader = new InputStreamReader(url.openStream(), StandardCharsets.UTF_8);
-        } catch (IOException e) {
-          System.err.println("Kunne ikke lese innebygget " + sampleTodoListResource);
-        }
-      } else {
-        System.err.println("Fant ikke innebygget " + sampleTodoListResource);
-      }
-    }
-    if (reader == null) {
-      // use embedded String
-      reader = new StringReader(todoListWithTwoItems);
-    }
-    try {
-      todoModel = todoPersistence.readTodoModel(reader);
-    } catch (IOException e) {
-      todoModel = new TodoModel();
-      TodoList todoList = new TodoList(
-          new TodoItem().text("Øl"),
-          new TodoItem().text("Pizza")
-      );
-      todoModel.addTodoList(todoList);
-    } finally {
-      try {
-        if (reader != null) {
-          reader.close();
-        }
-      } catch (IOException e) {
-        // ignore
-      }
-    }
+  public void setTodoModel(TodoModel todoModel) {
+    this.todoModel = todoModel;
+    updateTodoListsView(null);
   }
 
   @FXML
   void initialize() {
-    initializeTodoModel();
     // kobler data til list-controll
     initializeTodoListsView();
     todoListViewController.setOnTodoListChangedCallback(todoList -> {
       autoSaveTodoList();
       return null;
     });
-    updateTodoListsView(null);
   }
 
   private void initializeTodoListsView() {
@@ -122,7 +67,6 @@ public class TodoModelController {
       return listCell;
     });
     todoListsView.setConverter(new StringConverter<TodoList>() {
-
       @Override
       public String toString(TodoList todoList) {
         return (todoList != null ? todoList.getName() : "???");
