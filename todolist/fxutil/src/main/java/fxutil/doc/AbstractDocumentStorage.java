@@ -20,7 +20,7 @@ import java.util.Collection;
  * @param <D> the document type
  * @param <L> the location type
  */
-public abstract class AbstractDocumentStorageImpl<D, L> implements DocumentStorage<L>, DocumentPersistence<D, L> {
+public abstract class AbstractDocumentStorage<D, L> implements DocumentStorage<L>, DocumentPersistence<D, L> {
 
   private L documentLocation;
 

@@ -18,6 +18,9 @@ import todolist.core.TodoListListener;
 public class TodoListController {
 
   @FXML
+  Button newTodoItemButton;
+
+  @FXML
   TextField newTodoItemText;
 
   @FXML
@@ -94,6 +97,8 @@ public class TodoListController {
       todoItemsView.getSelectionModel().select(selectedItem);
     }
     newTodoItemText.setText(null);
+    newTodoItemButton.setDisable(todoList == null);
+    newTodoItemText.setDisable(todoList == null);
     updateTodoListButtons();
   }
 

@@ -1,6 +1,6 @@
 package todolist.ui;
 
-import fxutil.doc.AbstractDocumentStorageImpl;
+import fxutil.doc.AbstractDocumentStorage;
 import fxutil.doc.DocumentImporter;
 import java.io.File;
 import java.io.FileInputStream;
@@ -16,7 +16,7 @@ import java.util.Collections;
 import todolist.core.TodoModel;
 import todolist.json.TodoPersistence;
 
-public class TodoModelStorage extends AbstractDocumentStorageImpl<TodoModel, File> {
+public class TodoModelStorage extends AbstractDocumentStorage<TodoModel, File> {
 
   private TodoModel todoModel;
 

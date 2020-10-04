@@ -37,6 +37,7 @@ public class TodoDocumentAppController extends FileMenuController implements Doc
   @FXML
   private void initialize() {
     setDocumentStorage(todoModelStorage);
+    todoModelStorage.newDocument();
   }
 
   // DocumentListener
