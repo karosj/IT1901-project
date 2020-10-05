@@ -116,16 +116,16 @@ public abstract class AbstractDocumentStorage<D, L> implements DocumentStorage<L
    */
   protected abstract InputStream toInputStream(L location) throws IOException;
 
-  protected InputStream toInputStream(final File location) throws IOException {
+  protected InputStream toFileInputStream(final File location) throws IOException {
     return new FileInputStream(location);
   }
 
-  protected InputStream toInputStream(final URL location) throws IOException {
+  protected InputStream toUrlInputStream(final URL location) throws IOException {
     return location.openStream();
   }
 
-  protected InputStream toInputStream(final URI location) throws IOException {
-    return toInputStream(location.toURL());
+  protected InputStream toUrlInputStream(final URI location) throws IOException {
+    return toUrlInputStream(location.toURL());
   }
 
   @Override

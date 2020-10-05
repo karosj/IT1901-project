@@ -18,10 +18,10 @@
                 <FontAwesomeIconView glyphName="PLUS" size="18px" glyphStyle="-fx-fill: green" />
             </graphic>
             <tooltip>
-                <Tooltip text="New Item"/>
+                <Tooltip text="New item"/>
             </tooltip>
         </Button>
-        <TextField fx:id="newTodoItemText" promptText="Skriv inn tekst her" onAction="#handleNewTodoItemAction"/>
+        <TextField fx:id="newTodoItemText" promptText="Skriv inn tekst for nytt element" onAction="#handleNewTodoItemAction"/>
     </HBox>
     <ListView fx:id="todoItemsView">
     </ListView>

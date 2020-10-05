@@ -3,6 +3,7 @@ package todolist.ui;
 import fxutil.doc.AbstractDocumentStorage;
 import java.io.File;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
@@ -32,5 +33,10 @@ public class TodoModelStorage extends AbstractDocumentStorage<TodoModel, File> {
     try (Writer writer = new FileWriter(file, StandardCharsets.UTF_8)) {
       todoPersistence.writeTodoModel(todoModel, writer);
     }
+  }
+
+  @Override
+  protected InputStream toInputStream(final File location) throws IOException {
+    return toFileInputStream((File) location);
   }
 }
