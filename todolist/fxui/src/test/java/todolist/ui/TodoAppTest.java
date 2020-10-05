@@ -4,7 +4,12 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import todolist.json.TodoPersistence;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.fail;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.testfx.framework.junit5.ApplicationTest;
@@ -22,9 +27,16 @@ public class TodoAppTest extends ApplicationTest {
     stage.show();
   }
   
+  private TodoPersistence todoPersistence = new TodoPersistence();
+
   @BeforeEach
   public void setupItems() {
     // same as in test-todolist.json (should perhaps read it instead)
+    try (Reader reader = new InputStreamReader(getClass().getResourceAsStream("test-todomodel.json"))) {
+      this.controller.setTodoModel(todoPersistence.readTodoModel(reader));
+    } catch (IOException ioe) {
+      fail(ioe.getMessage());
+    }
   }
 
   @Test

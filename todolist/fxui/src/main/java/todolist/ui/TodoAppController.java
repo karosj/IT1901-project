@@ -17,7 +17,10 @@ import todolist.json.TodoPersistence;
 public class TodoAppController {
 
   private static final String todoListWithTwoItems =
-      "{\"lists\":[{\"name\":\"todo\",\"items\":[{\"text\":\"item1\",\"checked\":false},{\"text\":\"item2\",\"checked\":true,\"deadline\":\"2020-10-01T14:53:11\"}]}]}";
+      "{\"lists\":["
+        + "{\"name\":\"todo\",\"items\":[{\"text\":\"item1\",\"checked\":false},"
+        + "{\"text\":\"item2\",\"checked\":true,\"deadline\":\"2020-10-01T14:53:11\"}]}"
+      + "]}";
 
   @FXML
   String userTodoModelPath;
@@ -35,7 +38,7 @@ public class TodoAppController {
     if (userTodoModelPath != null) {
       try {
         reader = new FileReader(Paths.get(System.getProperty("user.home"), userTodoModelPath)
-        .toFile(), StandardCharsets.UTF_8);
+            .toFile(), StandardCharsets.UTF_8);
       } catch (IOException ioex) {
         System.err.println("Fant ingen " + userTodoModelPath + " på hjemmeområdet");
       }

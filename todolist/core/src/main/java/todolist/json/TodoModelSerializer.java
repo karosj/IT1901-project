@@ -14,8 +14,8 @@ class TodoModelSerializer extends JsonSerializer<TodoModel> {
    */
 
   @Override
-  public void serialize(TodoModel model, JsonGenerator jsonGen, SerializerProvider serializerProvider)
-      throws IOException {
+  public void serialize(TodoModel model, JsonGenerator jsonGen, SerializerProvider
+      serializerProvider) throws IOException {
     jsonGen.writeStartObject();
     jsonGen.writeArrayFieldStart("lists");
     for (TodoList list : model) {

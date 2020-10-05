@@ -8,19 +8,20 @@ import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 
 /**
  * Incomplete implementation of **DocumentStorage**,
  * to simplify implementing ones for specific document and location types.
- * The main missing methods are for getting and setting the current document, creating an empty one
- * and creating an **InputStream** from a location.
+ * The main missing methods creating an empty one and loading and saving them.
  *
  * @author hal
  *
  * @param <D> the document type
  * @param <L> the location type
  */
-public abstract class AbstractDocumentStorage<D, L> implements DocumentStorage<L>, DocumentPersistence<D, L> {
+public abstract class AbstractDocumentStorage<D, L> implements DocumentStorage<L>,
+    DocumentPersistence<D, L> {
 
   private L documentLocation;
 
@@ -41,23 +42,33 @@ public abstract class AbstractDocumentStorage<D, L> implements DocumentStorage<L
     setDocumentLocation(documentLocation);
   }
 
+  private D document;
+
   /**
    * Returns the current document.
    *
    * @return the current document
    */
-  protected abstract D getDocument();
+  public D getDocument() {
+    return document;
+  }
 
   /**
    * Sets the current document.
+   * Must notify listeners.
    *
    * @param document the new document
    */
-  protected abstract void setDocument(D document);
+  public void setDocument(D document) {
+    D oldDocument = getDocument();
+    this.document = document;
+    fireDocumentChanged(oldDocument);
+  }
 
   //
 
-  private final Collection<DocumentStorageListener<L>> documentListeners = new ArrayList<DocumentStorageListener<L>>();
+  private final Collection<DocumentStorageListener<L>> documentListeners =
+      new ArrayList<DocumentStorageListener<L>>();
 
   @Override
   public void addDocumentStorageListener(final DocumentStorageListener<L> documentStorageListener) {
@@ -65,7 +76,8 @@ public abstract class AbstractDocumentStorage<D, L> implements DocumentStorage<L
   }
 
   @Override
-  public void removeDocumentStorageListener(final DocumentStorageListener<L> documentStorageListener) {
+  public void removeDocumentStorageListener(final DocumentStorageListener<L>
+      documentStorageListener) {
     documentListeners.remove(documentStorageListener);
   }
 
@@ -152,5 +164,12 @@ public abstract class AbstractDocumentStorage<D, L> implements DocumentStorage<L
 
   public void saveCopyAs(final L documentLocation) throws Exception {
     saveDocument(getDocument(), documentLocation);
+  }
+
+  //
+
+  @Override
+  public Collection<DocumentImporter> getDocumentImporters() {
+    return Collections.emptyList();
   }
 }

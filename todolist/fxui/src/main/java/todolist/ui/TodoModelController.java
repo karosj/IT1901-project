@@ -34,6 +34,10 @@ public class TodoModelController {
   @FXML
   TodoListController todoListViewController;
 
+  public TodoModel getTodoModel() {
+    return todoModel;
+  }
+
   public void setTodoModel(TodoModel todoModel) {
     this.todoModel = todoModel;
     updateTodoListsView(null);
@@ -80,22 +84,23 @@ public class TodoModelController {
       }
     });
     todoListsView.setEditable(true);
-    todoListsView.valueProperty().addListener((prop, oldTodoList, newTodoList) -> {
+    todoListsView.valueProperty().addListener((prop, oldList, newList) -> {
       // must identify the case where newTodoList represents an edited name
-      if (oldTodoList != null && newTodoList != null && (! todoListsView.getItems().contains(newTodoList))) {
+      if (oldList != null && newList != null && (! todoListsView.getItems().contains(newList))) {
         // either new name of dummy item or existing item
-        if (oldTodoList.getName() == null) {
+        if (oldList.getName() == null) {
           // add as new list
-          todoModel.addTodoList(newTodoList);
-          updateTodoListsView(newTodoList);
+          todoModel.addTodoList(newList);
+          updateTodoListsView(newList);
         } else {
           // update name
-          oldTodoList.setName(newTodoList.getName());
-          updateTodoListsView(oldTodoList);
+          oldList.setName(newList.getName());
+          updateTodoListsView(oldList);
         }
       }
     });
-    todoListsView.getSelectionModel().selectedItemProperty().addListener((prop, oldTodoList, newTodoList) -> {
+    todoListsView.getSelectionModel().selectedItemProperty().addListener((prop, oldList, newList)
+        -> {
       todoListViewController.setTodoList(getSelectedTodoList());
     });
   }

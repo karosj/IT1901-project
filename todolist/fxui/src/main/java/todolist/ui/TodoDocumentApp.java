@@ -8,11 +8,21 @@ import javafx.stage.Stage;
 
 public class TodoDocumentApp extends Application {
 
+  private TodoDocumentAppController controller;
+
   @Override
   public void start(Stage stage) throws Exception {
-    Parent parent = FXMLLoader.load(getClass().getResource("TodoDocumentApp.fxml"));
+    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("TodoDocumentApp.fxml"));
+    Parent parent = fxmlLoader.load();
+    this.controller = fxmlLoader.getController();
     stage.setScene(new Scene(parent));
     stage.show();
+  }
+
+  @Override
+  public void stop() throws Exception {
+    this.controller.writeConfig();
+    super.stop();
   }
 
   public static void main(String[] args) {

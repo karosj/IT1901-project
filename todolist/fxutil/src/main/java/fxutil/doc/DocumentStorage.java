@@ -5,8 +5,10 @@ import java.util.Collection;
 
 /**
  * An interface with the methods necessary for supporting the standard File menu actions.
- * The class representing the document (domain data container) is implicit in the implementation of this interface.
- * The interface includes methods for getting and setting the location and creating, opening and saving the (current) document.
+ * The class representing the document (domain data container) is implicit in the implementation
+ * of this interface.
+ * The interface includes methods for getting and setting the location and creating, opening and
+ * saving the (current) document.
  *
  * @author hal
  *
@@ -22,13 +24,14 @@ public interface DocumentStorage<L> {
 
   /**
    * Sets the current location (of the current document), can be used by a save-as action.
+   * Must notify listeners.
    *
    * @param documentLocation the document location
    */
   public void setDocumentLocation(L documentLocation);
 
   /**
-   * Adds an IDocumentStorageListener that will be notified when the current location changes.
+   * Adds an DocumentStorageListener that will be notified when the current location changes.
    *
    * @param documentStorageListener the document storage listener
    */
@@ -47,7 +50,8 @@ public interface DocumentStorage<L> {
   public void newDocument();
 
   /**
-   * Loads a documents from the provided location and sets it as the current one, can be used by an open action.
+   * Loads a documents from the provided location and sets it as the current one,
+   * can be used by an open action.
    *
    * @param documentLocation the document location
    */

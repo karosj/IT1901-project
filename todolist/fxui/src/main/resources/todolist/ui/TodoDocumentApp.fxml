@@ -8,8 +8,7 @@
 
 <BorderPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="todolist.ui.TodoDocumentAppController">
     <fx:define>
-        <String fx:id="userTodoLModelPath" fx:value="todomodel.json"/>
-        <String fx:id="sampleTodoModelResource" fx:value="sample-todomodel.json"/>
+        <String fx:id="userAppConfigPath" fx:value="todo-config.toml"/>
     </fx:define>
     <top>
         <MenuBar>

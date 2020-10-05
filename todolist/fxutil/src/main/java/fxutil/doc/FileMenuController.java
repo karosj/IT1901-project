@@ -7,7 +7,11 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -42,17 +46,57 @@ public class FileMenuController {
 
   private final List<File> recentFiles = new ArrayList<File>();
 
+  public Collection<File> getRecentFiles() {
+    return Collections.unmodifiableCollection(recentFiles);
+  }
+
+  public void addRecentFiles(File... files) {
+    recentFiles.addAll(List.of(files));
+    updateRecentMenu();
+  }
+
+  public void clearRecentFiles() {
+    recentFiles.clear();
+    updateRecentMenu();
+  }
+
   @FXML
   private Menu recentMenu;
 
-  protected void updateRecentMenu(final File file) {
+  protected void updateRecentFiles(final File file) {
     recentFiles.remove(file);
     recentFiles.add(0, file);
     recentMenu.getItems().clear();
+    updateRecentMenu();
+  }
+
+  private Map<String, String> prefixReplacements = new HashMap<>(Map.of(System.getProperty("user.home"), "~"));
+
+  public void setPrefixReplacement(String prefix, String replacement) {
+    prefixReplacements.put(prefix, replacement);
+  }
+
+  public void removePrefixReplacement(String prefix) {
+    prefixReplacements.remove(prefix);
+  }
+
+  private String replacePrefix(String s) {
+    for (Map.Entry<String, String> entry : prefixReplacements.entrySet()) {
+      if (s.startsWith(entry.getKey())) {
+        return entry.getValue() + s.substring(entry.getKey().length());
+      }
+    }
+    return s;
+  }
+
+  protected void updateRecentMenu() {
+    recentMenu.getItems().clear();
     for (final File recentFile : recentFiles) {
       final MenuItem menuItem = new MenuItem();
-      menuItem.setText(recentFile.toString());
-      menuItem.setOnAction(event -> handleOpenAction(event));
+      String fileString = recentFile.toString();
+      String menuItemString = replacePrefix(fileString);
+      menuItem.setText(menuItemString);
+      menuItem.setOnAction(this::handleOpenAction);
       recentMenu.getItems().add(menuItem);
     }
   }
@@ -92,10 +136,27 @@ public class FileMenuController {
   void handleOpenAction(final File selection) {
     try {
       documentStorage.openDocument(selection);
-      updateRecentMenu(selection);
+      updateRecentFiles(selection);
     } catch (final IOException e) {
       showExceptionDialog("Oops, problem when opening " + selection, e);
     }
+  }
+
+  /**
+   * Opens the most recent file.
+   *
+   * @return true of the file was opened, false otherwise
+   */
+  public boolean openMostRecentFile() {
+    if (recentFiles.size() >= 1) {
+      try {
+        documentStorage.openDocument(recentFiles.get(0));
+        return true;
+      } catch (IOException e) {
+        return false;
+      }
+    }
+    return false;
   }
 
   private void showExceptionDialog(final String message) {
@@ -142,6 +203,7 @@ public class FileMenuController {
     try {
       documentStorage.setDocumentLocation(selection);
       documentStorage.saveDocument();
+      updateRecentFiles(selection);
     } catch (final IOException e) {
       showSaveExceptionDialog(documentStorage.getDocumentLocation(), e);
       documentStorage.setDocumentLocation(oldStorage);
