@@ -9,6 +9,15 @@ Dette prosjektet er et utviklingsprosjekt tilsvarende det en skal gjennom i IT19
 
 Ikke alt vi gjør blir tatt opp på video, noe arbeid vil bli gjort som forarbeid eller mellom episodene, videoene skal gi en oversikt over alt arbeidet. 
 
+## Bygging og kjøring av prosjektet
+
+Prosjektet bruker maven til bygging og kjøring.
+
+For å bygge, kjør `mvn install` fra rot-prosjektet (**todolist**-mappa). Dette vil kjøre alle tester og kvalitetssjekker.
+
+Prosjektet må kjøres fra **fxui**-modulen, enten med `mvn javafx:run -f fxui/pom.xml` eller ved å først kjøre `cd fxui` og så `mvn javafx:run`.
+Merk at man må først ha kjørt `mvn install` på modulene som **fxui**-modulen er avhengig av (pr. nå **core** og **fxutil**), for at det skal gå.
+
 ## Plan over arbeidet/episodene
 
 Her følger oversikt over arbeidet/episodene. Først er dette en plan, men etterhvert som arbeidet blir utført så blir det en oversikt over faktisk gjennomført arbeid.
@@ -91,3 +100,11 @@ Det ble [tre episoder](https://ntnu.cloud.panopto.eu/Panopto/Pages/Viewer.aspx?p
 Vi ønsker å unngå at kontrollerklassen blir for stor og kompleks, ved å dele opp i flere FXML-filer og tilhørende kontrollere.
 
 Det ble [én episode](https://ntnu.cloud.panopto.eu/Panopto/Pages/Viewer.aspx?id=8a8df17e-45e7-4a42-ab2c-ac4b00bec6fb), episode 11.
+
+### Variant av app med dokument-metafor
+
+Vi lager en variant av appen, som bruker dokument-metaforen og derfor inkluderer en **File**-meny med kommendoer som **New**, **Open** og **Save**.
+Koden er basert på en nokså generell implementasjon av menyen og en egen kontroller, som har jeg har liggende fra tidligere.
+Derfor legges den generelle koden i en egen **fxutil**-modul, som **fxui** får en avhengighet til.
+
+Denne varianten startes ved å angi en egen såkalt *profil* med `mvn javafx:run -Pdocumentapp` (og om nødvendig -f-opsjonen).
