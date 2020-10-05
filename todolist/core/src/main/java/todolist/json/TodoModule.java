@@ -7,7 +7,7 @@ import todolist.core.TodoList;
 import todolist.core.TodoModel;
 
 @SuppressWarnings("serial")
-class TodoModule extends SimpleModule {
+public class TodoModule extends SimpleModule {
 
   private static final String NAME = "TodoModule";
 

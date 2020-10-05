@@ -140,5 +140,7 @@
         <module>core</module>
         <module>fxutil</module>
         <module>fxui</module>
+        <module>restapi</module>
+        <module>restserver</module>
     </modules>
 </project>
