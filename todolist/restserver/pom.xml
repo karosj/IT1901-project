@@ -17,7 +17,6 @@
         <jerseyVersion>2.28</jerseyVersion>
     </properties>
 
-
     <dependencies>
          <dependency>
             <groupId>it1901.todolist</groupId>
@@ -58,6 +57,9 @@
             <artifactId>mockito-core</artifactId>
         </dependency>
 
+        <!-- Her kommer web-server-avhengighetene -->
+
+        <!-- Logging med slf4j -->
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
@@ -69,11 +71,7 @@
             <version>${slf4jVersion}</version>
         </dependency>
 
-        <dependency>
-            <groupId>org.glassfish.jersey.containers</groupId>
-            <artifactId>jersey-container-servlet</artifactId>
-            <version>${jerseyVersion}</version>
-        </dependency>
+        <!-- Kompileringsavhengigheter for Jersey -->
         <dependency>
             <groupId>org.glassfish.jersey.core</groupId>
             <artifactId>jersey-server</artifactId>
@@ -90,6 +88,33 @@
             <version>${jerseyVersion}</version>
         </dependency>
 
+        <!-- Støtte for testing med Jersey og Grizzly2 -->
+        <dependency>
+            <groupId>org.glassfish.jersey.test-framework</groupId>
+            <artifactId>jersey-test-framework-util</artifactId>
+            <version>${jerseyVersion}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- See https://eclipse-ee4j.github.io/jersey.github.io/documentation/latest/deployment.html for various server options -->
+        <dependency>
+            <groupId>org.glassfish.jersey.containers</groupId>
+            <artifactId>jersey-container-grizzly2-http</artifactId>
+            <version>${jerseyVersion}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.glassfish.jersey.test-framework.providers</groupId>
+            <artifactId>jersey-test-framework-provider-grizzly2</artifactId>
+            <version>${jerseyVersion}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- Kjøretidsavhengigheter for Jersey -->
+        <dependency>
+            <groupId>org.glassfish.jersey.containers</groupId>
+            <artifactId>jersey-container-servlet</artifactId>
+            <version>${jerseyVersion}</version>
+        </dependency>
         <dependency>
             <groupId>javax.activation</groupId>
             <artifactId>activation</artifactId>
