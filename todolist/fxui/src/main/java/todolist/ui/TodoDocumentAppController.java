@@ -48,7 +48,6 @@ public class TodoDocumentAppController implements DocumentListener<TodoModel, Fi
 
   /**
    * Map of config data. Current contents:
-   *
    * fileMenu.recentFiles = [ ... ]
    */
   
@@ -104,7 +103,8 @@ public class TodoDocumentAppController implements DocumentListener<TodoModel, Fi
     try {
       configMapper.writeValue(configPath.toFile(), config);
     } catch (IOException ioe) {
-      System.out.println("Fikk ikke skrevet konfigurasjon til " + userAppConfigPath + " på hjemmeområdet");
+      System.out.println("Fikk ikke skrevet konfigurasjon til " + userAppConfigPath
+          + " på hjemmeområdet");
     }
   }
 

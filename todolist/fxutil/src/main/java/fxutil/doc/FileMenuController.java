@@ -70,7 +70,8 @@ public class FileMenuController {
     updateRecentMenu();
   }
 
-  private Map<String, String> prefixReplacements = new HashMap<>(Map.of(System.getProperty("user.home"), "~"));
+  private Map<String, String> prefixReplacements =
+      new HashMap<>(Map.of(System.getProperty("user.home"), "~"));
 
   public void setPrefixReplacement(String prefix, String replacement) {
     prefixReplacements.put(prefix, replacement);

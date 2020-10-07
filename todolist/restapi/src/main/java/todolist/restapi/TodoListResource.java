@@ -18,6 +18,13 @@ public class TodoListResource {
   private final String name;
   private final TodoList todoList;
 
+  /**
+   * Initializes this TodoListResource with appropriate context information.
+   *
+   * @param todoModel the TodoModel
+   * @param name the todo list name
+   * @param todoList the TodoList, or null
+   */
   public TodoListResource(TodoModel todoModel, String name, TodoList todoList) {
     this.todoModel = todoModel;
     this.name = name;

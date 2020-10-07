@@ -1,6 +1,7 @@
 package todolist.restserver;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import org.glassfish.hk2.utilities.binding.AbstractBinder;
@@ -50,11 +51,11 @@ public class TodoConfig extends ResourceConfig {
 
   private static TodoModel createDefaultTodoModel() {
     TodoPersistence todoPersistence = new TodoPersistence();
-    try {
-      return todoPersistence
-          .readTodoModel(new InputStreamReader(TodoConfig.class.getResourceAsStream("default-todomodel.json"), StandardCharsets.UTF_8));
+    try (InputStream input = TodoConfig.class.getResourceAsStream("default-todomodel.json")) {
+      return todoPersistence.readTodoModel(new InputStreamReader(input, StandardCharsets.UTF_8));
     } catch (IOException e) {
-      System.out.println("Couldn't read default-todomodel.json, so rigging TodoModel manually (" + e + ")");
+      System.out.println("Couldn't read default-todomodel.json, so rigging TodoModel manually ("
+          + e + ")");
     }
     TodoModel todoModel = new TodoModel();
     TodoList todoList1 = new TodoList();
