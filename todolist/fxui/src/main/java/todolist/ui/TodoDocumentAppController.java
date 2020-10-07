@@ -1,16 +1,20 @@
 package todolist.ui;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import fxutil.doc.DocumentListener;
 import fxutil.doc.FileMenuController;
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
-import java.util.stream.Collectors;
-import org.tomlj.Toml;
-import org.tomlj.TomlParseResult;
 import javafx.fxml.FXML;
 import todolist.core.TodoModel;
 
@@ -44,11 +48,10 @@ public class TodoDocumentAppController implements DocumentListener<TodoModel, Fi
 
   /**
    * Map of config data. Current contents:
-   * 
+   *
    * fileMenu.recentFiles = [ ... ]
    */
-  private TomlParseResult config;
-
+  
   @FXML
   private void initialize() {
     fileMenuController.setDocumentStorage(todoModelStorage);
@@ -59,43 +62,79 @@ public class TodoDocumentAppController implements DocumentListener<TodoModel, Fi
     }
   }
 
+  private JsonNode config;
+  private ObjectMapper configMapper = new ObjectMapper();
+
   private void applyConfig() {
+    Path configPath = Paths.get(System.getProperty("user.home"), userAppConfigPath);
     if (userAppConfigPath != null) {
       try {
-        Path configPath = Paths.get(System.getProperty("user.home"), userAppConfigPath);
-        config = Toml.parse(configPath);
+        config = configMapper.readTree(configPath.toFile());
       } catch (IOException ioex) {
         System.err.println("Fant ingen " + userAppConfigPath + " på hjemmeområdet");
       }
     }
     if (config == null) {
-      try {
-        config = Toml.parse(getClass().getResourceAsStream("todo-config.toml"));
+      try (InputStream input = getClass().getResourceAsStream("todo-config.json")) {
+        config = configMapper.readTree(input);
       } catch (IOException e) {
         // ignore
       }
     }
+    if (config == null) {
+      config = JsonNodeFactory.instance.objectNode();
+    }
     if (config != null) {
-      if (config.contains("fileMenu.recentFiles")) {
-        List<File> recentFiles = config.getArray("fileMenu.recentFiles").toList().stream()
-            .map(o -> new File(o.toString())).collect(Collectors.toList());
-        fileMenuController.addRecentFiles(recentFiles.toArray(new File[recentFiles.size()]));
+      ArrayNode recentFiles = getConfigProperty("fileMenu", "recentFiles");
+      if (recentFiles != null) {
+        List<File> recentFilesList = new ArrayList<>();
+        recentFiles.forEach(element -> recentFilesList.add(new File(element.asText())));
+        fileMenuController.addRecentFiles(recentFilesList.toArray(new File[0]));
       }
     }
   }
 
   void writeConfig() {
-    // TODO
     Path configPath = Paths.get(System.getProperty("user.home"), userAppConfigPath);
-    try (FileWriter writer = new FileWriter(configPath.toFile())) {
-      writer.write("[fileMenu]\n");
-      writer.write("recentFiles = [ ");
-      writer.write(fileMenuController.getRecentFiles().stream()
-          .map(o -> "\"" + o + "\"")
-          .collect(Collectors.joining(", ")));
-      writer.write(" ]\n");
-    } catch(IOException ioe) {
+    ArrayNode recentFilesArray = JsonNodeFactory.instance.arrayNode();
+    for (File file : fileMenuController.getRecentFiles()) {
+      recentFilesArray.add(JsonNodeFactory.instance.textNode(file.toString()));
+    }
+    setConfigProperty(recentFilesArray, "fileMenu", "recentFiles");
+    try {
+      configMapper.writeValue(configPath.toFile(), config);
+    } catch (IOException ioe) {
       System.out.println("Fikk ikke skrevet konfigurasjon til " + userAppConfigPath + " på hjemmeområdet");
+    }
+  }
+
+  private <T extends JsonNode> T getConfigProperty(String... path) {
+    JsonNode node = config;
+    for (String segment : path) {
+      if (node instanceof ObjectNode) {
+        node = ((ObjectNode) node).get(segment);
+      } else {
+        return null;
+      }
+    }
+    return (T) node;
+  }
+
+  private void setConfigProperty(JsonNode newNode, String... path) {
+    JsonNode node = config;
+    Iterator<String> segments = List.of(path).iterator();
+    while (segments.hasNext()) {
+      String segment = segments.next();
+      if (node instanceof ObjectNode) {
+        if (! segments.hasNext()) {
+          ((ObjectNode) node).set(segment, newNode);
+          return;
+        } else {
+          ObjectNode objectNode = JsonNodeFactory.instance.objectNode();
+          ((ObjectNode) node).set(segment, objectNode);
+          node = objectNode;
+        }
+      }
     }
   }
 

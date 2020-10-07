@@ -10,7 +10,7 @@
     </parent>
 
     <artifactId>restserver</artifactId>
-    <packaging>war</packaging>
+    <packaging>jar</packaging>
 
     <properties>
         <slf4jVersion>1.7.25</slf4jVersion>
@@ -169,33 +169,15 @@
                 <artifactId>jacoco-maven-plugin</artifactId>
             </plugin>
 
+            <!--
+            https://pragmaticintegrator.wordpress.com/2010/10/22/using-a-war-module-as-dependency-in-maven/
+            -->
             <plugin>
-                <groupId>org.eclipse.jetty</groupId>
-                <artifactId>jetty-maven-plugin</artifactId>
-                <version>9.4.31.v20200723</version>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>2.1-beta-1</version>
                 <configuration>
-                    <httpConnector>
-                        <port>8999</port>
-                    </httpConnector>
-                    <stopKey>quit</stopKey>
-                    <stopPort>9000</stopPort>
+                    <attachClasses>true</attachClasses>
                 </configuration>
-                <executions>
-                    <execution>
-                        <id>start-jetty</id>
-                        <phase>pre-integration-test</phase>
-                        <goals>
-                            <goal>start</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>stop-jetty</id>
-                        <phase>post-integration-test</phase>
-                        <goals>
-                            <goal>stop</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
 
         </plugins>
