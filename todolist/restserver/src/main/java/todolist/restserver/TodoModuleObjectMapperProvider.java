@@ -1,4 +1,4 @@
-package todolist.restapi;
+package todolist.restserver;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import javax.ws.rs.Consumes;
@@ -16,7 +16,8 @@ public class TodoModuleObjectMapperProvider implements ContextResolver<ObjectMap
   private final ObjectMapper objectMapper;
 
   public TodoModuleObjectMapperProvider() {
-    objectMapper = new ObjectMapper().registerModule(new TodoModule());
+    objectMapper = new ObjectMapper();
+    objectMapper.registerModule(new TodoModule());
   }
 
   @Override

@@ -16,12 +16,12 @@ import org.glassfish.jersey.test.TestProperties;
 import org.glassfish.jersey.test.grizzly.GrizzlyTestContainerFactory;
 import org.glassfish.jersey.test.spi.TestContainerException;
 import org.glassfish.jersey.test.spi.TestContainerFactory;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import todolist.core.TodoList;
 import todolist.core.TodoModel;
 import todolist.restapi.TodoModelService;
-import todolist.restapi.TodoModuleObjectMapperProvider;
 
 public class TodoServiceTest extends JerseyTest {
 
@@ -37,7 +37,6 @@ public class TodoServiceTest extends JerseyTest {
       enable(TestProperties.DUMP_ENTITY);
       config.property(LoggingFeature.LOGGING_FEATURE_LOGGER_LEVEL_SERVER, "WARNING");
     }
-    System.out.println(config.getTodoModel());
     return config;
   }
 
@@ -55,10 +54,16 @@ public class TodoServiceTest extends JerseyTest {
     objectMapper = new TodoModuleObjectMapperProvider().getContext(getClass());
   }
 
+  @AfterEach
+  public void tearDown() throws Exception {
+    super.tearDown();
+  }
+
   @Test
   public void testGet_todo() {
     Response getResponse = target(TodoModelService.TODO_MODEL_SERVICE_PATH)
-        .request(MediaType.APPLICATION_JSON + ";" + MediaType.CHARSET_PARAMETER + "=UTF-8").get();
+        .request(MediaType.APPLICATION_JSON + ";" + MediaType.CHARSET_PARAMETER + "=UTF-8")
+        .get();
     assertEquals(200, getResponse.getStatus());
     try {
       TodoModel todoModel = objectMapper.readValue(getResponse.readEntity(String.class), TodoModel.class);
@@ -67,8 +72,24 @@ public class TodoServiceTest extends JerseyTest {
       TodoList todoList1 = it.next();
       assertTrue(it.hasNext());
       TodoList todoList2 = it.next();
-      assertFalse(todoList1.iterator().hasNext());
-      assertFalse(todoList2.iterator().hasNext());
+      assertFalse(it.hasNext());
+      assertEquals("todo1", todoList1.getName());
+      assertEquals("todo2", todoList2.getName());
+    } catch (JsonProcessingException e) {
+      fail(e.getMessage());
+    }
+  }
+
+  @Test
+  public void testGet_todo_todo1() {
+    Response getResponse = target(TodoModelService.TODO_MODEL_SERVICE_PATH)
+        .path("todo1")
+        .request(MediaType.APPLICATION_JSON + ";" + MediaType.CHARSET_PARAMETER + "=UTF-8")
+        .get();
+    assertEquals(200, getResponse.getStatus());
+    try {
+      TodoList todoList = objectMapper.readValue(getResponse.readEntity(String.class), TodoList.class);
+      assertEquals("todo1", todoList.getName());
     } catch (JsonProcessingException e) {
       fail(e.getMessage());
     }

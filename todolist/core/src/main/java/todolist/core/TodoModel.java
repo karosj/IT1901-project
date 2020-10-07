@@ -25,4 +25,17 @@ public class TodoModel implements Iterable<TodoList> {
   public Iterator<TodoList> iterator() {
     return todoLists.iterator();
   }
+
+  /**
+   * Gets the TodoList with the provided name.
+   *
+   * @param name the name
+   * @return the TodoList with the provided name
+   */
+  public TodoList getTodoList(String name) {
+    return todoLists.stream()
+        .filter(todoList -> name.equals(todoList.getName()))
+        .findFirst()
+        .orElse(null);
+  }
 }

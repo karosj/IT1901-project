@@ -28,96 +28,15 @@ public class TodoModelService {
     return todoModel;
   }
 
-  private TodoList getTodoList(String name, boolean throwWhenMissing) {
-    for (TodoList todoList : getTodoModel()) {
-      if (name.equals(todoList.getName())) {
-        return todoList;
-      }
-    }
-    if (throwWhenMissing) {
-      throw new IllegalArgumentException("No TodoList by the name " + name);
-    }
-    return null;
-  }
-
   /**
-   * Returns the TodoList with the provided name.
+   * Returns the TodoList with the provided name
+   * (as a resource to support chaining path elements).
    *
    * @param name the name of the todo list
    */
-  @GET
   @Path("/{name}")
-  @Produces(MediaType.APPLICATION_JSON)
-  public TodoList getTodoList(@PathParam("name") String name) {
-    return getTodoList(name, true);
-  }
-
-  private boolean putTodoList(String name, TodoList todoList) {
-    TodoList existingTodoList = getTodoList(name, false);
-    boolean added = false;
-    if (existingTodoList == null) {
-      existingTodoList = new TodoList();
-      existingTodoList.setName(name);
-      getTodoModel().addTodoList(existingTodoList);
-      added = true;
-    }
-    if (todoList != null) {
-      existingTodoList.setDeadline(todoList.getDeadline());
-    }
-    return added;
-  }
-
-  /**
-   * Adds a TodoList with the given name, if it doesn't exist already.
-   *
-   * @param name the name of the todo list to add
-   */
-  @PUT
-  @Path("/{name}")
-  @Produces(MediaType.APPLICATION_JSON)
-  public boolean putTodoList(@PathParam("name") String name) {
-    return putTodoList(name, null);
-  }
-
-  /**
-   * Adds or modifies the TodoList with the given name, and sets the deadline.
-   *
-   * @param todoList the todoList to add or modify
-   */
-  @PUT
-  @Consumes(MediaType.APPLICATION_JSON)
-  @Produces(MediaType.APPLICATION_JSON)
-  public boolean putTodoList(TodoList todoList) {
-    return putTodoList(todoList.getName(), todoList);
-  }
-
-  /**
-   * Renames a TodoList.
-   *
-   * @param fromName the oldName
-   * @param toName the newName
-   */
-  @POST
-  @Path("/rename")
-  @Produces(MediaType.APPLICATION_JSON)
-  public boolean renameTodoList(@QueryParam("from") String fromName, @QueryParam("from") String toName) {
-    TodoList todoList = getTodoList(fromName, true);
-    todoList.setName(toName);
-    return true;
-  }
-
-  /**
-   * Removes the TodoList by the given name.
-   *
-   * @param name the name
-   */
-  @DELETE
-  @Path("/{name}")
-  @Consumes(MediaType.APPLICATION_JSON)
-  @Produces(MediaType.APPLICATION_JSON)
-  public boolean removeTodoList(String name) {
-    TodoList todoList = getTodoList(name, true);
-    getTodoModel().removeTodoList(todoList);
-    return true;
+  public TodoListResource getTodoList(@PathParam("name") String name) {
+    TodoList todoList = getTodoModel().getTodoList(name);
+    return new TodoListResource(todoModel, name, todoList);
   }
 }
