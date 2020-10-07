@@ -8,6 +8,11 @@ public class TodoModel implements Iterable<TodoList> {
 
   private Collection<TodoList> todoLists = new ArrayList<>();
 
+  @Override
+  public String toString() {
+    return String.format("[TodoModel #todoLists=%s]", todoLists.size());
+  }
+
   public void addTodoList(TodoList list) {
     todoLists.add(list);
   }
