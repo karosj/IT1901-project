@@ -11,6 +11,7 @@ public interface TodoModelAccess {
 
   /**
    * Gets the names of the TodoLists.
+   *
    * @return the names of the TodoLists.
    */
   Collection<String> getTodoListNames();
@@ -24,7 +25,7 @@ public interface TodoModelAccess {
   TodoList getTodoList(String name);
 
   /**
-   * Adds a TodoList to the underlying TodoModel
+   * Adds a TodoList to the underlying TodoModel.
    *
    * @param todoList the TodoList
    */
@@ -33,14 +34,14 @@ public interface TodoModelAccess {
   /**
    * Removes the TodoList with the given name from the underlying TodoModel.
    *
-   * @param todoList the TodoList
+   * @param name the name of the TodoList to remove
    */
   void removeTodoList(String name);
 
   /**
-   * Renames the TodoList to the newName
+   * Renames the TodoList to the newName.
    *
-   * @param todoList the TodoList
+   * @param oldName the name of the TodoList to rename
    * @param newName the new name
    */
   void renameTodoList(String oldName, String newName);

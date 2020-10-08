@@ -1,9 +1,16 @@
 package todolist.ui;
 
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Writer;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collection;
 import todolist.core.TodoList;
 import todolist.core.TodoModel;
+import todolist.json.TodoPersistence;
 
 /**
  * Class that centralizes access to a TodoModel.
@@ -19,6 +26,7 @@ public class DirectTodoModelAccess implements TodoModelAccess {
 
   /**
    * Gets the names of the TodoLists.
+   *
    * @return the names of the TodoLists.
    */
   public Collection<String> getTodoListNames() {
@@ -38,7 +46,7 @@ public class DirectTodoModelAccess implements TodoModelAccess {
   }
 
   /**
-   * Adds a TodoList to the underlying TodoModel
+   * Adds a TodoList to the underlying TodoModel.
    *
    * @param todoList the TodoList
    */
@@ -49,14 +57,14 @@ public class DirectTodoModelAccess implements TodoModelAccess {
   /**
    * Removes the TodoList with the given name from the underlying TodoModel.
    *
-   * @param todoList the TodoList
+   * @param name the name of the TodoList to remove
    */
   public void removeTodoList(String name) {
     todoModel.removeTodoList(todoModel.getTodoList(name));
   }
 
   /**
-   * Renames a TodoList to a new name
+   * Renames a TodoList to a new name.
    *
    * @param oldName the name of the TodoList to change
    * @param newName the new name
@@ -79,6 +87,36 @@ public class DirectTodoModelAccess implements TodoModelAccess {
    * @param todoList the TodoList that has changed
    */
   public void notifyTodoListChanged(TodoList todoList) {
-    // no need to do anything locally
+    if (autosaveOn) {
+      autoSaveTodoModel();
+    }
+  }
+
+  private String userTodoModelPath;
+
+  public void setUserTodoModelPath(String userTodoModelPath) {
+    this.userTodoModelPath = userTodoModelPath;
+  }
+
+  private boolean autosaveOn = false;
+
+  public void setAutosaveOn(boolean autosaveOn) {
+    this.autosaveOn = autosaveOn;
+  }
+
+  private TodoPersistence todoPersistence = null;
+
+  private void autoSaveTodoModel() {
+    if (userTodoModelPath != null) {
+      if (todoPersistence == null) {
+        todoPersistence = new TodoPersistence();
+      }
+      Path path = Paths.get(System.getProperty("user.home"), userTodoModelPath);
+      try (Writer writer = new FileWriter(path.toFile(), StandardCharsets.UTF_8)) {
+        todoPersistence.writeTodoModel(todoModel, writer);
+      } catch (IOException e) {
+        System.err.println("Fikk ikke skrevet til " + userTodoModelPath + " på hjemmeområdet");
+      }
+    }
   }
 }

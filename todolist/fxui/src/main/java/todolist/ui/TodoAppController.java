@@ -88,6 +88,8 @@ public class TodoAppController {
 
   @FXML
   void initialize() {
-    todoModelViewController.setTodoModelAccess(new DirectTodoModelAccess(getInitialTodoModel()));
+    DirectTodoModelAccess todoModelAccess = new DirectTodoModelAccess(getInitialTodoModel());
+    todoModelAccess.setUserTodoModelPath(userTodoModelPath);
+    todoModelViewController.setTodoModelAccess(todoModelAccess);
   }
 }

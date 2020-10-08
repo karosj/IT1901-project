@@ -1,26 +1,16 @@
 package todolist.ui;
 
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.Writer;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.ListCell;
-import javafx.util.StringConverter;
 import todolist.core.TodoList;
-import todolist.core.TodoModel;
 import todolist.json.TodoPersistence;
 
 public class TodoModelController {
 
   private TodoModelAccess todoModelAccess;
-
-  private TodoPersistence todoPersistence = new TodoPersistence();
 
   @FXML
   String userTodoListPath;
@@ -55,7 +45,7 @@ public class TodoModelController {
       // must identify the case where newTodoList represents an edited name
       if (oldName != null && newName != null && (! todoListsView.getItems().contains(newName))) {
         // either new name of dummy item or existing item
-        if (oldName == todoListsView.getItems().get(0)) {
+        if (Objects.equals(oldName, todoListsView.getItems().get(0))) {
           // add as new list
           todoModelAccess.addTodoList(new TodoList(newName));
           updateTodoListsView(newName);
@@ -67,13 +57,13 @@ public class TodoModelController {
       }
     });
     todoListsView.getSelectionModel().selectedIndexProperty().addListener((prop, oldIndex, newIndex)
-        -> {
-          if (newIndex.intValue() == 0) {
-            todoListsView.setValue("");
-          } else {
-            TodoList todoList = getSelectedTodoList();
-            todoListViewController.setTodoList(todoList);
-          }
+      -> {
+      if (newIndex.intValue() == 0) {
+        todoListsView.setValue("");
+      } else {
+        TodoList todoList = getSelectedTodoList();
+        todoListViewController.setTodoList(todoList);
+      }
     });
   }
 
@@ -93,17 +83,4 @@ public class TodoModelController {
       todoListsView.getSelectionModel().select(todoListsView.getItems().size() > 1 ? 1 : 0);
     }
   }
-
-  /*
-  void autoSaveTodoList() {
-    if (userTodoListPath != null) {
-      Path path = Paths.get(System.getProperty("user.home"), userTodoListPath);
-      try (Writer writer = new FileWriter(path.toFile(), StandardCharsets.UTF_8)) {
-        todoPersistence.writeTodoModel(todoModelAccess, writer);
-      } catch (IOException e) {
-        System.err.println("Fikk ikke skrevet til todolist.json på hjemmeområdet");
-      }
-    }
-  }
-  */
 }
