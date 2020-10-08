@@ -58,13 +58,8 @@ public class TodoConfig extends ResourceConfig {
           + e + ")");
     }
     TodoModel todoModel = new TodoModel();
-    TodoList todoList1 = new TodoList();
-    todoList1.setName("todo1");
-    todoModel.addTodoList(todoList1);
-    TodoList todoList2 = new TodoList();
-    todoList2.setName("todo2");
-    todoModel.addTodoList(todoList2);
-
+    todoModel.addTodoList(new TodoList("todo1"));
+    todoModel.addTodoList(new TodoList("todo2"));
     return todoModel;
   }
 }

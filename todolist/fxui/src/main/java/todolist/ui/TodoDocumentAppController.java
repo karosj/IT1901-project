@@ -34,7 +34,7 @@ public class TodoDocumentAppController implements DocumentListener<TodoModel, Fi
   // to make it testable
   void setTodoModel(final TodoModel todoModel) {
     todoModelStorage.setDocument(todoModel);
-    todoModelViewController.setTodoModel(getTodoModel());
+    todoModelViewController.setTodoModelAccess(new DirectTodoModelAccess(getTodoModel()));
   }
 
   @FXML
@@ -146,6 +146,6 @@ public class TodoDocumentAppController implements DocumentListener<TodoModel, Fi
 
   @Override
   public void documentChanged(final TodoModel document, final TodoModel oldDocument) {
-    todoModelViewController.setTodoModel(getTodoModel());
+    todoModelViewController.setTodoModelAccess(new DirectTodoModelAccess(getTodoModel()));
   }
 }

@@ -33,7 +33,8 @@ public class TodoAppIT extends ApplicationTest {
   public void setupItems() {
     // same as in test-todolist.json (should perhaps read it instead)
     try (Reader reader = new InputStreamReader(getClass().getResourceAsStream("it-todomodel.json"))) {
-      this.controller.setTodoModel(todoPersistence.readTodoModel(reader));
+      // TODO: implement and use remote todo model access
+      this.controller.setTodoModelAccess(new DirectTodoModelAccess(todoPersistence.readTodoModel(reader)));
     } catch (IOException ioe) {
       fail(ioe.getMessage());
     }

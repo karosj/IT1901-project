@@ -171,7 +171,6 @@
 
             <!--
             https://pragmaticintegrator.wordpress.com/2010/10/22/using-a-war-module-as-dependency-in-maven/
-            -->
             <plugin>
                 <artifactId>maven-war-plugin</artifactId>
                 <version>2.1-beta-1</version>
@@ -179,7 +178,7 @@
                     <attachClasses>true</attachClasses>
                 </configuration>
             </plugin>
-
+        -->
         </plugins>
     </build>
 </project>

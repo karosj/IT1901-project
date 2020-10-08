@@ -31,8 +31,7 @@ public class TodoModuleTest {
   @Test
   public void testSerializers() {
     TodoModel model = new TodoModel();
-    TodoList list = new TodoList();
-    list.setName("todo");
+    TodoList list = new TodoList("todo");
     model.addTodoList(list);
     TodoItem item1 = list.createTodoItem();
     item1.setText("item1");
@@ -80,8 +79,7 @@ public class TodoModuleTest {
   @Test
   public void testSerializersDeserializers() {
     TodoModel model = new TodoModel();
-    TodoList list = new TodoList();
-    list.setName("todo");
+    TodoList list = new TodoList("todo");
     model.addTodoList(list);
     TodoItem item1 = new TodoItem();
     item1.setText("item1");

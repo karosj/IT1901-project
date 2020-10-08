@@ -15,13 +15,14 @@ public class TodoList implements Iterable<TodoItem> {
 
   private LocalDateTime deadline;
 
-  public TodoList(TodoItem... items) {
+  public TodoList(String name, TodoItem... items) {
+    setName(name);
     addTodoItems(items);
   }
 
   @Override
   public String toString() {
-    return String.format("[TodoList name=%s deadline=%s #item=%s]",
+    return String.format("[TodoList name=%s deadline=%s #items=%s]",
         getName(), getDeadline(), items.size());
   }
 

@@ -55,15 +55,15 @@ public class TodoListController {
     }
   }
 
-  private Callback<TodoList, Void> onTodoListChangedCallback = null;
+  private Callback<TodoList, Void> onTodoListChanged = null;
 
-  public void setOnTodoListChangedCallback(Callback<TodoList, Void> onTodoListChangedCallback) {
-    this.onTodoListChangedCallback = onTodoListChangedCallback;
+  public void setOnTodoListChanged(Callback<TodoList, Void> onTodoListChanged) {
+    this.onTodoListChanged = onTodoListChanged;
   }
 
   private TodoListListener todoListListener = todoList -> {
-    if (onTodoListChangedCallback != null) {
-      onTodoListChangedCallback.call(getTodoList());
+    if (onTodoListChanged != null) {
+      onTodoListChanged.call(getTodoList());
     }
     updateView();
   };

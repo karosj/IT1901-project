@@ -31,11 +31,11 @@ class TodoListDeserializer extends JsonDeserializer<TodoList> {
   TodoList deserialize(JsonNode treeNode) {
     if (treeNode instanceof ObjectNode) {
       ObjectNode objectNode = (ObjectNode) treeNode;
-      TodoList list = new TodoList();
       JsonNode nameNode = objectNode.get("name");
-      if (nameNode instanceof TextNode) {
-        list.setName(nameNode.asText());
+      if (! (nameNode instanceof TextNode)) {
+        return null;
       }
+      TodoList list = new TodoList(nameNode.asText());
       JsonNode deadlineNode = objectNode.get("deadline");
       if (deadlineNode instanceof TextNode) {
         list.setDeadline(LocalDateTime.parse(deadlineNode.asText()));

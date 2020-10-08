@@ -57,9 +57,7 @@ public class TodoListResource {
     if (this.todoList != null) {
       todoList = this.todoList;
     } else {
-      todoList = new TodoList();
-      todoList.setName(this.name);
-      todoModel.addTodoList(todoList);
+      todoModel.addTodoList(new TodoList(this.name));
     }
     if (todoListArg != null) {
       todoList.setDeadline(todoListArg.getDeadline());

@@ -18,7 +18,7 @@ import todolist.json.TodoPersistence;
 
 public class TodoModelController {
 
-  private TodoModel todoModel;
+  private TodoModelAccess todoModelAccess;
 
   private TodoPersistence todoPersistence = new TodoPersistence();
 
@@ -29,17 +29,13 @@ public class TodoModelController {
   String sampleTodoListResource;
 
   @FXML
-  ComboBox<TodoList> todoListsView;
+  ComboBox<String> todoListsView;
 
   @FXML
   TodoListController todoListViewController;
 
-  public TodoModel getTodoModel() {
-    return todoModel;
-  }
-
-  public void setTodoModel(TodoModel todoModel) {
-    this.todoModel = todoModel;
+  public void setTodoModelAccess(TodoModelAccess todoModelAccess) {
+    this.todoModelAccess = todoModelAccess;
     updateTodoListsView(null);
   }
 
@@ -47,73 +43,49 @@ public class TodoModelController {
   void initialize() {
     // kobler data til list-controll
     initializeTodoListsView();
-    todoListViewController.setOnTodoListChangedCallback(todoList -> {
-      autoSaveTodoList();
+    todoListViewController.setOnTodoListChanged(todoList -> {
+      todoModelAccess.notifyTodoListChanged(todoList);
       return null;
     });
   }
 
   private void initializeTodoListsView() {
-    todoListsView.setCellFactory(listView  -> {
-      ListCell<TodoList> listCell = new ListCell<TodoList>() {
-        @Override
-        protected void updateItem(TodoList item, boolean empty) {
-          super.updateItem(item, empty);
-          if (empty || item == null) {
-            setText(null);
-          } else if (item.getName() == null) {
-            setText("<create new list>");
-          } else {
-            setText(item.getName());
-          }
-        }
-      };
-      return listCell;
-    });
-    todoListsView.setConverter(new StringConverter<TodoList>() {
-      @Override
-      public String toString(TodoList todoList) {
-        return (todoList != null ? todoList.getName() : "???");
-      }
-
-      @Override
-      public TodoList fromString(String newName) {
-        TodoList todoList = new TodoList(); // getTodoList()
-        todoList.setName(newName);
-        return todoList;
-      }
-    });
     todoListsView.setEditable(true);
-    todoListsView.valueProperty().addListener((prop, oldList, newList) -> {
+    todoListsView.valueProperty().addListener((prop, oldName, newName) -> {
       // must identify the case where newTodoList represents an edited name
-      if (oldList != null && newList != null && (! todoListsView.getItems().contains(newList))) {
+      if (oldName != null && newName != null && (! todoListsView.getItems().contains(newName))) {
         // either new name of dummy item or existing item
-        if (oldList.getName() == null) {
+        if (oldName == todoListsView.getItems().get(0)) {
           // add as new list
-          todoModel.addTodoList(newList);
-          updateTodoListsView(newList);
+          todoModelAccess.addTodoList(new TodoList(newName));
+          updateTodoListsView(newName);
         } else {
           // update name
-          oldList.setName(newList.getName());
-          updateTodoListsView(oldList);
+          todoModelAccess.renameTodoList(oldName, newName);
+          updateTodoListsView(newName);
         }
       }
     });
-    todoListsView.getSelectionModel().selectedItemProperty().addListener((prop, oldList, newList)
+    todoListsView.getSelectionModel().selectedIndexProperty().addListener((prop, oldIndex, newIndex)
         -> {
-      todoListViewController.setTodoList(getSelectedTodoList());
+          if (newIndex.intValue() == 0) {
+            todoListsView.setValue("");
+          } else {
+            TodoList todoList = getSelectedTodoList();
+            todoListViewController.setTodoList(todoList);
+          }
     });
   }
 
   TodoList getSelectedTodoList() {
-    return todoListsView.getSelectionModel().getSelectedItem();
+    return todoModelAccess.getTodoList(todoListsView.getSelectionModel().getSelectedItem());
   }
 
-  protected void updateTodoListsView(TodoList newSelection) {
-    List<TodoList> items = new ArrayList<>();
+  protected void updateTodoListsView(String newSelection) {
+    List<String> items = new ArrayList<>();
     // dummy element used for creating new ones, with null name
-    items.add(new TodoList());
-    todoModel.forEach(items::add);
+    items.add("<add new todo list>");
+    items.addAll(todoModelAccess.getTodoListNames());
     todoListsView.getItems().setAll(items);
     if (newSelection != null) {
       todoListsView.setValue(newSelection);
@@ -122,14 +94,16 @@ public class TodoModelController {
     }
   }
 
+  /*
   void autoSaveTodoList() {
     if (userTodoListPath != null) {
       Path path = Paths.get(System.getProperty("user.home"), userTodoListPath);
       try (Writer writer = new FileWriter(path.toFile(), StandardCharsets.UTF_8)) {
-        todoPersistence.writeTodoModel(todoModel, writer);
+        todoPersistence.writeTodoModel(todoModelAccess, writer);
       } catch (IOException e) {
         System.err.println("Fikk ikke skrevet til todolist.json på hjemmeområdet");
       }
     }
   }
+  */
 }

@@ -19,7 +19,7 @@ public class TodoListTest {
 
   @BeforeEach
   public void setUp() {
-    newList = new TodoList();
+    newList = new TodoList("todo");
   }
 
   @Test

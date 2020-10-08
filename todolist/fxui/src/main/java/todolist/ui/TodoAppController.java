@@ -77,7 +77,7 @@ public class TodoAppController {
     }
     if (todoModel == null) {
       todoModel = new TodoModel();
-      TodoList todoList = new TodoList(
+      TodoList todoList = new TodoList("Helgehandling",
           new TodoItem().text("Øl"),
           new TodoItem().text("Pizza")
         );
@@ -88,6 +88,6 @@ public class TodoAppController {
 
   @FXML
   void initialize() {
-    todoModelViewController.setTodoModel(getInitialTodoModel());
+    todoModelViewController.setTodoModelAccess(new DirectTodoModelAccess(getInitialTodoModel()));
   }
 }
