@@ -8,6 +8,9 @@
     }, {
       "text" : "Item 2",
       "checked" : false
+    }, {
+      "text" : "Item 3",
+      "checked" : false
     } ]
   } ]
 }

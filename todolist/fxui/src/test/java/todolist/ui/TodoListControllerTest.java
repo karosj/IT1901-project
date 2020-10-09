@@ -40,7 +40,7 @@ public class TodoListControllerTest extends ApplicationTest {
 
   private TodoPersistence todoPersistence = new TodoPersistence();
   private TodoList todoList;
-  private TodoItem item1, item2;
+  private TodoItem item1, item2, item3;
 
   @BeforeEach
   public void setupItems() {
@@ -59,6 +59,7 @@ public class TodoListControllerTest extends ApplicationTest {
     Iterator<TodoItem> todoItems = todoList.iterator();
     item1 = new TodoItem().as(todoItems.next());
     item2 = new TodoItem().as(todoItems.next());
+    item3 = new TodoItem().as(todoItems.next());
   }
 
   @Test
@@ -66,14 +67,13 @@ public class TodoListControllerTest extends ApplicationTest {
     assertNotNull(this.controller);
     assertNotNull(this.todoList);
     // initial todo items
-    checkTodoItems(this.todoList, item1, item2);
+    checkTodoListItems(item1, item2, item3);
   }
 
   @Test
   public void testTodoListView_initialItems() {
-    final ListView<TodoItem> todoListView = lookup("#todoItemsView").query();
     // initial todo items, note the unchecked one comes first
-    checkTodoItems(todoListView.getItems(), item2, item1);
+    checkTodoListViewItems(item2, item3, item1);
   }
 
   @Test
@@ -83,25 +83,24 @@ public class TodoListControllerTest extends ApplicationTest {
     clickOn("#newTodoItemButton");
     TodoItem newItem = new TodoItem().text(newItemText);
     // item is added last in underlying todo list
-    checkTodoListItems(item1, item2, newItem);
+    checkTodoListItems(item1, item2, item3, newItem);
     // item is last of the unchecked items in list view
-    checkTodoListViewItems(item2, newItem, item1);
+    checkTodoListViewItems(item2, item3, newItem, item1);
     // check element is selected
-    checkSelectedTodoItem(1);
+    checkSelectedTodoItem(2);
   }
 
   @Test
   public void testDeleteTodoItem() {
-    // final ListView<TodoItem> todoListView = lookup("#todoItemsView").query();
-    // todoListView.getSelectionModel().select(1);
-    clickOn(findTodoItemListCellNode(cell -> true, ".label", 1));
+    // select the second item in the list view, which is the third item in the model
+    clickOn(findTodoItemListCellNode(cell -> true, ".label", 1));  
     clickOn("#deleteTodoItemButton");
+    // item3 is removed, item1 and item2 is left
+    checkTodoListItems(item1, item2);
     // item2 is removed, only item1 is left
-    checkTodoListItems(item1);
-    // item2 is removed, only item1 is left
-    checkTodoListViewItems(item1);
-    // check remaining item is selected
-    checkSelectedTodoItem(0);
+    checkTodoListViewItems(item2, item1);
+    // check same index in list view is selected
+    checkSelectedTodoItem(1);
   }
 
   @Test
@@ -109,21 +108,24 @@ public class TodoListControllerTest extends ApplicationTest {
     clickOn(findTodoItemListCellNode(cell -> !cell.getItem().isChecked(), ".check-box", 0));
     TodoItem newItem2 = item2.withChecked(true);
     // item is changed
-    checkTodoListItems(item1, newItem2);
+    checkTodoListItems(item1, newItem2, item3);
     // items in list view change order
-    checkTodoListViewItems(item1, newItem2);
+    checkTodoListViewItems(item3, item1, newItem2);
   }
 
   @Test
   public void testDragTodoItem() {
     Predicate<TodoItemListCell> draggableCell = cell -> cell.lookup(".label") != null;
+    // drag the first item in the list view, which is the second item in the model
     TodoItemListCell sourceTodoItemListCell = findTodoItemListCell(draggableCell, 0);
+    // drop on the second item in the list view, which is the third item in the model
     TodoItemListCell targetTodoItemListCell = findTodoItemListCell(draggableCell, 1);
     drag(sourceTodoItemListCell).dropTo(targetTodoItemListCell);
+  
     // item order is changed
-    checkTodoListItems(item2, item1);
+    checkTodoListItems(item1, item3, item2);
     // items in list view do not change order
-    checkTodoListViewItems(item1, item2);
+    checkTodoListViewItems(item3, item2, item1);
   }
 
   // utility methods
@@ -141,7 +143,7 @@ public class TodoListControllerTest extends ApplicationTest {
   private Node waitForNode(Predicate<Node> nodeTest, int num) {
     Node[] nodes = new Node[1];
     try {
-      WaitForAsyncUtils.waitFor(500, TimeUnit.MILLISECONDS,
+      WaitForAsyncUtils.waitFor(1000, TimeUnit.MILLISECONDS,
           () -> {
             while (true) {
               if ((nodes[0] = findNode(nodeTest, num)) != null) {
@@ -186,7 +188,7 @@ public class TodoListControllerTest extends ApplicationTest {
 
   private void checkTodoItems(Iterable<TodoItem> it, TodoItem... items) {
     int i = 0;
-    for (TodoItem item : items) {
+    for (TodoItem item : it) {
       assertTrue(i < items.length);
       checkTodoItem(item, items[i].isChecked(), items[i].getText());
       i++;
