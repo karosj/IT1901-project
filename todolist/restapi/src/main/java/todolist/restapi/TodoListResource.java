@@ -45,7 +45,7 @@ public class TodoListResource {
   @Produces(MediaType.APPLICATION_JSON)
   public TodoList getTodoList() {
     checkTodoList();
-    LOG.debug("getTodoList(%s)", name);
+    LOG.debug("getTodoList({})", name);
     return this.todoList;
   }
 
@@ -59,7 +59,7 @@ public class TodoListResource {
   @Consumes(MediaType.APPLICATION_JSON)
   @Produces(MediaType.APPLICATION_JSON)
   public boolean putTodoList(TodoList todoListArg) {
-    LOG.debug("putTodoList(%s)", todoListArg);
+    LOG.debug("putTodoList({})", todoListArg);
     return this.todoModel.putTodoList(todoListArg) == null;
   }
 

@@ -6,7 +6,6 @@ import java.util.Objects;
 import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
 import todolist.core.TodoList;
-import todolist.json.TodoPersistence;
 
 public class TodoModelController {
 
