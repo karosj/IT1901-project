@@ -14,7 +14,7 @@ public class TodoModule extends SimpleModule {
   /**
    * Initializes this TodoModule with appropriate serializers and deserializers.
    */
-  public TodoModule() {
+  public TodoModule(boolean deepTodoModelSerializer) {
     super(NAME, Version.unknownVersion());
     addSerializer(TodoItem.class, new TodoItemSerializer());
     addSerializer(TodoList.class, new TodoListSerializer());
@@ -22,5 +22,9 @@ public class TodoModule extends SimpleModule {
     addDeserializer(TodoItem.class, new TodoItemDeserializer());
     addDeserializer(TodoList.class, new TodoListDeserializer());
     addDeserializer(TodoModel.class, new TodoModelDeserializer());
+  }
+
+  public TodoModule() {
+    this(true);
   }
 }

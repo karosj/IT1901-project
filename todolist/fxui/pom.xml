@@ -111,6 +111,21 @@
                 </plugins>
             </build>
         </profile>
+        <profile>
+            <id>remoteapp</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.openjfx</groupId>
+                        <artifactId>javafx-maven-plugin</artifactId>
+                        <version>0.0.4</version>
+                        <configuration>                    
+                            <mainClass>todolist.ui.TodoRemoteApp</mainClass>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
     </profiles>
 
     <build>

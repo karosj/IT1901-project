@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.StringReader;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
@@ -17,28 +19,29 @@ import todolist.json.TodoPersistence;
 public class TodoAppController {
 
   private static final String todoListWithTwoItems =
-      "{\"lists\":["
-        + "{\"name\":\"todo\",\"items\":[{\"text\":\"item1\",\"checked\":false},"
-        + "{\"text\":\"item2\",\"checked\":true,\"deadline\":\"2020-10-01T14:53:11\"}]}"
-      + "]}";
+      "{\"lists\":[" + "{\"name\":\"todo\",\"items\":[{\"text\":\"item1\",\"checked\":false},"
+          + "{\"text\":\"item2\",\"checked\":true,\"deadline\":\"2020-10-01T14:53:11\"}]}" + "]}";
 
   @FXML
   String userTodoModelPath;
-  
+
+  @FXML
+  String endpointUri;
+
   @FXML
   String sampleTodoModelResource;
-  
+
   @FXML
   TodoModelController todoModelViewController;
-  
+
   private TodoModel getInitialTodoModel() {
     // setter opp data
     Reader reader = null;
     // try to read file from home folder first
     if (userTodoModelPath != null) {
       try {
-        reader = new FileReader(Paths.get(System.getProperty("user.home"), userTodoModelPath)
-            .toFile(), StandardCharsets.UTF_8);
+        reader = new FileReader(Paths.get(System.getProperty("user.home"), userTodoModelPath).toFile(),
+            StandardCharsets.UTF_8);
       } catch (IOException ioex) {
         System.err.println("Fant ingen " + userTodoModelPath + " på hjemmeområdet");
       }
@@ -77,10 +80,7 @@ public class TodoAppController {
     }
     if (todoModel == null) {
       todoModel = new TodoModel();
-      TodoList todoList = new TodoList("Helgehandling",
-          new TodoItem().text("Øl"),
-          new TodoItem().text("Pizza")
-        );
+      TodoList todoList = new TodoList("Helgehandling", new TodoItem().text("Øl"), new TodoItem().text("Pizza"));
       todoModel.addTodoList(todoList);
     }
     return todoModel;
@@ -88,8 +88,22 @@ public class TodoAppController {
 
   @FXML
   void initialize() {
-    DirectTodoModelAccess todoModelAccess = new DirectTodoModelAccess(getInitialTodoModel());
-    todoModelAccess.setUserTodoModelPath(userTodoModelPath);
+    TodoModelAccess todoModelAccess = null;
+    if (endpointUri != null) {
+      RemoteTodoModelAccess remoteAccess;
+      try {
+        System.out.println("Using remote endpoint @ " + endpointUri);
+        remoteAccess = new RemoteTodoModelAccess(new URI(endpointUri));
+        todoModelAccess = remoteAccess;
+      } catch (URISyntaxException e) {
+        System.err.println(e);
+      }
+    }
+    if (todoModelAccess == null) {
+      DirectTodoModelAccess directAccess = new DirectTodoModelAccess(getInitialTodoModel());
+      directAccess.setUserTodoModelPath(userTodoModelPath);
+      todoModelAccess = directAccess;
+    }
     todoModelViewController.setTodoModelAccess(todoModelAccess);
   }
 }

@@ -6,6 +6,8 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import todolist.core.TodoList;
 import todolist.core.TodoModel;
 
@@ -13,6 +15,8 @@ import todolist.core.TodoModel;
 public class TodoModelService {
 
   public static final String TODO_MODEL_SERVICE_PATH = "todo";
+
+  private static final Logger LOG = LoggerFactory.getLogger(TodoModelService.class);
 
   @Inject
   private TodoModel todoModel;
@@ -32,6 +36,7 @@ public class TodoModelService {
   @Path("/{name}")
   public TodoListResource getTodoList(@PathParam("name") String name) {
     TodoList todoList = getTodoModel().getTodoList(name);
+    LOG.debug("Sub-resource for TodoList " + name + ": " + todoList);
     return new TodoListResource(todoModel, name, todoList);
   }
 }

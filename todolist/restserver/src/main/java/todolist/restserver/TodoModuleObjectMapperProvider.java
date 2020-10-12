@@ -9,15 +9,15 @@ import javax.ws.rs.ext.Provider;
 import todolist.json.TodoModule;
 
 @Provider
-@Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
+@Produces(MediaType.APPLICATION_JSON)
 public class TodoModuleObjectMapperProvider implements ContextResolver<ObjectMapper> {
 
   private final ObjectMapper objectMapper;
 
   public TodoModuleObjectMapperProvider() {
     objectMapper = new ObjectMapper();
-    objectMapper.registerModule(new TodoModule());
+    objectMapper.registerModule(new TodoModule(false));
   }
 
   @Override

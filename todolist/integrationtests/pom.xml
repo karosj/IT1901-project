@@ -37,7 +37,6 @@
             <artifactId>restserver</artifactId>
             <version>0.0.1-SNAPSHOT</version>
             <classifier>classes</classifier>
-            <scope>test</scope>
         </dependency>
 
         <dependency>

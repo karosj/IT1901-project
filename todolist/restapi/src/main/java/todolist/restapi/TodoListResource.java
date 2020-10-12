@@ -9,10 +9,14 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import todolist.core.TodoList;
 import todolist.core.TodoModel;
 
 public class TodoListResource {
+
+  private static final Logger LOG = LoggerFactory.getLogger(TodoListResource.class);
 
   private final TodoModel todoModel;
   private final String name;
@@ -39,30 +43,24 @@ public class TodoListResource {
 
   @GET
   @Produces(MediaType.APPLICATION_JSON)
-  public TodoList gxetTodoList() {
+  public TodoList getTodoList() {
     checkTodoList();
+    LOG.debug("getTodoList(%s)", name);
     return this.todoList;
   }
 
   /**
-   * Adds a TodoList, if it doesn't exist already.
+   * Replaces or adds a TodoList.
    *
    * @param todoListArg the todoList to add
+   * @return true if it was added, false if it replaced
    */
   @PUT
-  @Produces(MediaType.APPLICATION_JSON)
   @Consumes(MediaType.APPLICATION_JSON)
+  @Produces(MediaType.APPLICATION_JSON)
   public boolean putTodoList(TodoList todoListArg) {
-    TodoList todoList = null;
-    if (this.todoList != null) {
-      todoList = this.todoList;
-    } else {
-      todoModel.addTodoList(new TodoList(this.name));
-    }
-    if (todoListArg != null) {
-      todoList.setDeadline(todoListArg.getDeadline());
-    }
-    return this.todoList == null;
+    LOG.debug("putTodoList(%s)", todoListArg);
+    return this.todoModel.putTodoList(todoListArg) == null;
   }
 
   /**

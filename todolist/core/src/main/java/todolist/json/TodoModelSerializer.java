@@ -9,6 +9,16 @@ import todolist.core.TodoModel;
 
 class TodoModelSerializer extends JsonSerializer<TodoModel> {
 
+  private final boolean deep;
+
+  public TodoModelSerializer(boolean deep) {
+    this.deep = deep;
+  }
+
+  public TodoModelSerializer() {
+    this(true);
+  }
+
   /*
    * format: { "lists": [ ... ] }
    */
@@ -19,7 +29,13 @@ class TodoModelSerializer extends JsonSerializer<TodoModel> {
     jsonGen.writeStartObject();
     jsonGen.writeArrayFieldStart("lists");
     for (TodoList list : model) {
-      jsonGen.writeObject(list);
+      if (deep) {
+        jsonGen.writeObject(list);
+      } else {
+        jsonGen.writeStartObject();
+        jsonGen.writeStringField("name", list.getName());
+        jsonGen.writeEndObject();
+      }
     }
     jsonGen.writeEndArray();
     jsonGen.writeEndObject();

@@ -118,8 +118,13 @@ public class TodoListControllerTest extends ApplicationTest {
     Predicate<TodoItemListCell> draggableCell = cell -> cell.lookup(".label") != null;
     // drag the first item in the list view, which is the second item in the model
     TodoItemListCell sourceTodoItemListCell = findTodoItemListCell(draggableCell, 0);
+    assertEquals(item2.getText(), sourceTodoItemListCell.getItem().getText());
+
     // drop on the second item in the list view, which is the third item in the model
     TodoItemListCell targetTodoItemListCell = findTodoItemListCell(draggableCell, 1);
+    assertEquals(item3.getText(), targetTodoItemListCell.getItem().getText());
+
+    // do the drop
     drag(sourceTodoItemListCell).dropTo(targetTodoItemListCell);
   
     // item order is changed
@@ -143,13 +148,13 @@ public class TodoListControllerTest extends ApplicationTest {
   private Node waitForNode(Predicate<Node> nodeTest, int num) {
     Node[] nodes = new Node[1];
     try {
-      WaitForAsyncUtils.waitFor(1000, TimeUnit.MILLISECONDS,
+      WaitForAsyncUtils.waitFor(2000, TimeUnit.MILLISECONDS,
           () -> {
             while (true) {
               if ((nodes[0] = findNode(nodeTest, num)) != null) {
                 return true;
               }
-              Thread.sleep(10);
+              Thread.sleep(100);
             }
           }
       );
