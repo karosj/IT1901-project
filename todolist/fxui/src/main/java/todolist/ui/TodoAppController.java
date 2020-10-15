@@ -40,8 +40,8 @@ public class TodoAppController {
     // try to read file from home folder first
     if (userTodoModelPath != null) {
       try {
-        reader = new FileReader(Paths.get(System.getProperty("user.home"), userTodoModelPath).toFile(),
-            StandardCharsets.UTF_8);
+        reader = new FileReader(Paths.get(System.getProperty("user.home"),
+            userTodoModelPath).toFile(), StandardCharsets.UTF_8);
       } catch (IOException ioex) {
         System.err.println("Fant ingen " + userTodoModelPath + " på hjemmeområdet");
       }
@@ -80,7 +80,8 @@ public class TodoAppController {
     }
     if (todoModel == null) {
       todoModel = new TodoModel();
-      TodoList todoList = new TodoList("Helgehandling", new TodoItem().text("Øl"), new TodoItem().text("Pizza"));
+      TodoList todoList = new TodoList("Helgehandling", new TodoItem().text("Øl"),
+          new TodoItem().text("Pizza"));
       todoModel.addTodoList(todoList);
     }
     return todoModel;

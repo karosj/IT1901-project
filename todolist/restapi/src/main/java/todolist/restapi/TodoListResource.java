@@ -41,6 +41,11 @@ public class TodoListResource {
     }
   }
 
+  /**
+   * Gets the corresponding TodoList.
+   *
+   * @return the corresponding TodoList
+   */
   @GET
   @Produces(MediaType.APPLICATION_JSON)
   public TodoList getTodoList() {

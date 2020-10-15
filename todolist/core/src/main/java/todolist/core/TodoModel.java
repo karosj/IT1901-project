@@ -43,7 +43,7 @@ public class TodoModel implements Iterable<TodoList> {
   /**
    * Replaces an existing TodoList with the same name, or adds it.
    *
-   * @param todoList
+   * @param todoList the TodoList
    * @return the replaced TodoList, or null
    */
   public TodoList putTodoList(TodoList todoList) {

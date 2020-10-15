@@ -56,7 +56,7 @@ public class TodoModelController {
       }
     });
     todoListsView.getSelectionModel().selectedIndexProperty().addListener((prop, oldIndex, newIndex)
-      -> {
+        -> {
       if (newIndex.intValue() == 0) {
         todoListsView.setValue("");
       } else {

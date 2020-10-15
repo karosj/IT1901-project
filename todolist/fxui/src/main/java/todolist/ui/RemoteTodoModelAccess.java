@@ -1,16 +1,16 @@
 package todolist.ui;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URLEncoder;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
 import java.net.http.HttpRequest.BodyPublishers;
+import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collection;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import todolist.core.TodoList;
 import todolist.core.TodoModel;
 import todolist.json.TodoModule;
@@ -35,9 +35,9 @@ public class RemoteTodoModelAccess implements TodoModelAccess {
   private TodoModel getTodoModel() {
     if (todoModel == null) {
       HttpRequest request = HttpRequest.newBuilder(endpointBaseUri)
-      .header("Accept", "application/json")
-      .GET()
-      .build();
+          .header("Accept", "application/json")
+          .GET()
+          .build();
       try {
         final HttpResponse<String> response =
             HttpClient.newBuilder().build().send(request, HttpResponse.BodyHandlers.ofString());
@@ -62,6 +62,14 @@ public class RemoteTodoModelAccess implements TodoModelAccess {
     return allNames;
   }
 
+  private String uriParam(String s) {
+    return URLEncoder.encode(s, StandardCharsets.UTF_8);
+  }
+
+  private URI todoListUri(String name) {
+    return endpointBaseUri.resolve(uriParam(name));
+  }
+
   /**
    * Gets the TodoList with the given name.
    *
@@ -73,8 +81,8 @@ public class RemoteTodoModelAccess implements TodoModelAccess {
     // if existing list has no todo items, try to (re)load
     if (oldTodoList == null || (!oldTodoList.iterator().hasNext())) {
       HttpRequest request =
-          HttpRequest.newBuilder(endpointBaseUri.resolve(URLEncoder.encode(name, StandardCharsets.UTF_8)))
-          .header("Accept", "application/json").GET().build();
+          HttpRequest.newBuilder(todoListUri(name))
+              .header("Accept", "application/json").GET().build();
       try {
         final HttpResponse<String> response =
             HttpClient.newBuilder().build().send(request, HttpResponse.BodyHandlers.ofString());
@@ -93,11 +101,11 @@ public class RemoteTodoModelAccess implements TodoModelAccess {
   private void putTodoList(TodoList todoList) {
     try {
       String json = objectMapper.writeValueAsString(todoList);
-      HttpRequest request = HttpRequest.newBuilder(endpointBaseUri.resolve(URLEncoder.encode(todoList.getName(), StandardCharsets.UTF_8)))
-      .header("Accept", "application/json")
-      .header("Content-Type", "application/json")
-      .PUT(BodyPublishers.ofString(json))
-      .build();
+      HttpRequest request = HttpRequest.newBuilder(todoListUri(todoList.getName()))
+          .header("Accept", "application/json")
+          .header("Content-Type", "application/json")
+          .PUT(BodyPublishers.ofString(json))
+          .build();
       final HttpResponse<String> response =
           HttpClient.newBuilder().build().send(request, HttpResponse.BodyHandlers.ofString());
       String responseString = response.body();
@@ -127,10 +135,10 @@ public class RemoteTodoModelAccess implements TodoModelAccess {
    */
   public void removeTodoList(String name) {
     try {
-      HttpRequest request = HttpRequest.newBuilder(endpointBaseUri.resolve(URLEncoder.encode(name, StandardCharsets.UTF_8)))
-      .header("Accept", "application/json")
-      .DELETE()
-      .build();
+      HttpRequest request = HttpRequest.newBuilder(todoListUri(name))
+          .header("Accept", "application/json")
+          .DELETE()
+          .build();
       final HttpResponse<String> response =
           HttpClient.newBuilder().build().send(request, HttpResponse.BodyHandlers.ofString());
       String responseString = response.body();
@@ -151,11 +159,11 @@ public class RemoteTodoModelAccess implements TodoModelAccess {
    */
   public void renameTodoList(String oldName, String newName) {
     try {
-      HttpRequest request = HttpRequest.newBuilder(endpointBaseUri.resolve(URLEncoder.encode(oldName, StandardCharsets.UTF_8)))
-        .header("Accept", "application/json")
-        .header("Content-Type", "application/x-www-form-urlencoded")
-        .POST(BodyPublishers.ofString("newName=" + URLEncoder.encode(newName, StandardCharsets.UTF_8)))
-        .build();
+      HttpRequest request = HttpRequest.newBuilder(todoListUri(oldName))
+          .header("Accept", "application/json")
+          .header("Content-Type", "application/x-www-form-urlencoded")
+          .POST(BodyPublishers.ofString("newName=" + uriParam(newName)))
+          .build();
       final HttpResponse<String> response =
           HttpClient.newBuilder().build().send(request, HttpResponse.BodyHandlers.ofString());
       String responseString = response.body();
