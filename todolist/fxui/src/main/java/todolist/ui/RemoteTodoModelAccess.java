@@ -11,6 +11,7 @@ import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collection;
+import todolist.core.AbstractTodoList;
 import todolist.core.TodoList;
 import todolist.core.TodoModel;
 import todolist.json.TodoModule;
@@ -52,10 +53,33 @@ public class RemoteTodoModelAccess implements TodoModelAccess {
   }
 
   /**
+   * Checks that name is valid for a (new) TodoList
+   *
+   * @param name the (new) name
+   * @return true if the name is value, false otherwise
+   */
+  @Override
+  public boolean isValidTodoListName(String name) {
+    return getTodoModel().isValidTodoListName(name);
+  }
+
+  /**
+   * Checks if there (already) exists a TodoList with the provided name
+   *
+   * @param name the (new) name
+   * @return true if there exists a TodoList with the provided name, false otherwise
+   */
+  @Override
+  public boolean hasTodoList(String name) {
+    return getTodoModel().hasTodoList(name);
+  }
+
+  /**
    * Gets the names of the TodoLists.
    *
    * @return the names of the TodoLists.
    */
+  @Override
   public Collection<String> getTodoListNames() {
     Collection<String> allNames = new ArrayList<>();
     getTodoModel().forEach(todoList -> allNames.add(todoList.getName()));
@@ -76,10 +100,11 @@ public class RemoteTodoModelAccess implements TodoModelAccess {
    * @param name the TodoList's name
    * @return the TodoList with the given name
    */
-  public TodoList getTodoList(String name) {
-    TodoList oldTodoList = this.todoModel.getTodoList(name);
+  @Override
+  public AbstractTodoList getTodoList(String name) {
+    AbstractTodoList oldTodoList = this.todoModel.getTodoList(name);
     // if existing list has no todo items, try to (re)load
-    if (oldTodoList == null || (!oldTodoList.iterator().hasNext())) {
+    if (oldTodoList == null || (! (oldTodoList instanceof TodoList))) {
       HttpRequest request =
           HttpRequest.newBuilder(todoListUri(name))
               .header("Accept", "application/json").GET().build();
@@ -88,8 +113,12 @@ public class RemoteTodoModelAccess implements TodoModelAccess {
             HttpClient.newBuilder().build().send(request, HttpResponse.BodyHandlers.ofString());
         String responseString = response.body();
         System.out.println("getTodoList(" + name + ") response: " + responseString);
-        TodoList todoList = objectMapper.readValue(responseString, TodoList.class);
-        System.out.println("TodoList named \"" + name + "\": " + todoList);
+        AbstractTodoList todoList = objectMapper.readValue(responseString, AbstractTodoList.class);
+        if (! (todoList instanceof TodoList)) {
+          TodoList newTodoList = new TodoList(todoList.getName());
+          newTodoList.setDeadline(todoList.getDeadline());
+          todoList = newTodoList;
+        }
         this.todoModel.putTodoList(todoList);
       } catch (IOException | InterruptedException e) {
         throw new RuntimeException(e);
@@ -98,7 +127,7 @@ public class RemoteTodoModelAccess implements TodoModelAccess {
     return oldTodoList;
   }
 
-  private void putTodoList(TodoList todoList) {
+  private void putTodoList(AbstractTodoList todoList) {
     try {
       String json = objectMapper.writeValueAsString(todoList);
       HttpRequest request = HttpRequest.newBuilder(todoListUri(todoList.getName()))
@@ -109,7 +138,6 @@ public class RemoteTodoModelAccess implements TodoModelAccess {
       final HttpResponse<String> response =
           HttpClient.newBuilder().build().send(request, HttpResponse.BodyHandlers.ofString());
       String responseString = response.body();
-      System.out.println("putTodoList(" + todoList + ") response: " + responseString);
       Boolean added = objectMapper.readValue(responseString, Boolean.class);
       if (added != null) {
         todoModel.putTodoList(todoList);
@@ -124,7 +152,8 @@ public class RemoteTodoModelAccess implements TodoModelAccess {
    *
    * @param todoList the TodoList
    */
-  public void addTodoList(TodoList todoList) {
+  @Override
+  public void addTodoList(AbstractTodoList todoList) {
     putTodoList(todoList);
   }
 
@@ -133,6 +162,7 @@ public class RemoteTodoModelAccess implements TodoModelAccess {
    *
    * @param name the name of the TodoList to remove
    */
+  @Override
   public void removeTodoList(String name) {
     try {
       HttpRequest request = HttpRequest.newBuilder(todoListUri(name))
@@ -157,6 +187,7 @@ public class RemoteTodoModelAccess implements TodoModelAccess {
    * @param oldName the name of the TodoList to change
    * @param newName the new name
    */
+  @Override
   public void renameTodoList(String oldName, String newName) {
     try {
       HttpRequest request = HttpRequest.newBuilder(todoListUri(oldName))
@@ -182,7 +213,8 @@ public class RemoteTodoModelAccess implements TodoModelAccess {
    *
    * @param todoList the TodoList that has changed
    */
-  public void notifyTodoListChanged(TodoList todoList) {
+  @Override
+  public void notifyTodoListChanged(AbstractTodoList todoList) {
     putTodoList(todoList);
   }
 }

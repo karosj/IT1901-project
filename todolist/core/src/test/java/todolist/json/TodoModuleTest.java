@@ -10,6 +10,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import todolist.core.AbstractTodoList;
 import todolist.core.TodoItem;
 import todolist.core.TodoList;
 import todolist.core.TodoModel;
@@ -63,7 +64,7 @@ public class TodoModuleTest {
     try {
       TodoModel model = mapper.readValue(todoListWithTwoItems, TodoModel.class);
       assertTrue(model.iterator().hasNext());
-      TodoList list = model.iterator().next();
+      AbstractTodoList list = model.iterator().next();
       assertEquals("todo", list.getName());
       Iterator<TodoItem> it = list.iterator();
       assertTrue(it.hasNext());
@@ -93,7 +94,7 @@ public class TodoModuleTest {
       String json = mapper.writeValueAsString(model);
       TodoModel model2 = mapper.readValue(json, TodoModel.class);
       assertTrue(model2.iterator().hasNext());
-      TodoList list2 = model.iterator().next();
+      AbstractTodoList list2 = model.iterator().next();
       assertEquals("todo", list.getName());
       Iterator<TodoItem> it = list2.iterator();
       assertTrue(it.hasNext());

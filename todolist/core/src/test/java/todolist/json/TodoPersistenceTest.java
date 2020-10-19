@@ -10,6 +10,7 @@ import java.io.StringWriter;
 import java.time.LocalDateTime;
 import java.util.Iterator;
 import org.junit.jupiter.api.Test;
+import todolist.core.AbstractTodoList;
 import todolist.core.TodoItem;
 import todolist.core.TodoList;
 import todolist.core.TodoModel;
@@ -37,7 +38,7 @@ public class TodoPersistenceTest {
       String json = writer.toString();
       TodoModel model2 = todoPersistence.readTodoModel(new StringReader(json));
       assertTrue(model2.iterator().hasNext());
-      TodoList list2 = model.iterator().next();
+      AbstractTodoList list2 = model.iterator().next();
       assertEquals("todo", list.getName());
       Iterator<TodoItem> it = list2.iterator();
       assertTrue(it.hasNext());

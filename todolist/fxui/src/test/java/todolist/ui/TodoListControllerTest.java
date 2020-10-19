@@ -20,6 +20,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.testfx.framework.junit5.ApplicationTest;
 import org.testfx.util.WaitForAsyncUtils;
+import todolist.core.AbstractTodoList;
 import todolist.core.TodoItem;
 import todolist.core.TodoList;
 import todolist.core.TodoModel;
@@ -53,7 +54,9 @@ public class TodoListControllerTest extends ApplicationTest {
     }
     assertNotNull(todoModel);
     assertTrue(todoModel.iterator().hasNext());
-    this.todoList = todoModel.iterator().next();
+    AbstractTodoList next = todoModel.iterator().next();
+    assertTrue(next instanceof TodoList);
+    this.todoList = (TodoList) next;
     this.controller.setTodoList(this.todoList);
     // same as in test-todomodel.json
     Iterator<TodoItem> todoItems = todoList.iterator();
@@ -146,6 +149,7 @@ public class TodoListControllerTest extends ApplicationTest {
   }
 
   private Node waitForNode(Predicate<Node> nodeTest, int num) {
+    WaitForAsyncUtils.waitForFxEvents();
     Node[] nodes = new Node[1];
     try {
       WaitForAsyncUtils.waitFor(2000, TimeUnit.MILLISECONDS,

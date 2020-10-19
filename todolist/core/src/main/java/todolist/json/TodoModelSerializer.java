@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import java.io.IOException;
-import todolist.core.TodoList;
+import todolist.core.AbstractTodoList;
 import todolist.core.TodoModel;
 
 class TodoModelSerializer extends JsonSerializer<TodoModel> {
@@ -28,12 +28,16 @@ class TodoModelSerializer extends JsonSerializer<TodoModel> {
       serializerProvider) throws IOException {
     jsonGen.writeStartObject();
     jsonGen.writeArrayFieldStart("lists");
-    for (TodoList list : model) {
+    for (AbstractTodoList list : model) {
       if (deep) {
         jsonGen.writeObject(list);
       } else {
         jsonGen.writeStartObject();
         jsonGen.writeStringField("name", list.getName());
+        if (list.getDeadline() != null) {
+          jsonGen.writeStringField("deadline", list.getDeadline().toString());
+        }
+        // no items!
         jsonGen.writeEndObject();
       }
     }

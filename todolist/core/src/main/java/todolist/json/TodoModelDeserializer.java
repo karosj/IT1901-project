@@ -9,7 +9,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.io.IOException;
-import todolist.core.TodoList;
+import todolist.core.AbstractTodoList;
 import todolist.core.TodoModel;
 
 class TodoModelDeserializer extends JsonDeserializer<TodoModel> {
@@ -33,7 +33,7 @@ class TodoModelDeserializer extends JsonDeserializer<TodoModel> {
       JsonNode itemsNode = objectNode.get("lists");
       if (itemsNode instanceof ArrayNode) {
         for (JsonNode elementNode : ((ArrayNode) itemsNode)) {
-          TodoList list = todoListDeserializer.deserialize(elementNode);
+          AbstractTodoList list = todoListDeserializer.deserialize(elementNode);
           if (list != null) {
             model.addTodoList(list);
           }

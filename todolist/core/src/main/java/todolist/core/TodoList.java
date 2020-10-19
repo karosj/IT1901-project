@@ -1,22 +1,17 @@
 package todolist.core;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class TodoList implements Iterable<TodoItem> {
-
-  private String name;
+public class TodoList extends AbstractTodoList {
 
   private List<TodoItem> items = new ArrayList<>();
 
-  private LocalDateTime deadline;
-
   public TodoList(String name, TodoItem... items) {
-    setName(name);
+    super(name);
     addTodoItems(items);
   }
 
@@ -26,22 +21,7 @@ public class TodoList implements Iterable<TodoItem> {
         getName(), getDeadline(), items.size());
   }
 
-  public String getName() {
-    return name;
-  }
-
-  public void setName(String name) {
-    this.name = name;
-  }
-
-  public LocalDateTime getDeadline() {
-    return deadline;
-  }
-
-  public void setDeadline(LocalDateTime deadline) {
-    this.deadline = deadline;
-  }
-
+  @Override
   public TodoItem createTodoItem() {
     return new TodoListItem(this);
   }
@@ -53,6 +33,7 @@ public class TodoList implements Iterable<TodoItem> {
    *
    * @param items the TodoItems to add
    */
+  @Override
   public void addTodoItems(TodoItem... items) {
     for (TodoItem item : items) {
       TodoListItem todoListItem = null;
@@ -69,17 +50,6 @@ public class TodoList implements Iterable<TodoItem> {
     fireTodoListChanged();
   }
 
-  /**
-   * Adds the provided TodoItem to this TodoList.
-   * If the TodoItem is not an instance of TodoListItem,
-   * its contents is copied in to a new TodoListItem and that is added instead.
-   *
-   * @param item the TodoItem to add
-   */
-  public void addTodoItem(TodoItem item) {
-    addTodoItems(item);
-  }
-
   public void removeTodoItem(TodoItem item) {
     items.remove(item);
     fireTodoListChanged();
@@ -90,7 +60,8 @@ public class TodoList implements Iterable<TodoItem> {
     return items.iterator();
   }
 
-  private Collection<TodoItem> getTodoItems(Boolean checked) {
+  @Override
+  protected Collection<TodoItem> getTodoItems(Boolean checked) {
     Collection<TodoItem> result = new ArrayList<>(items.size());
     for (TodoItem item : items) {
       if (checked == null || item.isChecked() == checked) {
@@ -104,31 +75,14 @@ public class TodoList implements Iterable<TodoItem> {
     // .collect(Collectors.toList());
   }
 
-  public Collection<TodoItem> getTodoItems() {
-    return getTodoItems(null);
-  }
-
-  public Collection<TodoItem> getCheckedTodoItems() {
-    return getTodoItems(true);
-  }
-
-  public Collection<TodoItem> getUncheckedTodoItems() {
-    return getTodoItems(false);
-  }
-
-  // methods related to deadlines
-
-  public boolean isOverdue() {
-    return deadline != null && deadline.isBefore(LocalDateTime.now())
-        && (!getUncheckedTodoItems().isEmpty());
-  }
-
+  @Override
   public Collection<TodoItem> getOverdueTodoItems() {
     return items.stream().filter(TodoItem::isOverdue).collect(Collectors.toList());
   }
 
   // index-oriented methods
 
+  @Override
   public int indexOf(TodoItem item) {
     return items.indexOf(item);
   }
@@ -140,6 +94,7 @@ public class TodoList implements Iterable<TodoItem> {
    * @param item     the item to move
    * @param newIndex the new position
    */
+  @Override
   public void moveTodoItem(TodoItem item, int newIndex) {
     items.remove(item);
     items.add(newIndex, item);
@@ -148,23 +103,8 @@ public class TodoList implements Iterable<TodoItem> {
 
   // støtte for lytting
 
-  private Collection<TodoListListener> todoListListeners = new ArrayList<>();
-
-  public void addTodoListListener(TodoListListener listener) {
-    todoListListeners.add(listener);
-  }
-
-  public void removeTodoListListener(TodoListListener listener) {
-    todoListListeners.remove(listener);
-  }
-
-  protected void fireTodoListChanged(TodoItem item) {
-    fireTodoListChanged();
-  }
-
-  protected void fireTodoListChanged() {
-    for (TodoListListener listener : todoListListeners) {
-      listener.todoListChanged(this);
-    }
+  @Override
+  protected void fireTodoListChanged(TodoListListener listener) {
+    listener.todoListChanged(this);
   }
 }

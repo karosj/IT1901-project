@@ -2,9 +2,10 @@ package todolist.ui;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
+import todolist.core.AbstractTodoList;
 import todolist.core.TodoList;
 
 public class TodoModelController {
@@ -38,13 +39,17 @@ public class TodoModelController {
     });
   }
 
+  private String addNewTodoListText = "<add new todo list>";
+
   private void initializeTodoListsView() {
     todoListsView.setEditable(true);
     todoListsView.valueProperty().addListener((prop, oldName, newName) -> {
-      // must identify the case where newTodoList represents an edited name
-      if (oldName != null && newName != null && (! todoListsView.getItems().contains(newName))) {
+      // System.out.println("valueProperty: -> " + todoListsView.getSelectionModel().getSelectedIndex() + " -> " + (oldName != null ? ("\"" + oldName + "\"") : null) + " -> " + (newName != null ? ("\"" + newName + "\"") : null));
+      if (newName != null && (! todoModelAccess.isValidTodoListName(newName))) {
+        // allow user to edit name
+      } else if (oldName != null && newName != null && (! todoListsView.getItems().contains(newName))) {
         // either new name of dummy item or existing item
-        if (Objects.equals(oldName, todoListsView.getItems().get(0))) {
+        if (addNewTodoListText.equals(oldName)) {
           // add as new list
           todoModelAccess.addTodoList(new TodoList(newName));
           updateTodoListsView(newName);
@@ -53,27 +58,30 @@ public class TodoModelController {
           todoModelAccess.renameTodoList(oldName, newName);
           updateTodoListsView(newName);
         }
-      }
-    });
-    todoListsView.getSelectionModel().selectedIndexProperty().addListener((prop, oldIndex, newIndex)
-        -> {
-      if (newIndex.intValue() == 0) {
-        todoListsView.setValue("");
-      } else {
-        TodoList todoList = getSelectedTodoList();
-        todoListViewController.setTodoList(todoList);
+      } else if (todoListsView.getSelectionModel().getSelectedIndex() == 0) {
+        // run later to avoid conflicts with event processing
+        Platform.runLater(() -> {
+          todoListsView.getEditor().selectAll();
+        });
+      } else if (todoListsView.getSelectionModel().getSelectedIndex() >= 0) {
+        AbstractTodoList todoList = getSelectedTodoList();
+        if (! (todoList instanceof TodoList)) {
+          // retrieve actual list
+          todoList = todoModelAccess.getTodoList(todoList.getName());
+        }
+        todoListViewController.setTodoList(todoList instanceof TodoList ? (TodoList) todoList : null);
       }
     });
   }
 
-  TodoList getSelectedTodoList() {
+  AbstractTodoList getSelectedTodoList() {
     return todoModelAccess.getTodoList(todoListsView.getSelectionModel().getSelectedItem());
   }
 
   protected void updateTodoListsView(String newSelection) {
     List<String> items = new ArrayList<>();
     // dummy element used for creating new ones, with null name
-    items.add("<add new todo list>");
+    items.add(addNewTodoListText);
     items.addAll(todoModelAccess.getTodoListNames());
     todoListsView.getItems().setAll(items);
     if (newSelection != null) {

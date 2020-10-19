@@ -1,30 +1,58 @@
 package todolist.core;
 
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
-import java.util.Objects;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
-public class TodoModel implements Iterable<TodoList> {
+public class TodoModel implements Iterable<AbstractTodoList> {
 
-  private List<TodoList> todoLists = new ArrayList<>();
+  private Map<String, AbstractTodoList> todoLists = new LinkedHashMap<>();
 
   @Override
   public String toString() {
     return String.format("[TodoModel #todoLists=%s]", todoLists.size());
   }
 
-  public void addTodoList(TodoList list) {
-    todoLists.add(list);
+  /**
+   * Checks if this TodoModel already has a TodoList with the provided name.
+   *
+   * @param name the name to check
+   * @return true if a TodoList with the provided name exists, false otherwise
+   */
+  public boolean hasTodoList(String name) {
+    return todoLists.containsKey(name);
   }
 
-  public void removeTodoList(TodoList list) {
-    todoLists.remove(list);
+  /**
+   * Checks if it is OK to add a list with the provided name.
+   *
+   * @param name the new name
+   * @return true if the name is value, false otherwise
+   */
+  public boolean isValidTodoListName(String name) {
+    return name.strip().length() > 0;
+  }
+
+  /**
+   * Adds the TodoList to this TodoModel.
+   *
+   * @param list the TodoList
+   * @throws IllegalArgumentException if the list's name is invalid
+   */
+  public void addTodoList(AbstractTodoList list) {
+    if (! isValidTodoListName(list.getName())) {
+      throw new IllegalArgumentException(list.getName() + " is not a legal name for a new list");
+    }
+    todoLists.put(list.getName(), list);
+  }
+
+  public void removeTodoList(AbstractTodoList list) {
+    todoLists.remove(list.getName());
   }
 
   @Override
-  public Iterator<TodoList> iterator() {
-    return todoLists.iterator();
+  public Iterator<AbstractTodoList> iterator() {
+    return todoLists.values().iterator();
   }
 
   /**
@@ -33,11 +61,8 @@ public class TodoModel implements Iterable<TodoList> {
    * @param name the name
    * @return the TodoList with the provided name
    */
-  public TodoList getTodoList(String name) {
-    return todoLists.stream()
-        .filter(todoList -> name.equals(todoList.getName()))
-        .findFirst()
-        .orElse(null);
+  public AbstractTodoList getTodoList(String name) {
+    return todoLists.get(name);
   }
 
   /**
@@ -46,14 +71,7 @@ public class TodoModel implements Iterable<TodoList> {
    * @param todoList the TodoList
    * @return the replaced TodoList, or null
    */
-  public TodoList putTodoList(TodoList todoList) {
-    for (int i = 0; i < todoLists.size(); i++) {
-      TodoList oldTodoList = todoLists.get(i);
-      if (Objects.equals(oldTodoList.getName(), todoList.getName())) {
-        todoLists.set(i, todoList);
-        return oldTodoList;
-      }
-    }
-    return null;
+  public AbstractTodoList putTodoList(AbstractTodoList todoList) {
+    return todoLists.put(todoList.getName(), todoList);
   }
 }

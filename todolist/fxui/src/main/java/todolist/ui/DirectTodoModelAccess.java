@@ -8,7 +8,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collection;
-import todolist.core.TodoList;
+import todolist.core.AbstractTodoList;
 import todolist.core.TodoModel;
 import todolist.json.TodoPersistence;
 
@@ -25,10 +25,33 @@ public class DirectTodoModelAccess implements TodoModelAccess {
   }
 
   /**
+   * Checks that name is valid for a (new) TodoList
+   *
+   * @param name the (new) name
+   * @return true if the name is value, false otherwise
+   */
+  @Override
+  public boolean isValidTodoListName(String name) {
+    return todoModel.isValidTodoListName(name);
+  }
+
+  /**
+   * Checks if there (already) exists a TodoList with the provided name
+   *
+   * @param name the (new) name
+   * @return true if there exists a TodoList with the provided name, false otherwise
+   */
+  @Override
+  public boolean hasTodoList(String name) {
+    return todoModel.hasTodoList(name);
+  }
+
+  /**
    * Gets the names of the TodoLists.
    *
    * @return the names of the TodoLists.
    */
+  @Override
   public Collection<String> getTodoListNames() {
     Collection<String> allNames = new ArrayList<>();
     todoModel.forEach(todoList -> allNames.add(todoList.getName()));
@@ -41,7 +64,8 @@ public class DirectTodoModelAccess implements TodoModelAccess {
    * @param name the TodoList's name
    * @return the TodoList with the given name
    */
-  public TodoList getTodoList(String name) {
+  @Override
+  public AbstractTodoList getTodoList(String name) {
     return todoModel.getTodoList(name);
   }
 
@@ -50,7 +74,8 @@ public class DirectTodoModelAccess implements TodoModelAccess {
    *
    * @param todoList the TodoList
    */
-  public void addTodoList(TodoList todoList) {
+  @Override
+  public void addTodoList(AbstractTodoList todoList) {
     todoModel.addTodoList(todoList);
   }
 
@@ -59,6 +84,7 @@ public class DirectTodoModelAccess implements TodoModelAccess {
    *
    * @param name the name of the TodoList to remove
    */
+  @Override
   public void removeTodoList(String name) {
     todoModel.removeTodoList(todoModel.getTodoList(name));
   }
@@ -69,8 +95,9 @@ public class DirectTodoModelAccess implements TodoModelAccess {
    * @param oldName the name of the TodoList to change
    * @param newName the new name
    */
+  @Override
   public void renameTodoList(String oldName, String newName) {
-    TodoList todoList = todoModel.getTodoList(oldName);
+    AbstractTodoList todoList = todoModel.getTodoList(oldName);
     if (todoList == null) {
       throw new IllegalArgumentException("No TodoList named \"" + newName + "\" found");
     }
@@ -86,7 +113,8 @@ public class DirectTodoModelAccess implements TodoModelAccess {
    *
    * @param todoList the TodoList that has changed
    */
-  public void notifyTodoListChanged(TodoList todoList) {
+  @Override
+  public void notifyTodoListChanged(AbstractTodoList todoList) {
     if (autosaveOn) {
       autoSaveTodoModel();
     }

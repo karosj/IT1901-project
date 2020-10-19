@@ -11,25 +11,29 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import todolist.core.TodoList;
+import todolist.core.AbstractTodoList;
 import todolist.core.TodoModel;
 
+/**
+ * Used for all requests referring to TodoLists by name.
+ */
 public class TodoListResource {
 
   private static final Logger LOG = LoggerFactory.getLogger(TodoListResource.class);
 
   private final TodoModel todoModel;
   private final String name;
-  private final TodoList todoList;
+  private final AbstractTodoList todoList;
 
   /**
    * Initializes this TodoListResource with appropriate context information.
+   * Each method will check and use what it needs.
    *
-   * @param todoModel the TodoModel
-   * @param name the todo list name
-   * @param todoList the TodoList, or null
+   * @param todoModel the TodoModel, needed for DELETE and rename
+   * @param name the todo list name, needed for most requests
+   * @param todoList the TodoList, or null, needed for PUT
    */
-  public TodoListResource(TodoModel todoModel, String name, TodoList todoList) {
+  public TodoListResource(TodoModel todoModel, String name, AbstractTodoList todoList) {
     this.todoModel = todoModel;
     this.name = name;
     this.todoList = todoList;
@@ -48,7 +52,7 @@ public class TodoListResource {
    */
   @GET
   @Produces(MediaType.APPLICATION_JSON)
-  public TodoList getTodoList() {
+  public AbstractTodoList getTodoList() {
     checkTodoList();
     LOG.debug("getTodoList({})", name);
     return this.todoList;
@@ -63,7 +67,7 @@ public class TodoListResource {
   @PUT
   @Consumes(MediaType.APPLICATION_JSON)
   @Produces(MediaType.APPLICATION_JSON)
-  public boolean putTodoList(TodoList todoListArg) {
+  public boolean putTodoList(AbstractTodoList todoListArg) {
     LOG.debug("putTodoList({})", todoListArg);
     return this.todoModel.putTodoList(todoListArg) == null;
   }

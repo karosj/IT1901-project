@@ -1,10 +1,14 @@
 {
     "lists": [
         {
-            "name": "todo1"
+            "name": "todo1",
+            "items": [
+            ]
         },
         {
-            "name": "todo2"
+            "name": "todo2",
+            "items": [
+            ]
         }
     ]
 }

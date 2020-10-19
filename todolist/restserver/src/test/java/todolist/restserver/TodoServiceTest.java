@@ -19,6 +19,7 @@ import org.glassfish.jersey.test.spi.TestContainerFactory;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import todolist.core.AbstractTodoList;
 import todolist.core.TodoList;
 import todolist.core.TodoModel;
 import todolist.restapi.TodoModelService;
@@ -67,11 +68,11 @@ public class TodoServiceTest extends JerseyTest {
     assertEquals(200, getResponse.getStatus());
     try {
       TodoModel todoModel = objectMapper.readValue(getResponse.readEntity(String.class), TodoModel.class);
-      Iterator<TodoList> it = todoModel.iterator();
+      Iterator<AbstractTodoList> it = todoModel.iterator();
       assertTrue(it.hasNext());
-      TodoList todoList1 = it.next();
+      AbstractTodoList todoList1 = it.next();
       assertTrue(it.hasNext());
-      TodoList todoList2 = it.next();
+      AbstractTodoList todoList2 = it.next();
       assertFalse(it.hasNext());
       assertEquals("todo1", todoList1.getName());
       assertEquals("todo2", todoList2.getName());
@@ -88,7 +89,7 @@ public class TodoServiceTest extends JerseyTest {
         .get();
     assertEquals(200, getResponse.getStatus());
     try {
-      TodoList todoList = objectMapper.readValue(getResponse.readEntity(String.class), TodoList.class);
+      AbstractTodoList todoList = objectMapper.readValue(getResponse.readEntity(String.class), AbstractTodoList.class);
       assertEquals("todo1", todoList.getName());
     } catch (JsonProcessingException e) {
       fail(e.getMessage());

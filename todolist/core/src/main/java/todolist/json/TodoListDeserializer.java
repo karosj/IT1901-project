@@ -11,10 +11,11 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.node.TextNode;
 import java.io.IOException;
 import java.time.LocalDateTime;
+import todolist.core.AbstractTodoList;
 import todolist.core.TodoItem;
 import todolist.core.TodoList;
 
-class TodoListDeserializer extends JsonDeserializer<TodoList> {
+class TodoListDeserializer extends JsonDeserializer<AbstractTodoList> {
 
   private TodoItemDeserializer todoItemDeserializer = new TodoItemDeserializer();
   /*
@@ -22,34 +23,36 @@ class TodoListDeserializer extends JsonDeserializer<TodoList> {
    */
 
   @Override
-  public TodoList deserialize(JsonParser parser, DeserializationContext ctxt)
+  public AbstractTodoList deserialize(JsonParser parser, DeserializationContext ctxt)
       throws IOException, JsonProcessingException {
     TreeNode treeNode = parser.getCodec().readTree(parser);
     return deserialize((JsonNode) treeNode);
   }
 
-  TodoList deserialize(JsonNode treeNode) {
+  AbstractTodoList deserialize(JsonNode treeNode) {
     if (treeNode instanceof ObjectNode) {
       ObjectNode objectNode = (ObjectNode) treeNode;
       JsonNode nameNode = objectNode.get("name");
       if (! (nameNode instanceof TextNode)) {
         return null;
       }
-      TodoList list = new TodoList(nameNode.asText());
+      String name = nameNode.asText();
+      JsonNode itemsNode = objectNode.get("items");
+      boolean hasItems = itemsNode instanceof ArrayNode;
+      AbstractTodoList todoList = (hasItems ? new TodoList(name) : new AbstractTodoList(name));
       JsonNode deadlineNode = objectNode.get("deadline");
       if (deadlineNode instanceof TextNode) {
-        list.setDeadline(LocalDateTime.parse(deadlineNode.asText()));
+        todoList.setDeadline(LocalDateTime.parse(deadlineNode.asText()));
       }
-      JsonNode itemsNode = objectNode.get("items");
-      if (itemsNode instanceof ArrayNode) {
+      if (hasItems) {
         for (JsonNode elementNode : ((ArrayNode) itemsNode)) {
           TodoItem item = todoItemDeserializer.deserialize(elementNode);
           if (item != null) {
-            list.addTodoItem(item);
+            todoList.addTodoItem(item);
           }
         }
       }
-      return list;
+      return todoList;
     }
     return null;
   }   
