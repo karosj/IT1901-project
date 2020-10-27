@@ -149,5 +149,6 @@
         <module>restapi</module>
         <module>restserver</module>
         <module>integrationtests</module>
+        <module>springboot/restserver</module>
     </modules>
 </project>

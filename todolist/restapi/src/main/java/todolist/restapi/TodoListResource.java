@@ -12,6 +12,7 @@ import javax.ws.rs.core.MediaType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import todolist.core.AbstractTodoList;
+import todolist.core.TodoList;
 import todolist.core.TodoModel;
 
 /**
@@ -74,17 +75,19 @@ public class TodoListResource {
 
   /**
    * Adds a TodoList with the given name, if it doesn't exist already.
+   *
+   * @return true if it was added, false if it replaced
    */
   @PUT
   @Produces(MediaType.APPLICATION_JSON)
   public boolean putTodoList() {
-    return putTodoList(null);
+    return putTodoList(new TodoList(name));
   }
 
   /**
    * Renames the TodoList.
    *
-   * @param newName the newName
+   * @param newName the new name
    */
   @POST
   @Path("/rename")
