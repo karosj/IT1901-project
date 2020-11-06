@@ -20,7 +20,6 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import todolist.core.AbstractTodoList;
-import todolist.core.TodoList;
 import todolist.core.TodoModel;
 import todolist.restapi.TodoModelService;
 
