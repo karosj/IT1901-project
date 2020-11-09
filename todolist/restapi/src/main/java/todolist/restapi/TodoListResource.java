@@ -30,7 +30,7 @@ public class TodoListResource {
    * Initializes this TodoListResource with appropriate context information.
    * Each method will check and use what it needs.
    *
-   * @param todoModel the TodoModel, needed for DELETE and rename
+   * @param todoModel the TodoModel, needed for PUT, DELETE and rename
    * @param name the todo list name, needed for most requests
    * @param todoList the TodoList, or null, needed for PUT
    */

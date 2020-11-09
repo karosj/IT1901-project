@@ -118,7 +118,7 @@ public class RemoteTodoModelAccess implements TodoModelAccess {
   }
 
   private URI todoListUri(String name) {
-    return endpointBaseUri.resolve(uriParam(name));
+    return endpointBaseUri.resolve("list").resolve(uriParam(name));
   }
 
   /**

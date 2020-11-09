@@ -83,6 +83,7 @@ public class TodoServiceTest extends JerseyTest {
   @Test
   public void testGet_todo_todo1() {
     Response getResponse = target(TodoModelService.TODO_MODEL_SERVICE_PATH)
+        .path("list")
         .path("todo1")
         .request(MediaType.APPLICATION_JSON + ";" + MediaType.CHARSET_PARAMETER + "=UTF-8")
         .get();

@@ -31,6 +31,17 @@ public class TodoModelService {
   public TodoModel getTodoModel() {
     return todoModel;
   }
+  
+  /**
+   * The root resource, i.e. /todo
+   *
+   * @return the TodoModel
+   */
+  @Path("/settings")
+  public TodoSettingsResource getTodoSettings() {
+    LOG.debug("Sub-resource for TodoSettings");
+    return new TodoSettingsResource(todoModel);
+  }
 
   /**
    * Returns the TodoList with the provided name
@@ -40,7 +51,7 @@ public class TodoModelService {
    *
    * @param name the name of the todo list
    */
-  @Path("/{name}")
+  @Path("/list/{name}")
   public TodoListResource getTodoList(@PathParam("name") String name) {
     AbstractTodoList todoList = getTodoModel().getTodoList(name);
     LOG.debug("Sub-resource for TodoList " + name + ": " + todoList);
