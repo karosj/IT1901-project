@@ -2,6 +2,7 @@ package todolist.ui;
 
 import java.util.Collection;
 import todolist.core.AbstractTodoList;
+import todolist.core.TodoSettings;
 
 /**
  * Class that centralizes access to a TodoModel.
@@ -10,7 +11,14 @@ import todolist.core.AbstractTodoList;
 public interface TodoModelAccess {
 
   /**
-   * Checks that name is valid for a (new) TodoList
+   * Gets the todo settings.
+   *
+   * @return the todo settings
+   */
+  public TodoSettings getTodoSettings();
+
+  /**
+   * Checks that name is valid for a (new) TodoList.
    *
    * @param name the (new) name
    * @return true if the name is valid, false otherwise
@@ -18,7 +26,7 @@ public interface TodoModelAccess {
   public boolean isValidTodoListName(String name);
 
   /**
-   * Checks if there (already) exists a TodoList with the provided name
+   * Checks if there (already) exists a TodoList with the provided name.
    *
    * @param name the (new) name
    * @return true if there exists a TodoList with the provided name, false otherwise

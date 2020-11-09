@@ -47,7 +47,7 @@ public class TodoPersistenceTest {
       TodoModuleTest.checkTodoItem(it.next(), item2);
       assertFalse(it.hasNext());
     } catch (IOException e) {
-      fail();
+      fail(e.getMessage());
     }
   }
 }

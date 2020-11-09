@@ -144,11 +144,11 @@ public class TodoListTest {
 
   // test iterator
 
-  private void checkItems(Iterable<TodoItem> it, TodoItem... items) {
+  static void checkItems(Iterable<TodoItem> it, TodoItem... items) {
     checkIterator(it.iterator(), items);
   }
 
-  private void checkIterator(Iterator<TodoItem> it, TodoItem... items) {
+  static void checkIterator(Iterator<TodoItem> it, TodoItem... items) {
     int i = 0;
     while (it.hasNext()) {
       assertTrue(i < items.length);

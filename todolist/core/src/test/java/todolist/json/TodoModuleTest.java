@@ -14,6 +14,8 @@ import todolist.core.AbstractTodoList;
 import todolist.core.TodoItem;
 import todolist.core.TodoList;
 import todolist.core.TodoModel;
+import todolist.core.TodoSettings;
+import todolist.core.TodoSettings.TodoItemsSortOrder;
 
 public class TodoModuleTest {
 
@@ -45,7 +47,7 @@ public class TodoModuleTest {
     try {
       assertEquals(todoListWithTwoItems.replaceAll("\\s+", ""), mapper.writeValueAsString(model));
     } catch (JsonProcessingException e) {
-      fail();
+      fail(e.getMessage());
     }
   }
 
@@ -73,7 +75,7 @@ public class TodoModuleTest {
       checkTodoItem(it.next(), "item2", true, LocalDateTime.parse("2020-10-01T14:53:11"));
       assertFalse(it.hasNext());
     } catch (JsonProcessingException e) {
-      fail();
+      fail(e.getMessage());
     }
   }
 
@@ -103,7 +105,23 @@ public class TodoModuleTest {
       checkTodoItem(it.next(), item2);
       assertFalse(it.hasNext());
     } catch (JsonProcessingException e) {
-      fail();
+      fail(e.getMessage());
+    }
+  }
+
+  private final static String defaultTodoSettings = "{\"todoItemsSortOrder\":\"UNCHECKED_CHECKED\"}";
+
+  @Test
+  public void testTodoSettings() {
+    TodoSettings settings = new TodoSettings();
+    settings.setTodoItemSortOrder(TodoItemsSortOrder.UNCHECKED_CHECKED);
+    try {
+      String json = mapper.writeValueAsString(settings);
+      assertEquals(defaultTodoSettings.replaceAll("\\s+", ""), mapper.writeValueAsString(settings));
+      TodoSettings settings2 = mapper.readValue(json, TodoSettings.class);
+      assertEquals(settings.getTodoItemSortOrder(), settings2.getTodoItemSortOrder());
+    } catch (JsonProcessingException e) {
+      fail(e.getMessage());
     }
   }
 }

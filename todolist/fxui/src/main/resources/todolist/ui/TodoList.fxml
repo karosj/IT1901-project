@@ -8,7 +8,6 @@
 <?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ListView?>
-
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
 
 <VBox xmlns:fx="http://javafx.com/fxml/1" fx:controller="todolist.ui.TodoListController">

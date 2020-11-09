@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 import todolist.core.AbstractTodoList;
 import todolist.core.TodoItem;
 import todolist.core.TodoModel;
+import todolist.core.TodoSettings;
 
 @SuppressWarnings("serial")
 public class TodoModule extends SimpleModule {
@@ -17,11 +18,16 @@ public class TodoModule extends SimpleModule {
   public TodoModule(boolean deepTodoModelSerializer) {
     super(NAME, Version.unknownVersion());
     addSerializer(TodoItem.class, new TodoItemSerializer());
-    addSerializer(AbstractTodoList.class, new TodoListSerializer());
-    addSerializer(TodoModel.class, new TodoModelSerializer(deepTodoModelSerializer));
     addDeserializer(TodoItem.class, new TodoItemDeserializer());
+
+    addSerializer(AbstractTodoList.class, new TodoListSerializer());
     addDeserializer(AbstractTodoList.class, new TodoListDeserializer());
+
+    addSerializer(TodoModel.class, new TodoModelSerializer(deepTodoModelSerializer));
     addDeserializer(TodoModel.class, new TodoModelDeserializer());
+
+    addSerializer(TodoSettings.class, new TodoSettingsSerializer());
+    addDeserializer(TodoSettings.class, new TodoSettingsDeserializer());
   }
 
   public TodoModule() {

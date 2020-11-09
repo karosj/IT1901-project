@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import todolist.core.AbstractTodoList;
 import todolist.core.TodoModel;
+import todolist.core.TodoSettings;
 import todolist.json.TodoPersistence;
 
 /**
@@ -24,8 +25,13 @@ public class DirectTodoModelAccess implements TodoModelAccess {
     this.todoModel = todoModel;
   }
 
+  @Override
+  public TodoSettings getTodoSettings() {
+    return todoModel.getSettings();
+  }
+
   /**
-   * Checks that name is valid for a (new) TodoList
+   * Checks that name is valid for a (new) TodoList.
    *
    * @param name the (new) name
    * @return true if the name is value, false otherwise
@@ -36,7 +42,7 @@ public class DirectTodoModelAccess implements TodoModelAccess {
   }
 
   /**
-   * Checks if there (already) exists a TodoList with the provided name
+   * Checks if there (already) exists a TodoList with the provided name.
    *
    * @param name the (new) name
    * @return true if there exists a TodoList with the provided name, false otherwise

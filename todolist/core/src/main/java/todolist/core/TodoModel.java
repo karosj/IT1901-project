@@ -1,10 +1,24 @@
 package todolist.core;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.function.Function;
+import todolist.core.TodoSettings.TodoItemsSortOrder;
 
 public class TodoModel implements Iterable<AbstractTodoList> {
+
+  private TodoSettings settings = new TodoSettings();
+
+  public TodoSettings getSettings() {
+    return settings;
+  }
+
+  public void setSettings(TodoSettings settings) {
+    this.settings = settings;
+  }
 
   private Map<String, AbstractTodoList> todoLists = new LinkedHashMap<>();
 
@@ -73,5 +87,41 @@ public class TodoModel implements Iterable<AbstractTodoList> {
    */
   public AbstractTodoList putTodoList(AbstractTodoList todoList) {
     return todoLists.put(todoList.getName(), todoList);
+  }
+
+  private static Collection<TodoItem> todoItemsProviderHelper(TodoList todoList,
+      Function<TodoList, Collection<TodoItem>> todoItemsProvider1,
+      Function<TodoList, Collection<TodoItem>> todoItemsProvider2) {
+    Collection<TodoItem> todoItems = new ArrayList<>(todoItemsProvider1.apply(todoList));
+    todoItems.addAll(todoItemsProvider2.apply(todoList));
+    return todoItems;
+  }
+
+  /**
+   * Returns a function that gets the todo items of a todo list in the corresponding sort order.
+   *
+   * @param sortOrder the desired sort order of the todo items
+   * @return a function that gets the todo items of a todo list in the corresponding sort order
+   */
+  public static Function<TodoList, Collection<TodoItem>> getSortedTodoItemsProvider(TodoItemsSortOrder sortOrder) {
+    switch (sortOrder) {
+      case UNCHECKED_CHECKED: 
+        return todoList -> todoItemsProviderHelper(todoList,
+            TodoList::getUncheckedTodoItems, TodoList::getCheckedTodoItems);
+      case CHECKED_UNCHECKED:
+        return todoList -> todoItemsProviderHelper(todoList,
+            TodoList::getCheckedTodoItems, TodoList::getUncheckedTodoItems);
+      default: return TodoList::getTodoItems;
+    }
+  }
+
+  /**
+   * Returns a function that gets the todo items of a todo list
+   * in the sort order given by the todo settings.
+   *
+   * @return a function that gets the todo items of a todo list in the corresponding sort order
+   */
+  public Function<TodoList, Collection<TodoItem>> getSortedTodoItemsProvider() {
+    return getSortedTodoItemsProvider(getSettings().getTodoItemSortOrder());
   }
 }

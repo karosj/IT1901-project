@@ -3,6 +3,7 @@ package todolist.ui;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.function.Function;
 import java.util.function.Predicate;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -84,11 +85,16 @@ public class TodoListController {
     todoItemsView.setEditable(true);
   }
 
+  private Function<TodoList, Collection<TodoItem>> todoItemsProvider = TodoList::getTodoItems;
+
+  public void setTodoItemsProvider(Function<TodoList, Collection<TodoItem>> todoItemsProvider) {
+    this.todoItemsProvider = todoItemsProvider;
+  }
+
   protected void updateView() {
     List<TodoItem> items = new ArrayList<>();
     if (todoList != null) {
-      items.addAll(getTodoList().getUncheckedTodoItems());
-      items.addAll(getTodoList().getCheckedTodoItems());
+      items.addAll(todoItemsProvider.apply(todoList));
     }
     TodoItem selectedItem = todoItemsView.getSelectionModel().getSelectedItem();
     todoItemsView.getItems().setAll(items);
