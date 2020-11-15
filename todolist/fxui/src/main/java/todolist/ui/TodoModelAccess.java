@@ -18,7 +18,7 @@ public interface TodoModelAccess {
   public boolean isValidTodoListName(String name);
 
   /**
-   * Checks if there (already) exists a TodoList with the provided name.
+   * Checks if there (already) exists a TodoList with the provided name.m
    *
    * @param name the (new) name
    * @return true if there exists a TodoList with the provided name, false otherwise
