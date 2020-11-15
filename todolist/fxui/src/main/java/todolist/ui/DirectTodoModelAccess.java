@@ -25,7 +25,7 @@ public class DirectTodoModelAccess implements TodoModelAccess {
   }
 
   /**
-   * Checks that name is valid for a (new) TodoList
+   * Checks that name is valid for a (new) TodoList.
    *
    * @param name the (new) name
    * @return true if the name is value, false otherwise
@@ -36,7 +36,7 @@ public class DirectTodoModelAccess implements TodoModelAccess {
   }
 
   /**
-   * Checks if there (already) exists a TodoList with the provided name
+   * Checks if there (already) exists a TodoList with the provided name.
    *
    * @param name the (new) name
    * @return true if there exists a TodoList with the provided name, false otherwise
@@ -120,12 +120,6 @@ public class DirectTodoModelAccess implements TodoModelAccess {
     }
   }
 
-  private String userTodoModelPath;
-
-  public void setUserTodoModelPath(String userTodoModelPath) {
-    this.userTodoModelPath = userTodoModelPath;
-  }
-
   private boolean autosaveOn = false;
 
   public void setAutosaveOn(boolean autosaveOn) {
@@ -134,16 +128,16 @@ public class DirectTodoModelAccess implements TodoModelAccess {
 
   private TodoPersistence todoPersistence = null;
 
-  private void autoSaveTodoModel() {
-    if (userTodoModelPath != null) {
-      if (todoPersistence == null) {
-        todoPersistence = new TodoPersistence();
-      }
-      Path path = Paths.get(System.getProperty("user.home"), userTodoModelPath);
-      try (Writer writer = new FileWriter(path.toFile(), StandardCharsets.UTF_8)) {
-        todoPersistence.writeTodoModel(todoModel, writer);
-      } catch (IOException e) {
-        System.err.println("Fikk ikke skrevet til " + userTodoModelPath + " på hjemmeområdet");
+  public void setTodoPersistence(TodoPersistence todoPersistence) {
+    this.todoPersistence = todoPersistence;
+  }
+
+  private void autoSaveTodoModel() {    
+    if (todoPersistence != null) {
+      try {
+        todoPersistence.saveTodoModel(todoModel);
+      } catch (Exception e) {
+        System.err.println("Fikk ikke lagret TodoModel: " + e.getMessage());
       }
     }
   }
