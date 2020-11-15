@@ -13,7 +13,11 @@ import todolist.json.TodoModule;
 @Produces(MediaType.APPLICATION_JSON)
 public class TodoModuleObjectMapperProvider implements ContextResolver<ObjectMapper> {
 
-  private final ObjectMapper objectMapper = new ObjectMapper().registerModule(new TodoModule(false));
+  private final ObjectMapper objectMapper;
+
+  public TodoModuleObjectMapperProvider() {
+    objectMapper = new ObjectMapper().registerModule(new TodoModule(false));
+  }
 
   @Override
   public ObjectMapper getContext(final Class<?> type) {
