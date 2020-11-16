@@ -1,6 +1,5 @@
 package todolist.ui;
 
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
@@ -9,8 +8,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Paths;
-import javafx.fxml.FXML;
 import todolist.core.TodoItem;
 import todolist.core.TodoList;
 import todolist.core.TodoModel;
