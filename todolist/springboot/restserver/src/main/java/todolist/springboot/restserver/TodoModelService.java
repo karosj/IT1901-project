@@ -14,9 +14,12 @@ import todolist.json.TodoPersistence;
 public class TodoModelService {
 
   private TodoModel todoModel;
+  private TodoPersistence todoPersistence;
 
   public TodoModelService(TodoModel todoModel) {
     this.todoModel = todoModel;
+    this.todoPersistence = new TodoPersistence();
+    todoPersistence.setSaveFile("springbootserver-todolist.json");
   }
 
   public TodoModelService() {
@@ -46,5 +49,15 @@ public class TodoModelService {
     todoModel.addTodoList(new TodoList("todo1"));
     todoModel.addTodoList(new TodoList("todo2"));
     return todoModel;
+  }
+
+  public void autoSaveTodoModel() {
+    if (todoPersistence != null) {
+      try {
+        todoPersistence.saveTodoModel(this.todoModel);
+      } catch (IllegalStateException | IOException e) {
+        System.err.println("Couldn't auto-save TodoModel: " + e);
+      }
+    }
   }
 }

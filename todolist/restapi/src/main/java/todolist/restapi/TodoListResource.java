@@ -1,5 +1,6 @@
 package todolist.restapi;
 
+import java.io.IOException;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -14,6 +15,7 @@ import org.slf4j.LoggerFactory;
 import todolist.core.AbstractTodoList;
 import todolist.core.TodoList;
 import todolist.core.TodoModel;
+import todolist.json.TodoPersistence;
 
 /**
  * Used for all requests referring to TodoLists by name.
@@ -26,13 +28,19 @@ public class TodoListResource {
   private final String name;
   private final AbstractTodoList todoList;
 
+  private TodoPersistence todoPersistence;
+
+  public void setTodoPersistence(TodoPersistence todoPersistence) {
+    this.todoPersistence = todoPersistence;
+  }
+
   /**
-   * Initializes this TodoListResource with appropriate context information.
-   * Each method will check and use what it needs.
+   * Initializes this TodoListResource with appropriate context information. Each method will check
+   * and use what it needs.
    *
    * @param todoModel the TodoModel, needed for DELETE and rename
-   * @param name the todo list name, needed for most requests
-   * @param todoList the TodoList, or null, needed for PUT
+   * @param name      the todo list name, needed for most requests
+   * @param todoList  the TodoList, or null, needed for PUT
    */
   public TodoListResource(TodoModel todoModel, String name, AbstractTodoList todoList) {
     this.todoModel = todoModel;
@@ -59,6 +67,16 @@ public class TodoListResource {
     return this.todoList;
   }
 
+  private void autoSaveTodoModel() {
+    if (todoPersistence != null) {
+      try {
+        todoPersistence.saveTodoModel(todoModel);
+      } catch (IllegalStateException | IOException e) {
+        System.err.println("Couldn't auto-save TodoModel: " + e);
+      }
+    }
+  }
+
   /**
    * Replaces or adds a TodoList.
    *
@@ -70,7 +88,9 @@ public class TodoListResource {
   @Produces(MediaType.APPLICATION_JSON)
   public boolean putTodoList(AbstractTodoList todoListArg) {
     LOG.debug("putTodoList({})", todoListArg);
-    return this.todoModel.putTodoList(todoListArg) == null;
+    AbstractTodoList oldTodoList = this.todoModel.putTodoList(todoListArg);
+    autoSaveTodoModel();
+    return oldTodoList == null;
   }
 
   /**
@@ -98,6 +118,7 @@ public class TodoListResource {
       throw new IllegalArgumentException("A TodoList named \"" + newName + "\" already exists");
     }
     this.todoList.setName(newName);
+    autoSaveTodoModel();
     return true;
   }
 
@@ -109,6 +130,7 @@ public class TodoListResource {
   public boolean removeTodoList() {
     checkTodoList();
     this.todoModel.removeTodoList(this.todoList);
+    autoSaveTodoModel();
     return true;
   }
 }
