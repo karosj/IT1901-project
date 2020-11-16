@@ -23,7 +23,7 @@ import todolist.core.TodoModel;
 import todolist.json.TodoModule;
 
 @AutoConfigureMockMvc
-@ContextConfiguration(classes = { TodoModelController.class, TodoModelService.class })
+@ContextConfiguration(classes = { TodoModelController.class, TodoModelService.class, TodoModelApplication.class })
 @WebMvcTest
 public class TodoModelApplicationTest {
 
@@ -37,15 +37,20 @@ public class TodoModelApplicationTest {
     objectMapper = new ObjectMapper().registerModule(new TodoModule(false));;
   }
 
+  private String todoUrl(String... segments) {
+    String url = "/" + TodoModelController.TODO_MODEL_SERVICE_PATH;
+    for (String segment : segments) {
+      url = url + "/" + segment;
+    }
+    return url;
+  }
+
   @Test
   public void testGet_todo() throws Exception {
-    MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/todo")
-//  .content(birthday)
-//  .contentType(MediaType.APPLICATION_JSON)
+    MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get(todoUrl())
         .accept(MediaType.APPLICATION_JSON))
         .andExpect(MockMvcResultMatchers.status().isOk())
         .andReturn();
-
     try {
       TodoModel todoModel = objectMapper.readValue(result.getResponse().getContentAsString(), TodoModel.class);
       Iterator<AbstractTodoList> it = todoModel.iterator();
