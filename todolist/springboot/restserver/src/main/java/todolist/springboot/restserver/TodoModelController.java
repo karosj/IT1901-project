@@ -27,6 +27,10 @@ public class TodoModelController {
     return todoModelService.getTodoModel();
   }
 
+  private void autoSaveTodoModel() {
+    todoModelService.autoSaveTodoModel();
+  }
+
   private void checkTodoList(AbstractTodoList todoList, String name) {
     if (todoList == null) {
       throw new IllegalArgumentException("No TodoList named \"" + name + "\"");
@@ -57,6 +61,7 @@ public class TodoModelController {
   public boolean putTodoList(@PathVariable("name") String name,
       @RequestBody AbstractTodoList todoList) {
     boolean added = getTodoModel().putTodoList(todoList) == null;
+    autoSaveTodoModel();
     return added;
   }
 
@@ -75,6 +80,7 @@ public class TodoModelController {
       throw new IllegalArgumentException("A TodoList named \"" + newName + "\" already exists");
     }
     todoList.setName(newName);
+    autoSaveTodoModel();
     return true;
   }
 
@@ -88,6 +94,7 @@ public class TodoModelController {
     AbstractTodoList todoList = getTodoModel().getTodoList(name);
     checkTodoList(todoList, name);
     getTodoModel().removeTodoList(todoList);
+    autoSaveTodoModel();
     return true;
   }
 }

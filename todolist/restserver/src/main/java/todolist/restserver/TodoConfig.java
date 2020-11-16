@@ -16,6 +16,7 @@ import todolist.restapi.TodoModelService;
 public class TodoConfig extends ResourceConfig {
 
   private TodoModel todoModel;
+  private TodoPersistence todoPersistence;
 
   /**
    * Initialize this TodoConfig.
@@ -24,6 +25,8 @@ public class TodoConfig extends ResourceConfig {
    */
   public TodoConfig(TodoModel todoModel) {
     setTodoModel(todoModel);
+    todoPersistence = new TodoPersistence();
+    todoPersistence.setSaveFile("server-todolist.json");
     register(TodoModelService.class);
     register(TodoModuleObjectMapperProvider.class);
     register(JacksonFeature.class);
@@ -31,6 +34,7 @@ public class TodoConfig extends ResourceConfig {
       @Override
       protected void configure() {
         bind(TodoConfig.this.todoModel);
+        bind(TodoConfig.this.todoPersistence);
       }
     });
   }

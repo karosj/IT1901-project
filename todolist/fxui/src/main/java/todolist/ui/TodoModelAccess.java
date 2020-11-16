@@ -10,7 +10,7 @@ import todolist.core.AbstractTodoList;
 public interface TodoModelAccess {
 
   /**
-   * Checks that name is valid for a (new) TodoList
+   * Checks that name is valid for a (new) TodoList.
    *
    * @param name the (new) name
    * @return true if the name is valid, false otherwise
@@ -18,7 +18,7 @@ public interface TodoModelAccess {
   public boolean isValidTodoListName(String name);
 
   /**
-   * Checks if there (already) exists a TodoList with the provided name
+   * Checks if there (already) exists a TodoList with the provided name.m
    *
    * @param name the (new) name
    * @return true if there exists a TodoList with the provided name, false otherwise

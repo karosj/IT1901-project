@@ -1,6 +1,5 @@
 package todolist.ui;
 
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
@@ -9,7 +8,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Paths;
 import javafx.fxml.FXML;
 import todolist.core.TodoItem;
 import todolist.core.TodoList;
@@ -34,48 +32,50 @@ public class TodoAppController {
   @FXML
   TodoModelController todoModelViewController;
 
+  private TodoPersistence todoPersistence;
+
   private TodoModel getInitialTodoModel() {
-    // setter opp data
-    Reader reader = null;
-    // try to read file from home folder first
-    if (userTodoModelPath != null) {
-      try {
-        reader = new FileReader(Paths.get(System.getProperty("user.home"),
-            userTodoModelPath).toFile(), StandardCharsets.UTF_8);
-      } catch (IOException ioex) {
-        System.err.println("Fant ingen " + userTodoModelPath + " på hjemmeområdet");
-      }
-    }
-    if (reader == null && sampleTodoModelResource != null) {
-      // try sample todo list from resources instead
-      URL url = getClass().getResource(sampleTodoModelResource);
-      if (url != null) {
-        try {
-          reader = new InputStreamReader(url.openStream(), StandardCharsets.UTF_8);
-        } catch (IOException e) {
-          System.err.println("Kunne ikke lese innebygget " + sampleTodoModelResource);
-        }
-      } else {
-        System.err.println("Fant ikke innebygget " + sampleTodoModelResource);
-      }
-    }
-    if (reader == null) {
-      // use embedded String
-      reader = new StringReader(todoListWithTwoItems);
-    }
     TodoModel todoModel = null;
-    try {
-      TodoPersistence todoPersistence = new TodoPersistence();
-      todoModel = todoPersistence.readTodoModel(reader);
-    } catch (IOException e) {
-      // ignore
-    } finally {
+    // try to read file from home folder first
+    if (todoPersistence != null) {
       try {
-        if (reader != null) {
-          reader.close();
+        todoModel = todoPersistence.loadTodoModel();
+      } catch (Exception ioex) {
+        System.err.println("ikke ikke lest inn lagret TodoModel");
+      }
+    }
+    if (todoModel == null) {
+      // setter opp data
+      Reader reader = null;
+      if (sampleTodoModelResource != null) {
+        // try sample todo list from resources instead
+        URL url = getClass().getResource(sampleTodoModelResource);
+        if (url != null) {
+          try {
+            reader = new InputStreamReader(url.openStream(), StandardCharsets.UTF_8);
+          } catch (IOException e) {
+            System.err.println("Kunne ikke lese innebygget " + sampleTodoModelResource);
+          }
+        } else {
+          System.err.println("Fant ikke innebygget " + sampleTodoModelResource);
         }
+      }
+      if (reader == null) {
+        // use embedded String
+        reader = new StringReader(todoListWithTwoItems);
+      }
+      try {
+        todoModel = todoPersistence.readTodoModel(reader);
       } catch (IOException e) {
         // ignore
+      } finally {
+        try {
+          if (reader != null) {
+            reader.close();
+          }
+        } catch (IOException e) {
+          // ignore
+        }
       }
     }
     if (todoModel == null) {
@@ -101,8 +101,10 @@ public class TodoAppController {
       }
     }
     if (todoModelAccess == null) {
+      this.todoPersistence = new TodoPersistence();
+      todoPersistence.setSaveFile(userTodoModelPath);
       DirectTodoModelAccess directAccess = new DirectTodoModelAccess(getInitialTodoModel());
-      directAccess.setUserTodoModelPath(userTodoModelPath);
+      directAccess.setTodoPersistence(todoPersistence);
       todoModelAccess = directAccess;
     }
     todoModelViewController.setTodoModelAccess(todoModelAccess);

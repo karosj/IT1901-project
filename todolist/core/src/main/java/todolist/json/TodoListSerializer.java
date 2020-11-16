@@ -15,8 +15,8 @@ class TodoListSerializer extends JsonSerializer<AbstractTodoList> {
    */
 
   @Override
-  public void serialize(AbstractTodoList list, JsonGenerator jsonGen, SerializerProvider serializerProvider)
-      throws IOException {
+  public void serialize(AbstractTodoList list, JsonGenerator jsonGen,
+      SerializerProvider serializerProvider) throws IOException {
     jsonGen.writeStartObject();
     if (list.getName() != null) {
       jsonGen.writeStringField("name", list.getName());

@@ -44,10 +44,14 @@ public class TodoModelController {
   private void initializeTodoListsView() {
     todoListsView.setEditable(true);
     todoListsView.valueProperty().addListener((prop, oldName, newName) -> {
-      // System.out.println("valueProperty: -> " + todoListsView.getSelectionModel().getSelectedIndex() + " -> " + (oldName != null ? ("\"" + oldName + "\"") : null) + " -> " + (newName != null ? ("\"" + newName + "\"") : null));
+      // System.out.println("valueProperty: -> "
+      //    + todoListsView.getSelectionModel().getSelectedIndex() + " -> "
+      //    + (oldName != null ? ("\"" + oldName + "\"") : null) + " -> " 
+      //    + (newName != null ? ("\"" + newName + "\"") : null));
       if (newName != null && (! todoModelAccess.isValidTodoListName(newName))) {
         // allow user to edit name
-      } else if (oldName != null && newName != null && (! todoListsView.getItems().contains(newName))) {
+      } else if (oldName != null && newName != null
+            && (! todoListsView.getItems().contains(newName))) {
         // either new name of dummy item or existing item
         if (addNewTodoListText.equals(oldName)) {
           // add as new list

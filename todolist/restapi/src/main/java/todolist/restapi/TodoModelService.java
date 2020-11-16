@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import todolist.core.AbstractTodoList;
 import todolist.core.TodoModel;
+import todolist.json.TodoPersistence;
 
 @Path(TodoModelService.TODO_MODEL_SERVICE_PATH)
 public class TodoModelService {
@@ -20,6 +21,9 @@ public class TodoModelService {
 
   @Inject
   private TodoModel todoModel;
+
+  @Inject
+  private TodoPersistence todoPersistence;
 
   /**
    * The root resource, i.e. /todo
@@ -44,6 +48,8 @@ public class TodoModelService {
   public TodoListResource getTodoList(@PathParam("name") String name) {
     AbstractTodoList todoList = getTodoModel().getTodoList(name);
     LOG.debug("Sub-resource for TodoList " + name + ": " + todoList);
-    return new TodoListResource(todoModel, name, todoList);
+    TodoListResource todoListResource = new TodoListResource(todoModel, name, todoList);
+    todoListResource.setTodoPersistence(todoPersistence);
+    return todoListResource;
   }
 }
