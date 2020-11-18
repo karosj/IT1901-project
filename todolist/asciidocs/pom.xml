@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <!-- 
+        current a standalone module
+        <parent>
+            <groupId>it1901.todolist</groupId>
+            <artifactId>parent</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </parent>
+    -->
+    <groupId>it1901.todolist</groupId>
+    <artifactId>asciidocs</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+
+    <dependencies>
+    </dependencies>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.asciidoctor</groupId>
+                <artifactId>asciidoctor-maven-plugin</artifactId>
+                <version>2.1.0</version>
+                <!-- 
+                    <version>1.5.6</version>
+                -->
+
+                <configuration>
+                    <sourceDirectory>docs</sourceDirectory>
+                    <imagesDir>images</imagesDir>
+                    <outputDirectory>target/asciidoc</outputDirectory>
+                    <preserveDirectories>true</preserveDirectories>
+                    <backend>html5</backend>
+                    <sourceHighlighter>highlight.js</sourceHighlighter>
+                    <attributes>
+                        <toc>left</toc>
+                        <sectnums>false</sectnums>
+                        <project-version>${project.version}</project-version>
+                    </attributes>
+                    <resources>
+                        <resource>
+                            <!-- (Mandatory) Directory to copy from. Paths are relative to maven's ${baseDir} -->
+                            <directory>docs/images</directory>
+                            <!-- (Optional) Directory to copy to. By default uses the option `outputDirectory` -->
+                            <targetPath>images</targetPath>
+                            <!-- (Optional) NOTE: SVN, GIT and other version control files are excluded by default, there's no need to add them -->
+                            <excludes>
+                                <exclude>**/.txt</exclude>
+                            </excludes>
+                            <!-- (Optional) If not set, includes all files but default exceptions mentioned -->
+                            <includes>
+                                <include>**/*.png</include>
+                                <include>**/*.jpg</include>
+                            </includes>
+                        </resource>
+                    </resources>
+                </configuration>
+
+                <executions>
+                    <execution>
+                        <id>generate-html</id>              
+                        <phase>generate-resources</phase> 
+                        <goals>
+                            <goal>process-asciidoc</goal> 
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>

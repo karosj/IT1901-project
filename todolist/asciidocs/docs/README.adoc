@@ -1,0 +1,11 @@
+= todo-list-eksempel
+
+== Forord
+
+Denne modulen i todo-list-eksemplet inneholder dokumentasjon tenkt brukt som læringsmateriell,
+ikke vanlig doumentasjon rettet mot utviklere av den typen en forventer i tilsvarende prosjekter.
+
+Dokumentasjonen er skrevet med https://asciidoctor.org/[Asciidoctor] og
+bygget med image:images/maven-logo-black-on-white.png[Maven logo,60,link="https://maven.apache.org/"]
+
+== Introduksjon
