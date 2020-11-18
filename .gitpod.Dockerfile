@@ -4,7 +4,7 @@ USER root
 
 RUN add-apt-repository universe
 RUN apt update
-RUN apt install graphviz
+RUN apt -y install graphviz
 
 USER gitpod
 
