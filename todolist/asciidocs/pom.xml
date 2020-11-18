@@ -15,6 +15,13 @@
     <artifactId>asciidocs</artifactId>
     <version>0.0.1-SNAPSHOT</version>
 
+     <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <asciidoctor.maven.plugin.version>2.1.0</asciidoctor.maven.plugin.version>
+        <asciidoctorj.version>2.4.1</asciidoctorj.version>
+        <asciidoctorj.diagram.version>2.0.2</asciidoctorj.diagram.version>
+    </properties>
+
     <dependencies>
     </dependencies>
     <build>
@@ -22,10 +29,24 @@
             <plugin>
                 <groupId>org.asciidoctor</groupId>
                 <artifactId>asciidoctor-maven-plugin</artifactId>
-                <version>2.1.0</version>
+                <version>${asciidoctor.maven.plugin.version}</version>
                 <!-- 
                     <version>1.5.6</version>
                 -->
+
+                <dependencies>
+                    <!-- Comment this section to use the default AsciidoctorJ artifact provided by the plugin -->
+                    <dependency>
+                        <groupId>org.asciidoctor</groupId>
+                        <artifactId>asciidoctorj</artifactId>
+                        <version>${asciidoctorj.version}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.asciidoctor</groupId>
+                        <artifactId>asciidoctorj-diagram</artifactId>
+                        <version>${asciidoctorj.diagram.version}</version>
+                    </dependency>
+                </dependencies>
 
                 <configuration>
                     <sourceDirectory>docs</sourceDirectory>
@@ -35,6 +56,7 @@
                     <backend>html5</backend>
                     <sourceHighlighter>highlight.js</sourceHighlighter>
                     <attributes>
+                        <imagesdir>./images</imagesdir>
                         <toc>left</toc>
                         <sectnums>false</sectnums>
                         <project-version>${project.version}</project-version>
@@ -56,6 +78,9 @@
                             </includes>
                         </resource>
                     </resources>
+                    <requires>
+                        <require>asciidoctor-diagram</require>
+                    </requires>
                 </configuration>
 
                 <executions>
