@@ -10,17 +10,24 @@ bygget med image:maven-logo-black-on-white.png[Maven logo,60,link="https://maven
 
 == Introduksjon
 
-Todo-list er en applikasjon for håndtering av todo-lister.
+Todolist er en applikasjon for håndtering av todo-lister.
 Den er implementert som en kombinasjon av en JavaFX-app og et REST API som appen bruker for håndtering av data.
-Med et REST API adskilt fra appen, så er det lett å utvide med andre klienter,
+Med et REST API adskilt fra appen, er det lett å støtte andre klienter som bruker de samme dataene,
 f.eks. en "native"-app for Android eller web-klient basert på React.
+
+== arkitekturen
+En kan tenke på appen som delt i ulike lag, med  et indre lag som håndterer representasjon og lagring av data, og
+et brukergrensesnittlag som brukeren interagerer med. Representasjonsdelen av det indre laget kalles ofte domenelogikken,
+fordi det bestemmer strukturen på dataene og hva en har lov til å gjøre med det. REST API-et har på en måte en lignende struktur,
+hvor brukergrensesnittet er byttet ut med et API som en når over web-protokollen HTTP.
 
 == Modularisering
 
-Todolist er strukturert i et sett _moduler_. Domenelogikken ligger i core-modulen, appen i fxui (og fxutil),
-mens REST API-et er fordelt over to moduler, restapi og restserver (og en alternativ implementasjon i springboot/restserver):
+Todolist er strukturert i et sett _moduler_, hvor hver modul fokuserer på en viss funksjonalitet eller del av arkitekturen.
+Det indre laget ligger i core-modulen, brukergrensesnittet i fxui (og fxutil), mens REST API-et er fordelt over to moduler,
+restapi og restserver (og en alternativ implementasjon i springboot/restserver):
 
-- <<core.adoc#, core>> - domenelogikken med alle klassene for å representeree todo-lister og -elementer, og støtte for serialisering og derialisering som JSON med Jackson-biblioteket
+- <<core.adoc#, core>> - klasser for representasjon og lagring (som JSON) av todo-lister og -elementer
 - <<fxui.adoc#, fxui (og fxutil)>> - app-brukergrensesnitt basert på JavaFX og FXML
 - <<restapi.adoc#, restapi og restserver>> - REST API og server basert på JAX-RS-standarden og Jersey-implementasjonen
 - <<springboot-restapi.adoc#, springboot/restserver>> - _alternativ_ REST API og server basert på spring boot-rammeverket

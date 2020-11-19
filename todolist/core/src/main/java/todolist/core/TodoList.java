@@ -32,9 +32,10 @@ public class TodoList extends AbstractTodoList {
    * its contents is copied in to a new TodoListItem and that is added instead.
    *
    * @param items the TodoItems to add
+   * @throws IllegalStateException if an item is a TodoListItem not belonging to this TodoList
    */
   @Override
-  public void addTodoItems(TodoItem... items) {
+  public void addTodoItems(TodoItem... items) throws IllegalStateException {
     for (TodoItem item : items) {
       TodoListItem todoListItem = null;
       if (item instanceof TodoListItem) {
@@ -44,6 +45,9 @@ public class TodoList extends AbstractTodoList {
         todoListItem.setText(item.getText());
         todoListItem.setChecked(item.isChecked());
         todoListItem.setDeadline(item.getDeadline());
+      }
+      if (todoListItem.getTodoList() != this) {
+        throw new IllegalStateException("TodoListItem does not belong to this list TodoList");
       }
       this.items.add(todoListItem);
     }
