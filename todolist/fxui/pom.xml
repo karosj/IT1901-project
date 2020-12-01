@@ -133,6 +133,38 @@
                 </plugins>
             </build>
         </profile>
+        <profile>
+            <id>jpro</id>
+            <pluginRepositories>
+                <pluginRepository>
+                    <id>jpro - sandec repository</id>
+                    <url>https://sandec.bintray.com/repo</url>
+                </pluginRepository>
+            </pluginRepositories>
+            <repositories>
+                <repository>
+                    <id>jpro - sandec repository</id>
+                    <url>https://sandec.bintray.com/repo</url>
+                </repository>
+            </repositories>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>com.sandec.jpro</groupId>
+                        <artifactId>jpro-maven-plugin</artifactId>
+                        <version>2020.1.0</version>
+                        <configuration>
+                            <visible>false</visible>
+                            <JVMArgs>
+                                <!-- <JVMArg>your-args</JVMArg> -->
+                            </JVMArgs>
+                            <mainClassName>todolist.ui.TodoApp</mainClassName>
+                            <openingPath>/</openingPath>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
     </profiles>
 
     <build>
