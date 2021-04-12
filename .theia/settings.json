@@ -3,5 +3,6 @@
     "java.format.settings.url": "todolist/config/checkstyle/eclipse-java-google-style.xml",
     "[java]": {
       "editor.tabSize": 2
-    }
+    },
+    "java.dependency.packagePresentation": "hierarchical"
 }

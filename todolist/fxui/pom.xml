@@ -28,13 +28,11 @@
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-core</artifactId>
-            <version>2.12.2</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind -->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
-            <version>2.12.2</version>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/org.openjfx/javafx-fxml -->
@@ -95,7 +93,7 @@
                     <plugin>
                         <groupId>org.openjfx</groupId>
                         <artifactId>javafx-maven-plugin</artifactId>
-                        <version>0.0.4</version>
+                        <version>0.0.5</version>
                         <configuration>                    
                             <mainClass>de.jensd.fx.glyphs.fontawesome.demo.FontAwesomeIconsDemoApp</mainClass>
                         </configuration>
@@ -179,13 +177,8 @@
             <plugin>
                 <groupId>org.openjfx</groupId>
                 <artifactId>javafx-maven-plugin</artifactId>
-                <version>0.0.4</version>
-                <configuration>                    
-                    <options>
-                        <!-- 
-                            <option>dash dash enable-preview</option>
-                        -->
-                    </options>
+                <version>0.0.5</version>
+                <configuration>
                     <mainClass>todolist.ui.TodoApp</mainClass>
                 </configuration>
             </plugin>
