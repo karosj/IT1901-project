@@ -31,7 +31,7 @@
 
         <dependency>
             <groupId>it1901.todolist</groupId>
-            <artifactId>restserver</artifactId>
+            <artifactId>rest</artifactId>
             <version>0.0.1-SNAPSHOT</version>
             <!-- 
                 https://pragmaticintegrator.wordpress.com/2010/10/22/using-a-war-module-as-dependency-in-maven/

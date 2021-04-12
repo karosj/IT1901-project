@@ -4,6 +4,9 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+/**
+ * The root container of Todo-related data.
+ */
 public class TodoModel implements Iterable<AbstractTodoList> {
 
   private Map<String, AbstractTodoList> todoLists = new LinkedHashMap<>();

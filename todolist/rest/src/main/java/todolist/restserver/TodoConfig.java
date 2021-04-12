@@ -13,6 +13,11 @@ import todolist.core.TodoModel;
 import todolist.json.TodoPersistence;
 import todolist.restapi.TodoModelService;
 
+/**
+ * Configures the rest service,
+ * e.g. JSON support with Jackson and
+ * injectable TodoModel and TodoPersistance
+ */
 public class TodoConfig extends ResourceConfig {
 
   private TodoModel todoModel;

@@ -8,6 +8,9 @@ import jakarta.ws.rs.ext.ContextResolver;
 import jakarta.ws.rs.ext.Provider;
 import todolist.json.TodoModule;
 
+/**
+ * Provides the Jackson module used for JSON serialization.
+ */
 @Provider
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)

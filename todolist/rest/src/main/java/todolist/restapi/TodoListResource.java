@@ -1,6 +1,5 @@
 package todolist.restapi;
 
-import java.io.IOException;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;
@@ -9,7 +8,9 @@ import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.QueryParam;
+import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
+import java.io.IOException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import todolist.core.AbstractTodoList;
@@ -18,8 +19,9 @@ import todolist.core.TodoModel;
 import todolist.json.TodoPersistence;
 
 /**
- * Used for all requests referring to TodoLists by name.
+ * Used for all requests referring to a TodoList by name.
  */
+@Produces(MediaType.APPLICATION_JSON)
 public class TodoListResource {
 
   private static final Logger LOG = LoggerFactory.getLogger(TodoListResource.class);
@@ -28,6 +30,7 @@ public class TodoListResource {
   private final String name;
   private final AbstractTodoList todoList;
 
+  @Context
   private TodoPersistence todoPersistence;
 
   public void setTodoPersistence(TodoPersistence todoPersistence) {
@@ -60,7 +63,6 @@ public class TodoListResource {
    * @return the corresponding TodoList
    */
   @GET
-  @Produces(MediaType.APPLICATION_JSON)
   public AbstractTodoList getTodoList() {
     checkTodoList();
     LOG.debug("getTodoList({})", name);
@@ -85,7 +87,6 @@ public class TodoListResource {
    */
   @PUT
   @Consumes(MediaType.APPLICATION_JSON)
-  @Produces(MediaType.APPLICATION_JSON)
   public boolean putTodoList(AbstractTodoList todoListArg) {
     LOG.debug("putTodoList({})", todoListArg);
     AbstractTodoList oldTodoList = this.todoModel.putTodoList(todoListArg);
@@ -99,7 +100,6 @@ public class TodoListResource {
    * @return true if it was added, false if it replaced
    */
   @PUT
-  @Produces(MediaType.APPLICATION_JSON)
   public boolean putTodoList() {
     return putTodoList(new TodoList(name));
   }
@@ -111,7 +111,6 @@ public class TodoListResource {
    */
   @POST
   @Path("/rename")
-  @Produces(MediaType.APPLICATION_JSON)
   public boolean renameTodoList(@QueryParam("newName") String newName) {
     checkTodoList();
     if (this.todoModel.getTodoList(newName) != null) {
@@ -126,7 +125,6 @@ public class TodoListResource {
    * Removes the TodoList.
    */
   @DELETE
-  @Produces(MediaType.APPLICATION_JSON)
   public boolean removeTodoList() {
     checkTodoList();
     this.todoModel.removeTodoList(this.todoList);

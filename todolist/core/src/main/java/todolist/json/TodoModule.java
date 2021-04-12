@@ -6,6 +6,9 @@ import todolist.core.AbstractTodoList;
 import todolist.core.TodoItem;
 import todolist.core.TodoModel;
 
+/**
+ * A Jackson module for configuring JSON serialization of TodoModel instances.
+ */
 @SuppressWarnings("serial")
 public class TodoModule extends SimpleModule {
 

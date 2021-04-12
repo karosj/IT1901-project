@@ -11,6 +11,10 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import todolist.core.TodoModel;
 
+/**
+ * Wrapper class for JSON serialization,
+ * to avoid direct compile dependencies on Jackson for other modules.
+ */
 public class TodoPersistence {
 
   private ObjectMapper mapper;

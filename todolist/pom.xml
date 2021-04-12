@@ -157,8 +157,7 @@
         <module>core</module>
         <module>fxutil</module>
         <module>fxui</module>
-        <module>restapi</module>
-        <module>restserver</module>
+        <module>rest</module>
         <module>integrationtests</module>
         <module>springboot/restserver</module>
     </modules>

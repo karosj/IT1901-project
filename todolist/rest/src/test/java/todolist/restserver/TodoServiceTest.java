@@ -40,21 +40,17 @@ public class TodoServiceTest extends JerseyTest {
     return config;
   }
 
-  @Override
-  protected TestContainerFactory getTestContainerFactory() throws TestContainerException {
-    return new GrizzlyTestContainerFactory();
-  }
-
   private ObjectMapper objectMapper;
 
-  @Override
   @BeforeEach
+  @Override
   public void setUp() throws Exception {
     super.setUp();
     objectMapper = new TodoModuleObjectMapperProvider().getContext(getClass());
   }
 
   @AfterEach
+  @Override
   public void tearDown() throws Exception {
     super.tearDown();
   }

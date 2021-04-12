@@ -3,6 +3,9 @@ package todolist.core;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+/**
+ * TodoItems that belong to a TodoList.
+ */
 public class TodoListItem extends TodoItem {
 
   private final TodoList todoList;

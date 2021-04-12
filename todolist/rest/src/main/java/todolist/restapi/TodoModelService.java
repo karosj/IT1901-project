@@ -1,28 +1,33 @@
 package todolist.restapi;
 
-import javax.inject.Inject;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
+import javax.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import todolist.core.AbstractTodoList;
 import todolist.core.TodoModel;
 import todolist.json.TodoPersistence;
 
+/**
+ * The top-level rest service for TodoModel.
+ */
 @Path(TodoModelService.TODO_MODEL_SERVICE_PATH)
+@Produces(MediaType.APPLICATION_JSON)
 public class TodoModelService {
 
   public static final String TODO_MODEL_SERVICE_PATH = "todo";
 
   private static final Logger LOG = LoggerFactory.getLogger(TodoModelService.class);
 
-  @Inject
+  @Context
   private TodoModel todoModel;
 
-  @Inject
+  @Context
   private TodoPersistence todoPersistence;
 
   /**
@@ -31,8 +36,8 @@ public class TodoModelService {
    * @return the TodoModel
    */
   @GET
-  @Produces(MediaType.APPLICATION_JSON)
   public TodoModel getTodoModel() {
+    LOG.debug("getTodoModel: " + todoModel);
     return todoModel;
   }
 

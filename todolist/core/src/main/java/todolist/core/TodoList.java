@@ -6,6 +6,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Lists of items in a todo list.
+ */
 public class TodoList extends AbstractTodoList {
 
   private List<TodoItem> items = new ArrayList<>();

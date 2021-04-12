@@ -23,6 +23,9 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextInputDialog;
 import javafx.stage.FileChooser;
 
+/**
+ * Controller for the file menu
+ */
 public class FileMenuController {
 
   private DocumentStorage<File> documentStorage;
