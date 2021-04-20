@@ -1,0 +1,51 @@
+{
+  "$schema": "https://aka.ms/codetour-schema",
+  "title": "Todo-list-oversikt",
+  "steps": [
+    {
+      "title": "Introduction",
+      "description": "Todo-list er et eksempel på en desktop-applikasjon for en rest-API-basert applikasjon, som bygges med maven.\nDenne kodeturen gir en oversikt over innholdet i prosjektet."
+    },
+    {
+      "file": "todolist/pom.xml",
+      "description": "Toppnivå-modulen angir modulene som prosjektet består av og innstillingene som er felles for disse.\n`module`-elementene angir mapper som inneholder del-modulene til hovedmodulen, her ser vi finner sub-moduler i mappene\n`core`, `fxutil`, `fxui`, `rest`, `integrationtest` og `springboot/restserver`.",
+      "line": 163
+    },
+    {
+      "file": "todolist/pom.xml",
+      "description": "`<properties>`-elementet i pom.xml-fila (eller bare pom-fila) angir egenskaper som blir brukt i andre innstillinger eller konfigurasjonselementer.\nSelve egenskapene angis direkte som element-navnet, her heter egenskapen `project.build.sourceEncoding`.\nDisse brukes andre steder ved å angi `${property}` inni attributte-verdier. Her er det tegnkodingen i kildekode som angis som `UTF-8?`.",
+      "line": 13
+    },
+    {
+      "file": "todolist/pom.xml",
+      "description": "<dependencyManagement>-elementet brukes for å angi avhengigheter og deres versjoner,\nslik at det sikres at alle del-moduler bruker de samme versjonene for dere avhengigheter.\nElementet sier ikke at denne modulen (altså hovedmodulen) har denne avhengigheten, men\nangir at en tilsvarende avhengighet i en del-modul må ha denne versjonen.\nI del-modulen oppgir en da ikke versjonen, den plukker automatisk opp versjonen som er angitt her.",
+      "line": 24
+    },
+    {
+      "file": "todolist/pom.xml",
+      "description": "Plugins er tillegg til maven, som bidrar med byggetrinn knyttet til faser.\n<pluginManagement>-elementet lar deg konfigurere disse tilleggene, uten at de aktiveres, slik at en sikrer at\nsamme konfigurasjon gjelder for alle aktiveringer i del-moduler.\nHer konfigureres kompilator-tillegget (maven-compile-plugin) til å ha en bestemt versjon, tegnkoding og Java-versjon (source og target).\nDel-moduler slipper dermed å oppgi dette på nytt i sin pom-fil.",
+      "line": 71
+    },
+    {
+      "file": "todolist/pom.xml",
+      "description": "Surefire-tillegget bidrar med byggetrinn for kjøring av JUnit-tester og vil som default kjøre JUnit 5-tester.",
+      "line": 75
+    },
+    {
+      "file": "todolist/pom.xml",
+      "description": "Checkstyle-tillegget bidrar med kodekvalitetsjekker.\n`<dependency>`-elementet under angir hvilken versjon av `checkstyle`-biblioteket som brukes,\nmens konfigurasjonen angir hva slags konfigurasjonsfil som brukes og andre innstillinger.\n`<executions>`-elementet knytter `check`-trinnet til `verify`-fasen, slik at kodekvalitetsjekken kjøres som en del av `verify`-fasen.",
+      "line": 86
+    },
+    {
+      "file": "todolist/pom.xml",
+      "description": "Spotbugs-tillegget bidrar også med en kodekvalitetsjekk, basert på statisk analyse av class-filene.\nSom for `checkstyle`-tillegget, så knyttes spotbugs sitt `check`-trinn til `verify`-fasen.",
+      "line": 115
+    },
+    {
+      "file": "todolist/pom.xml",
+      "description": "Jacoco-tillegg rigger opp samling av data om testdekningsgrad ved kjøring av tester og\nbidrar med et eget rapporteringstrinn basert på innsamlede data. Rapportene havner i\nen egen `jacoco`-mappe under `target/site`-mappa.",
+      "line": 134
+    }
+  ],
+  "ref": "master"
+}
