@@ -45,6 +45,24 @@
       "file": "todolist/pom.xml",
       "description": "Jacoco-tillegg rigger opp samling av data om testdekningsgrad ved kjøring av tester og\nbidrar med et eget rapporteringstrinn basert på innsamlede data. Rapportene havner i\nen egen `jacoco`-mappe under `target/site`-mappa.",
       "line": 134
+    },
+    {
+      "directory": "todolist/core",
+      "description": "Core-modulen inneholder klasser for å representere todo-liste-dataene og logikk for håndtering av det JSON-baserte formatet for å lagre og sende slike data over nettet (såkalt serialisering og deserialisering)."
+    },
+    {
+      "file": "todolist/core/pom.xml",
+      "description": "Core-modulen har bl.a. avhengigheter til to moduler i jackson-prosjektet, og vi kan derfor importere jackson-klasser i core-klassene.\nTilsvarende har core-modulen test-avhengigheter til flere jupiter-moduler (JUnit 5).\nVi ser vi slipper å oppgi `<version>`- og `<scope>`-elementer, siden disse er oppgitt i parent-modulen sitt `<dependencyManagement>`-element.",
+      "line": 19
+    },
+    {
+      "file": "todolist/core/pom.xml",
+      "description": "I `<plugins>`-elementer aktiveres diverse maven-tillegg. Vi kan godt, men trenger ikke, konfigurere dem,\nsiden de er oppgitt i parent-modulens `<pluginManagement>`-element.\nSom med avhengighetene lengre opp, så slipper vi å oppgi versjon, som det er gitt i parent-modulen.",
+      "line": 53
+    },
+    {
+      "directory": "todolist/core/src",
+      "description": "Kildekoden og tilhørende ressurser ligger i det standard maven-oppsettet under `src`-mappa.\nVanlig kode ligger under `main/java`, mens tilhørende ressurser ligger under `main/resources`.\nTester ligger under `test/java`, mens tilhørende ressurser ligger under `test/resources`.\n\nMappene under disse undermappene utgjør pakke-hierarkiet i modulen vår.\nVi har valgt å ha todolist som toppnivå-pakke, og derfor er det `todolist`-mapper under hver av de fire mappene nevnt over.\n`core`- og `json`-mappene under der igjen tilsvarer dermed `todolist.core`- og `todolist.json`-pakkene."
     }
   ],
   "ref": "master"
