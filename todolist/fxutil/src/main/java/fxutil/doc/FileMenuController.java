@@ -24,7 +24,7 @@ import javafx.scene.control.TextInputDialog;
 import javafx.stage.FileChooser;
 
 /**
- * Controller for the file menu
+ * Controller for the file menu.
  */
 public class FileMenuController {
 

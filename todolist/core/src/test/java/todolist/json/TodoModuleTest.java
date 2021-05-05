@@ -27,7 +27,26 @@ public class TodoModuleTest {
     mapper.registerModule(new TodoModule());
   }
 
-  private final static String todoListWithTwoItems = "{\"lists\":[{\"name\":\"todo\",\"items\":[{\"text\":\"item1\",\"checked\":false},{\"text\":\"item2\",\"checked\":true,\"deadline\":\"2020-10-01T14:53:11\"}]}]}";
+  private final static String todoListWithTwoItems = """
+    {
+      "lists": [
+        {
+          "name": "todo",
+          "items": [
+            {
+              "text": "item1",
+              "checked": false
+            },
+            {
+              "text": "item2",
+              "checked": true,
+              "deadline": "2020-10-01T14:53:11"
+            }
+          ]
+        }
+      ]
+    }
+    """;
 
   @Test
   public void testSerializers() {

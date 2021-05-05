@@ -93,7 +93,7 @@
                     <plugin>
                         <groupId>org.openjfx</groupId>
                         <artifactId>javafx-maven-plugin</artifactId>
-                        <version>0.0.5</version>
+                        <version>0.0.6</version>
                         <configuration>                    
                             <mainClass>de.jensd.fx.glyphs.fontawesome.demo.FontAwesomeIconsDemoApp</mainClass>
                         </configuration>
@@ -108,7 +108,7 @@
                     <plugin>
                         <groupId>org.openjfx</groupId>
                         <artifactId>javafx-maven-plugin</artifactId>
-                        <version>0.0.5</version>
+                        <version>0.0.6</version>
                         <configuration>                    
                             <mainClass>todolist.ui.TodoDocumentApp</mainClass>
                         </configuration>
@@ -123,7 +123,7 @@
                     <plugin>
                         <groupId>org.openjfx</groupId>
                         <artifactId>javafx-maven-plugin</artifactId>
-                        <version>0.0.5</version>
+                        <version>0.0.6</version>
                         <configuration>                    
                             <mainClass>todolist.ui.TodoRemoteApp</mainClass>
                         </configuration>
@@ -177,7 +177,7 @@
             <plugin>
                 <groupId>org.openjfx</groupId>
                 <artifactId>javafx-maven-plugin</artifactId>
-                <version>0.0.5</version>
+                <version>0.0.6</version>
                 <configuration>
                     <mainClass>todolist.ui.TodoApp</mainClass>
                 </configuration>
