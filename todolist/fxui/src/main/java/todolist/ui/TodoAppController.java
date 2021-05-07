@@ -41,7 +41,7 @@ public class TodoAppController {
       try {
         todoModel = todoPersistence.loadTodoModel();
       } catch (Exception ioex) {
-        System.err.println("ikke ikke lest inn lagret TodoModel");
+        System.err.println("Fikk ikke lest inn lagret TodoModel");
       }
     }
     if (todoModel == null) {
