@@ -29,8 +29,7 @@ public class TodoItemListCellDragHandler {
   }
 
   private void handleDragStart(MouseEvent event) {
-    if (event.getSource() instanceof TodoItemListCell) {
-      TodoItemListCell listCell = (TodoItemListCell) event.getSource();
+    if (event.getSource() instanceof TodoItemListCell listCell) {
       if (!listCell.isEmpty()) {
         Dragboard dragboard = listCell.startDragAndDrop(TransferMode.MOVE);
         ClipboardContent content = new ClipboardContent();
@@ -42,11 +41,9 @@ public class TodoItemListCellDragHandler {
   }
 
   private void handleDragOver(DragEvent event) {
-    if (event.getGestureSource() instanceof TodoItemListCell
-        && event.getSource() instanceof TodoItemListCell) {
-      TodoItem sourceItem = ((TodoItemListCell) event.getGestureSource()).getItem();
-      TodoItemListCell targetCell = (TodoItemListCell) event.getSource();
-      if ((!targetCell.isEmpty()) && acceptDrop(sourceItem, targetCell.getItem())) {
+    if (event.getGestureSource() instanceof TodoItemListCell sourceCell
+        && event.getSource() instanceof TodoItemListCell targetCell) {
+      if ((!targetCell.isEmpty()) && acceptDrop(sourceCell.getItem(), targetCell.getItem())) {
         event.acceptTransferModes(TransferMode.MOVE);
         // TODO: give feedback that drop will be accepted
       }
@@ -60,10 +57,9 @@ public class TodoItemListCellDragHandler {
 
   private void handleDragEnd(DragEvent event) {
     boolean success = false;
-    if (event.getGestureSource() instanceof TodoItemListCell
-        && event.getGestureTarget() instanceof TodoItemListCell) {
-      TodoItem sourceItem = ((TodoItemListCell) event.getGestureSource()).getItem();
-      TodoItemListCell targetCell = (TodoItemListCell) event.getGestureTarget();
+    if (event.getGestureSource() instanceof TodoItemListCell sourceCell
+        && event.getGestureTarget() instanceof TodoItemListCell targetCell) {
+      TodoItem sourceItem = sourceCell.getItem();
       if ((!targetCell.isEmpty()) && acceptDrop(sourceItem, targetCell.getItem())) {
         int newIndex = todoList.indexOf(targetCell.getItem());
         if (newIndex >= 0) {

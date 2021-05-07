@@ -23,8 +23,7 @@ class TodoItemDeserializer extends JsonDeserializer<TodoItem> {
   }
 
   TodoItem deserialize(JsonNode jsonNode) {
-    if (jsonNode instanceof ObjectNode) {
-      ObjectNode objectNode = (ObjectNode) jsonNode;
+    if (jsonNode instanceof ObjectNode objectNode) {
       TodoItem item = new TodoItem();
       JsonNode textNode = objectNode.get("text");
       if (textNode instanceof TextNode) {

@@ -30,8 +30,7 @@ class TodoListDeserializer extends JsonDeserializer<AbstractTodoList> {
   }
 
   AbstractTodoList deserialize(JsonNode treeNode) {
-    if (treeNode instanceof ObjectNode) {
-      ObjectNode objectNode = (ObjectNode) treeNode;
+    if (treeNode instanceof ObjectNode objectNode) {
       JsonNode nameNode = objectNode.get("name");
       if (! (nameNode instanceof TextNode)) {
         return null;

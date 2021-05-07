@@ -122,8 +122,8 @@ public class FileMenuController {
   @FXML
   public void handleOpenAction(final ActionEvent event) {
     File selection = null;
-    if (event.getSource() instanceof MenuItem) {
-      final File file = new File(((MenuItem) event.getSource()).getText());
+    if (event.getSource() instanceof MenuItem menuItem) {
+      final File file = new File(menuItem.getText());
       if (file.exists()) {
         selection = file;
       }

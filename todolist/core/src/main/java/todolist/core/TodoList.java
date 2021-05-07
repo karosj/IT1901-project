@@ -41,8 +41,8 @@ public class TodoList extends AbstractTodoList {
   public void addTodoItems(TodoItem... items) throws IllegalStateException {
     for (TodoItem item : items) {
       TodoListItem todoListItem = null;
-      if (item instanceof TodoListItem) {
-        todoListItem = (TodoListItem) item;
+      if (item instanceof TodoListItem tli) {
+        todoListItem = tli;
       } else {
         todoListItem = new TodoListItem(this);
         todoListItem.setText(item.getText());

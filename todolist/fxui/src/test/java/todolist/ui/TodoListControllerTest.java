@@ -169,11 +169,11 @@ public class TodoListControllerTest extends ApplicationTest {
   }
 
   private TodoItemListCell findTodoItemListCell(Predicate<TodoItemListCell> test, int num) {
-    return (TodoItemListCell) waitForNode(node -> node instanceof TodoItemListCell && test.test((TodoItemListCell) node), num);
+    return (TodoItemListCell) waitForNode(node -> node instanceof TodoItemListCell todoItemListCell && test.test(todoItemListCell), num);
   }
 
   private Node findTodoItemListCellNode(Predicate<TodoItemListCell> test, String selector, int num) {
-    Node listCell = waitForNode(node -> node instanceof TodoItemListCell && (selector == null || node.lookup(selector) != null) && test.test((TodoItemListCell) node), num);
+    Node listCell = waitForNode(node -> node instanceof TodoItemListCell todoItemListCell && (selector == null || node.lookup(selector) != null) && test.test(todoItemListCell), num);
     return listCell.lookup(selector);
   }
 

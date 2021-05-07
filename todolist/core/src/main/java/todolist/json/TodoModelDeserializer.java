@@ -27,12 +27,11 @@ class TodoModelDeserializer extends JsonDeserializer<TodoModel> {
   }
 
   TodoModel deserialize(JsonNode treeNode) {
-    if (treeNode instanceof ObjectNode) {
-      ObjectNode objectNode = (ObjectNode) treeNode;
+    if (treeNode instanceof ObjectNode objectNode) {
       TodoModel model = new TodoModel();
       JsonNode itemsNode = objectNode.get("lists");
-      if (itemsNode instanceof ArrayNode) {
-        for (JsonNode elementNode : ((ArrayNode) itemsNode)) {
+      if (itemsNode instanceof ArrayNode arrayNode) {
+        for (JsonNode elementNode : arrayNode) {
           AbstractTodoList list = todoListDeserializer.deserialize(elementNode);
           if (list != null) {
             model.addTodoList(list);
