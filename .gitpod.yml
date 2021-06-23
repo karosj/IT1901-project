@@ -1,8 +1,14 @@
 image:
   file: .gitpod.Dockerfile
 
+gitlab:
+  prebuilds:
+    # enable for the default branch (defaults to true)
+    master: true
+
 tasks:
   - init: sdk use java 16.0.1.hs-adpt
+    prebuild: echo "Prebuild!"
     command: cd todolist
 
 ports:
