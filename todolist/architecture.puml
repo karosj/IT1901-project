@@ -1,4 +1,4 @@
-@startuml architecture
+@startuml
 
 component core {
 	package todolist.core
@@ -30,20 +30,17 @@ fxui ..> javafx
 fxui ..> fxml
 fxui ..> fxutil
 
-component restapi {
-	package todolist.restapi
-}
-
-todolist.restapi ..> todolist.core
-
 component jaxrs {
 }
 
-restapi ..> jaxrs
-
-component restserver {
+component rest {
+	package todolist.restapi
 	package todolist.restserver
 }
+
+rest ..> jaxrs
+
+todolist.restapi ..> todolist.core
 
 todolist.restserver ..> todolist.core
 todolist.restserver ..> todolist.json
@@ -55,8 +52,8 @@ component jersey {
 component grizzly2 {
 }
 
-restserver ..> jersey
-restserver ..> grizzly2
+rest ..> jersey
+rest ..> grizzly2
 
 component "springboot/restserver" as springboot.restserver {
 	package todolist.springboot.restserver
