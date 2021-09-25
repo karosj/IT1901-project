@@ -14,11 +14,31 @@ import todolist.core.TodoList;
 import todolist.core.TodoModel;
 import todolist.json.TodoPersistence;
 
+/**
+ * Top-level controller.
+ */
 public class TodoAppController {
 
-  private static final String todoListWithTwoItems =
-      "{\"lists\":[" + "{\"name\":\"todo\",\"items\":[{\"text\":\"item1\",\"checked\":false},"
-          + "{\"text\":\"item2\",\"checked\":true,\"deadline\":\"2020-10-01T14:53:11\"}]}" + "]}";
+  private static final String todoListWithTwoItems = """
+      {
+        "lists" : [
+          {
+            "name": "todo",
+            "items": [
+              {
+                "text": "item1",
+                "checked":false
+              },
+              {
+                "text": "item2",
+                "checked": true,
+                "deadline": "2020-10-01T14:53:11"
+              }
+            ]
+          }
+        ]
+      }
+      """;
 
   @FXML
   String userTodoModelPath;

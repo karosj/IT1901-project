@@ -8,6 +8,11 @@ import javafx.scene.control.ComboBox;
 import todolist.core.AbstractTodoList;
 import todolist.core.TodoList;
 
+/**
+ * Controller for TodoModel objects.
+ * Supports adding new TodoList objects and
+ * selecting one for viewing and editing.
+ */
 public class TodoModelController {
 
   private TodoModelAccess todoModelAccess;
@@ -73,7 +78,7 @@ public class TodoModelController {
           // retrieve actual list
           todoList = todoModelAccess.getTodoList(todoList.getName());
         }
-        todoListViewController.setTodoList(todoList instanceof TodoList ? (TodoList) todoList : null);
+        todoListViewController.setTodoList(todoList instanceof TodoList tl ? tl : null);
       }
     });
   }

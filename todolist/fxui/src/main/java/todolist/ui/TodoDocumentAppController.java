@@ -18,6 +18,9 @@ import java.util.List;
 import javafx.fxml.FXML;
 import todolist.core.TodoModel;
 
+/**
+ * Controller for the document metaphor variant of the app.
+ */
 public class TodoDocumentAppController implements DocumentListener<TodoModel, File> {
 
   private final TodoModelStorage todoModelStorage;

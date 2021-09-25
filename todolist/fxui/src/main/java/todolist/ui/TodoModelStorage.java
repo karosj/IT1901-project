@@ -12,6 +12,9 @@ import java.nio.charset.StandardCharsets;
 import todolist.core.TodoModel;
 import todolist.json.TodoPersistence;
 
+/**
+ * DocumentStorage for TodoModel objects addressed by File.
+ */
 public class TodoModelStorage extends AbstractDocumentStorage<TodoModel, File> {
 
   @Override

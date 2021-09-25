@@ -6,6 +6,9 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+/**
+ * Variant of the app that connects to a REST service.
+ */
 public class TodoRemoteApp extends Application {
 
   @Override
