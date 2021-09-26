@@ -12,8 +12,8 @@
     <artifactId>rest</artifactId>
 
     <properties>
-        <slf4jVersion>1.7.25</slf4jVersion>
-        <jerseyVersion>3.0.1</jerseyVersion>
+        <slf4jVersion>2.0.0-alpha5</slf4jVersion>
+        <jerseyVersion>3.0.3</jerseyVersion>
     </properties>
 
     <dependencies>
@@ -170,6 +170,11 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <argLine>
+                    --add-opens todolist.rest/todolist.restapi=ALL-UNNAMED
+                    </argLine>
+                </configuration>
             </plugin>
             <!-- Run the checkstyle code quality tool -->
             <plugin>

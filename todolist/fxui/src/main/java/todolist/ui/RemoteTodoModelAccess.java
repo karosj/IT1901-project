@@ -14,7 +14,7 @@ import java.util.Collection;
 import todolist.core.AbstractTodoList;
 import todolist.core.TodoList;
 import todolist.core.TodoModel;
-import todolist.json.TodoModule;
+import todolist.json.TodoPersistence;
 
 /**
  * Class that centralizes access to a TodoModel. Makes it easier to support transparent use of a
@@ -30,7 +30,7 @@ public class RemoteTodoModelAccess implements TodoModelAccess {
 
   public RemoteTodoModelAccess(URI endpointBaseUri) {
     this.endpointBaseUri = endpointBaseUri;
-    objectMapper = new ObjectMapper().registerModule(new TodoModule());
+    objectMapper = TodoPersistence.createObjectMapper();
   }
 
   private TodoModel getTodoModel() {
@@ -44,7 +44,6 @@ public class RemoteTodoModelAccess implements TodoModelAccess {
             HttpClient.newBuilder().build().send(request, HttpResponse.BodyHandlers.ofString());
         final String responseString = response.body();
         this.todoModel = objectMapper.readValue(responseString, TodoModel.class);
-        System.out.println("TodoModel: " + this.todoModel);
       } catch (IOException | InterruptedException e) {
         throw new RuntimeException(e);
       }

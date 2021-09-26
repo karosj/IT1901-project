@@ -6,7 +6,7 @@ import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.ext.ContextResolver;
 import jakarta.ws.rs.ext.Provider;
-import todolist.json.TodoModule;
+import todolist.json.TodoPersistence;
 
 /**
  * Provides the Jackson module used for JSON serialization.
@@ -19,7 +19,7 @@ public class TodoModuleObjectMapperProvider implements ContextResolver<ObjectMap
   private final ObjectMapper objectMapper;
 
   public TodoModuleObjectMapperProvider() {
-    objectMapper = new ObjectMapper().registerModule(new TodoModule(false));
+    objectMapper = TodoPersistence.createObjectMapper();
   }
 
   @Override

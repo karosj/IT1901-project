@@ -14,6 +14,7 @@ import todolist.core.AbstractTodoList;
 import todolist.core.TodoItem;
 import todolist.core.TodoList;
 import todolist.core.TodoModel;
+import todolist.json.internal.TodoModule;
 
 public class TodoModuleTest {
 

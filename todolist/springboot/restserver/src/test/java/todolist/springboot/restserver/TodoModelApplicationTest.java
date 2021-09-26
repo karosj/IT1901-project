@@ -20,7 +20,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import todolist.core.AbstractTodoList;
 import todolist.core.TodoModel;
-import todolist.json.TodoModule;
+import todolist.json.TodoPersistence;
 
 @AutoConfigureMockMvc
 @ContextConfiguration(classes = { TodoModelController.class, TodoModelService.class, TodoModelApplication.class })
@@ -34,7 +34,7 @@ public class TodoModelApplicationTest {
 
   @BeforeEach
   public void setup() throws Exception {
-    objectMapper = new ObjectMapper().registerModule(new TodoModule(false));;
+    objectMapper = TodoPersistence.createObjectMapper();
   }
 
   private String todoUrl(String... segments) {

@@ -1,4 +1,4 @@
-package todolist.json;
+package todolist.json.internal;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonSerializer;

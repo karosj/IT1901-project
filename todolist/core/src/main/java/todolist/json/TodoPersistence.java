@@ -1,6 +1,9 @@
 package todolist.json;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.module.SimpleModule;
+
+
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -9,7 +12,10 @@ import java.io.Writer;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+
+
 import todolist.core.TodoModel;
+import todolist.json.internal.TodoModule;
 
 /**
  * Wrapper class for JSON serialization,
@@ -20,8 +26,16 @@ public class TodoPersistence {
   private ObjectMapper mapper;
 
   public TodoPersistence() {
-    mapper = new ObjectMapper();
-    mapper.registerModule(new TodoModule());
+    mapper = createObjectMapper();
+  }
+
+  public static SimpleModule createJacksonModule(boolean deep) {
+    return new TodoModule(deep);
+  }
+
+  public static ObjectMapper createObjectMapper() {
+    return new ObjectMapper()
+      .registerModule(createJacksonModule(true));
   }
 
   public TodoModel readTodoModel(Reader reader) throws IOException {

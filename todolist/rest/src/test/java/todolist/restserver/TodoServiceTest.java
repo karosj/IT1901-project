@@ -23,7 +23,7 @@ import todolist.restapi.TodoModelService;
 public class TodoServiceTest extends JerseyTest {
 
   protected boolean shouldLog() {
-    return false;
+    return true;
   }
 
   @Override
