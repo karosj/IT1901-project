@@ -147,7 +147,7 @@
                             <id>jacoco-report</id>
                             <phase>verify</phase>
                             <goals>
-                                <goal>report-aggregate</goal>
+                                <goal>report</goal>
                             </goals>
                         </execution>
                     </executions>
@@ -162,8 +162,6 @@
         <module>fxui</module>
         <module>rest</module>
         <module>integrationtests</module>
-        <!--
         <module>springboot/restserver</module>
-        -->
     </modules>
 </project>
