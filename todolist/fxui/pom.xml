@@ -179,6 +179,9 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <configuration>
                     <skipTests>${skipUiTests}</skipTests>
+                    <argLine>
+                    --add-opens todolist.ui/todolist.ui=ALL-UNNAMED --add-exports javafx.graphics/com.sun.javafx.application=ALL-UNNAMED
+                    </argLine>
                 </configuration>
             </plugin>
             <plugin>

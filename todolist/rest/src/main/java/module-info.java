@@ -9,4 +9,6 @@ module todolist.rest {
     requires org.slf4j;
 
     requires todolist.core;
+
+    opens todolist.restapi to jersey.server;
 }
