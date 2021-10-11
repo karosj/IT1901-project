@@ -93,6 +93,7 @@ public class TodoListController {
 
   public void setTodoItemsProvider(Function<TodoList, Collection<TodoItem>> todoItemsProvider) {
     this.todoItemsProvider = todoItemsProvider;
+    updateView();
   }
 
   protected void updateView() {

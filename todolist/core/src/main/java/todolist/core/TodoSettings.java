@@ -85,9 +85,11 @@ public class TodoSettings {
     return todoItemSortOrder;
   }
 
+  public final static String TODO_ITEM_SORT_ORDER_SETTING = "todoItemSortOrder";
+
   public void setTodoItemSortOrder(TodoItemsSortOrder todoItemSortOrder) {
     Object oldValue = this.todoItemSortOrder;
     this.todoItemSortOrder = todoItemSortOrder;
-    fireSettingChanged("todoItemSortOrder", oldValue, todoItemSortOrder);
+    fireSettingChanged(TODO_ITEM_SORT_ORDER_SETTING, oldValue, todoItemSortOrder);
   }
 }

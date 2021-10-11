@@ -20,13 +20,13 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
-import org.junit.jupiter.api.condition.DisabledIfSystemProperty;
 import org.testfx.framework.junit5.ApplicationTest;
 import org.testfx.util.WaitForAsyncUtils;
 import todolist.core.AbstractTodoList;
 import todolist.core.TodoItem;
 import todolist.core.TodoList;
 import todolist.core.TodoModel;
+import todolist.core.TodoSettings.TodoItemsSortOrder;
 import todolist.json.TodoPersistence;
 
 public class TodoListControllerTest extends ApplicationTest {
@@ -38,6 +38,7 @@ public class TodoListControllerTest extends ApplicationTest {
     final FXMLLoader loader = new FXMLLoader(getClass().getResource("TodoList_test.fxml"));
     final Parent root = loader.load();
     this.controller = loader.getController();
+    controller.setTodoItemsProvider(TodoModel.getSortedTodoItemsProvider(TodoItemsSortOrder.UNCHECKED_CHECKED));
     stage.setScene(new Scene(root));
     stage.show();
   }
@@ -183,12 +184,12 @@ public class TodoListControllerTest extends ApplicationTest {
     return listCell.lookup(selector);
   }
 
-  private void checkTodoItem(TodoItem item, Boolean checked, String text) {
+  private void checkTodoItem(TodoItem item, Boolean checked, String text, String itemMessage) {
     if (checked != null) {
-      assertEquals(checked, item.isChecked());
+      assertEquals(checked, item.isChecked(), "Checked of " + itemMessage);
     }
     if (text != null) {
-      assertEquals(text, item.getText());
+      assertEquals(text, item.getText(), "Text of " + itemMessage);
     }
   }
 
@@ -205,7 +206,7 @@ public class TodoListControllerTest extends ApplicationTest {
     int i = 0;
     for (TodoItem item : it) {
       assertTrue(i < items.length);
-      checkTodoItem(item, items[i].isChecked(), items[i].getText());
+      checkTodoItem(item, items[i].isChecked(), items[i].getText(), "item #" + i);
       i++;
     }
     assertTrue(i == items.length);

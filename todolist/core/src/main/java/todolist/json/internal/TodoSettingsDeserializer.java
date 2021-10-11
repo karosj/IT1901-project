@@ -25,7 +25,7 @@ class TodoSettingsDeserializer extends JsonDeserializer<TodoSettings> {
     if (jsonNode instanceof ObjectNode) {
       ObjectNode objectNode = (ObjectNode) jsonNode;
       TodoSettings settings = new TodoSettings();
-      JsonNode todoItemsSortOrderNode = objectNode.get("todoItemsSortOrder");
+      JsonNode todoItemsSortOrderNode = objectNode.get(TodoSettings.TODO_ITEM_SORT_ORDER_SETTING);
       if (todoItemsSortOrderNode instanceof TextNode) {
         try {
           TodoItemsSortOrder sortOrder = TodoItemsSortOrder.valueOf(todoItemsSortOrderNode.asText());

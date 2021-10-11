@@ -114,7 +114,7 @@
                         <artifactId>javafx-maven-plugin</artifactId>
                         <version>0.0.6</version>
                         <configuration>                    
-                            <mainClass>todolist.ui.TodoDocumentApp</mainClass>
+                            <mainClass>todolist.ui/todolist.ui.TodoDocumentApp</mainClass>
                         </configuration>
                     </plugin>
                 </plugins>
@@ -129,7 +129,7 @@
                         <artifactId>javafx-maven-plugin</artifactId>
                         <version>0.0.6</version>
                         <configuration>                    
-                            <mainClass>todolist.ui.TodoRemoteApp</mainClass>
+                            <mainClass>todolist.ui/todolist.ui.TodoRemoteApp</mainClass>
                         </configuration>
                     </plugin>
                 </plugins>
@@ -160,7 +160,7 @@
                             <JVMArgs>
                                 <!-- <JVMArg>your-args</JVMArg> -->
                             </JVMArgs>
-                            <mainClassName>todolist.ui.TodoApp</mainClassName>
+                            <mainClassName>todolist.ui/todolist.ui.TodoApp</mainClassName>
                             <openingPath>/</openingPath>
                         </configuration>
                     </plugin>
@@ -189,7 +189,7 @@
                 <artifactId>javafx-maven-plugin</artifactId>
                 <version>0.0.6</version>
                 <configuration>
-                    <mainClass>todolist.ui.TodoApp</mainClass>
+                    <mainClass>todolist.ui/todolist.ui.TodoApp</mainClass>
                 </configuration>
             </plugin>
 

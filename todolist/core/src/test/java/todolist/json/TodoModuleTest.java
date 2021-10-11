@@ -25,8 +25,7 @@ public class TodoModuleTest {
 
   @BeforeAll
   public static void setUp() {
-    mapper = new ObjectMapper();
-    mapper.registerModule(new TodoModule());
+    mapper = TodoPersistence.createObjectMapper();
   }
 
   private final static String todoListWithTwoItems = """

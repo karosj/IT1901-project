@@ -2,6 +2,7 @@ package todolist.ui;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -13,6 +14,8 @@ import javafx.stage.Stage;
 import todolist.core.AbstractTodoList;
 import todolist.core.TodoList;
 import todolist.core.TodoModel;
+import todolist.core.TodoSettings;
+import todolist.core.TodoSettingsListener;
 import todolist.core.TodoSettings.TodoItemsSortOrder;
 import todolist.ui.util.SceneTarget;
 
@@ -21,7 +24,7 @@ import todolist.ui.util.SceneTarget;
  * Supports adding new TodoList objects and
  * selecting one for viewing and editing.
  */
-public class TodoModelController {
+public class TodoModelController implements TodoSettingsListener {
 
   private TodoModelAccess todoModelAccess;
 
@@ -39,8 +42,19 @@ public class TodoModelController {
 
   public void setTodoModelAccess(TodoModelAccess todoModelAccess) {
     this.todoModelAccess = todoModelAccess;
+    updateTodoItemsProvider();
     updateTodoListsView(null);
-    TodoItemsSortOrder sortOrder = todoModelAccess.getTodoSettings().getTodoItemSortOrder();
+    todoModelAccess.getTodoSettings().addTodoSettingsListener(this);
+  }
+  
+  public void todoSettingsChanged(TodoSettings settings, Collection<String> changedProperties) {
+    if (changedProperties.contains(TodoSettings.TODO_ITEM_SORT_ORDER_SETTING)) {
+      updateTodoItemsProvider();
+    }
+  }
+
+  private void updateTodoItemsProvider() {
+    TodoItemsSortOrder sortOrder = this.todoModelAccess.getTodoSettings().getTodoItemSortOrder();
     todoListViewController.setTodoItemsProvider(TodoModel.getSortedTodoItemsProvider(sortOrder));
   }
 
@@ -52,7 +66,6 @@ public class TodoModelController {
       todoModelAccess.notifyTodoListChanged(todoList);
       return null;
     });
-    todoListViewController.setTodoItemsProvider(TodoModel.getSortedTodoItemsProvider(TodoItemsSortOrder.UNCHECKED_CHECKED));
   }
 
   private String addNewTodoListText = "<add new todo list>";
