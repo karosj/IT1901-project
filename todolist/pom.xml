@@ -162,6 +162,8 @@
         <module>fxui</module>
         <module>rest</module>
         <module>integrationtests</module>
+        <!--
         <module>springboot/restserver</module>
+        -->
     </modules>
 </project>
