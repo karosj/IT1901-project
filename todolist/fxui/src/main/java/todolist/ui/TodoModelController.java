@@ -35,6 +35,8 @@ public class TodoModelController {
   public void setTodoModelAccess(TodoModelAccess todoModelAccess) {
     this.todoModelAccess = todoModelAccess;
     updateTodoListsView(null);
+    TodoItemsSortOrder sortOrder = todoModelAccess.getTodoSettings().getTodoItemSortOrder();
+    todoListViewController.setTodoItemsProvider(TodoModel.getSortedTodoItemsProvider(sortOrder));
   }
 
   @FXML
@@ -45,8 +47,7 @@ public class TodoModelController {
       todoModelAccess.notifyTodoListChanged(todoList);
       return null;
     });
-    TodoItemsSortOrder sortOrder = todoModelAccess.getTodoSettings().getTodoItemSortOrder();
-    todoListViewController.setTodoItemsProvider(TodoModel.getSortedTodoItemsProvider(sortOrder));
+    todoListViewController.setTodoItemsProvider(TodoModel.getSortedTodoItemsProvider(TodoItemsSortOrder.UNCHECKED_CHECKED));
   }
 
   private String addNewTodoListText = "<add new todo list>";
