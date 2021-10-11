@@ -8,6 +8,9 @@ import java.util.Map;
 import java.util.function.Function;
 import todolist.core.TodoSettings.TodoItemsSortOrder;
 
+/**
+ * The root container of Todo-related data.
+ */
 public class TodoModel implements Iterable<AbstractTodoList> {
 
   private TodoSettings settings = new TodoSettings();

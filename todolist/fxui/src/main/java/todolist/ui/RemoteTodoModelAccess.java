@@ -15,7 +15,7 @@ import todolist.core.AbstractTodoList;
 import todolist.core.TodoList;
 import todolist.core.TodoModel;
 import todolist.core.TodoSettings;
-import todolist.json.TodoModule;
+import todolist.json.TodoPersistence;
 
 /**
  * Class that centralizes access to a TodoModel. Makes it easier to support transparent use of a
@@ -31,7 +31,7 @@ public class RemoteTodoModelAccess implements TodoModelAccess {
 
   public RemoteTodoModelAccess(URI endpointBaseUri) {
     this.endpointBaseUri = endpointBaseUri;
-    objectMapper = new ObjectMapper().registerModule(new TodoModule());
+    objectMapper = TodoPersistence.createObjectMapper();
   }
 
   private TodoModel getTodoModel() {

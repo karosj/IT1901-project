@@ -16,6 +16,11 @@ import todolist.core.TodoModel;
 import todolist.core.TodoSettings.TodoItemsSortOrder;
 import todolist.ui.util.SceneTarget;
 
+/**
+ * Controller for TodoModel objects.
+ * Supports adding new TodoList objects and
+ * selecting one for viewing and editing.
+ */
 public class TodoModelController {
 
   private TodoModelAccess todoModelAccess;
@@ -55,7 +60,10 @@ public class TodoModelController {
   private void initializeTodoListsView() {
     todoListsView.setEditable(true);
     todoListsView.valueProperty().addListener((prop, oldName, newName) -> {
-      // System.out.println("valueProperty: -> " + todoListsView.getSelectionModel().getSelectedIndex() + " -> " + (oldName != null ? ("\"" + oldName + "\"") : null) + " -> " + (newName != null ? ("\"" + newName + "\"") : null));
+      // System.out.println("valueProperty: -> "
+      //    + todoListsView.getSelectionModel().getSelectedIndex() + " -> "
+      //    + (oldName != null ? ("\"" + oldName + "\"") : null) + " -> " 
+      //    + (newName != null ? ("\"" + newName + "\"") : null));
       if (newName != null && (! todoModelAccess.isValidTodoListName(newName))) {
         // allow user to edit name
       } else if (oldName != null && newName != null
@@ -81,7 +89,7 @@ public class TodoModelController {
           // retrieve actual list
           todoList = todoModelAccess.getTodoList(todoList.getName());
         }
-        todoListViewController.setTodoList(todoList instanceof TodoList ? (TodoList) todoList : null);
+        todoListViewController.setTodoList(todoList instanceof TodoList tl ? tl : null);
       }
     });
   }

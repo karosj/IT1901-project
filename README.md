@@ -1,4 +1,4 @@
-[![Gitpod Ready-to-Code](https://img.shields.io/badge/Gitpod-Ready--to--Code-blue?logo=gitpod)](https://gitpod.idi.ntnu.no/#https://gitlab.stud.idi.ntnu.no/it1901/todo-list) 
+[![Gitpod Ready-to-Code](https://img.shields.io/badge/Gitpod-Ready--to--Code-blue?logo=gitpod)](https://gitpod.stud.ntnu.no/#https://gitlab.stud.idi.ntnu.no/it1901/todo-list) 
 
 # todo-list-prosjektet
 
@@ -7,7 +7,7 @@ Dette prosjektet er et utviklingsprosjekt tilsvarende det en skal gjennom i IT19
 - Prosjektoppsett og kodingsteknikker
 - Det er utgangspunktet for en videoserie som også viser hvordan det jobbes praktisk med utviklingsverktøy
 
-Ikke alt vi gjør blir tatt opp på video, noe arbeid vil bli gjort som forarbeid eller mellom episodene, videoene skal gi en oversikt over alt arbeidet. 
+Ikke alt vi gjør blir tatt opp på video, noe arbeid vil bli gjort som forarbeid eller mellom episodene, videoene skal gi en oversikt over alt arbeidet. Merk at oppsettet er ikke nødvendigvis likt fra år til år, så ikke alt kan gjøres på samme måte i ditt prosjekt.
 
 ## Bygging og kjøring av prosjektet
 
@@ -28,11 +28,15 @@ Planen er å primært bruke gitpod til utvikling (selv om det kanskje ville vær
 Først må vi "gitpodifisere" repoet, dvs. gjøre at gitpod kan startes opp rett fra repo-sida på gitlab.
 
 I starten så setter vi opp et enkelt JavaFX-prosjekt med **maven** som bygge-system. Vi setter det opp fra scratch, vha. en enkel mal for
-maven-prosjekter og så justerer vi litt på det ved å kopiere elementer fra andre prosjekter f.eks. malen som ligger i *javafx-maven*-grenen i
-[gitpod-templates-repoet](https://gitlab.stud.idi.ntnu.no/it1901/gitpod-templates) eller [simpleexample-repoet](https://gitlab.stud.idi.ntnu.no/it1901/simpleexamepl).
+maven-prosjekter og så justerer vi litt på det ved å kopiere elementer fra andre prosjekter.
+
+Maler til javafx-prosjekter finnes bl.a. i [javafx-template-kodelageret](https://gitlab.stud.idi.ntnu.no/it1901/javafx-template). Varianter finnes for alt i én modul og pakke, alt i én modul, men egne pakker for domenelogikk og javafx-grensesnitt, og domenelogikk og javafx-grensesnitt i hver side moduler. Disse inneholder også module-info.java, slik at det blir enklere å kjøre koden i en IDE, altså uten bruk av maven i terminalen.
+
 Jeg gjør det på denne måten, fordi det da er enklere å forklare hvert element i pom.xml-fila, som inneholder oppsettet.
 Merk at prosjektoppsettet i starten er enklere enn det vil bli etter hvert, men vi gjør det sånn for å komme raskere i gang.
 Så bygger vi ut og omstrukturerer når det trengs.
+
+[Første episode](https://ntnu.cloud.panopto.eu/Panopto/Pages/Viewer.aspx?id=d6d40267-19f0-4b5a-87fd-ac2f00bbbaf6)
 
 ### Vår første utviklingsoppgave: Et enkelt API for todo-lister
 

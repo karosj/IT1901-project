@@ -7,6 +7,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Iterator;
@@ -36,6 +37,13 @@ public class TodoListTest {
     assertEquals(item.getText(), addedItem.getText());
     assertTrue(item.isOverdue() == addedItem.isOverdue());
     assertEquals(item.getDeadline(), addedItem.getDeadline());
+  }
+
+  @Test
+  public void testAddToDoItem_ownedByOtherTodoList() {
+    // create item belonging to other list
+    TodoItem listItem = new TodoList("other").createTodoItem();
+    assertThrows(IllegalStateException.class, () -> newList.addTodoItem(listItem));
   }
 
   // tests for getCheckedItems

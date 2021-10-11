@@ -6,6 +6,9 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+/**
+ * Variant of the app with document metaphor and File menu.
+ */
 public class TodoDocumentApp extends Application {
 
   private TodoDocumentAppController controller;

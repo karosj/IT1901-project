@@ -6,6 +6,9 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+/**
+ * Standalone version of the app.
+ */
 public class TodoApp extends Application {
 
   @Override

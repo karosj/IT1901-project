@@ -10,6 +10,10 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import todolist.core.TodoItem;
 
+/**
+ * ListCell for TodoItems.
+ * Supports editing the text and checking the item.
+ */
 public class TodoItemListCell extends ListCell<TodoItem> {
 
   // for whole row

@@ -16,6 +16,10 @@ import todolist.core.TodoItem;
 import todolist.core.TodoList;
 import todolist.core.TodoListListener;
 
+/**
+ * Controller for a TodoList.
+ * Supports adding, editing and removing elements.
+ */
 public class TodoListController {
 
   @FXML
@@ -34,7 +38,7 @@ public class TodoListController {
 
   private TodoList todoList = null;
 
-  public TodoList getTodoList() {
+  TodoList getTodoList() {
     return todoList;
   }
 

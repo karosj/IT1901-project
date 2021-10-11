@@ -2,7 +2,8 @@ image:
   file: .gitpod.Dockerfile
 
 tasks:
-  - init: sdk use java 14.0.2.j9-adpt
+  - init: sdk use java 16.0.1.hs-adpt
+    prebuild: cd todolist; mvn compile
     command: cd todolist
 
 ports:

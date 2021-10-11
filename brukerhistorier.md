@@ -42,4 +42,4 @@ Elementer som ikke har en frist har implisitt samme frist som lista.
 ### Viktig å kunne gjøre
 
 - legge inn nye elementer m/frist
-- huke av elementer
+- huke av elementer, slik at de forsvinner

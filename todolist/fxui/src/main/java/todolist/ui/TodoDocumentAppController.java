@@ -18,6 +18,9 @@ import java.util.List;
 import javafx.fxml.FXML;
 import todolist.core.TodoModel;
 
+/**
+ * Controller for the document metaphor variant of the app.
+ */
 public class TodoDocumentAppController implements DocumentListener<TodoModel, File> {
 
   private final TodoModelStorage todoModelStorage;
@@ -111,8 +114,8 @@ public class TodoDocumentAppController implements DocumentListener<TodoModel, Fi
   private <T extends JsonNode> T getConfigProperty(String... path) {
     JsonNode node = config;
     for (String segment : path) {
-      if (node instanceof ObjectNode) {
-        node = ((ObjectNode) node).get(segment);
+      if (node instanceof ObjectNode objectNode) {
+        node = objectNode.get(segment);
       } else {
         return null;
       }
@@ -125,14 +128,14 @@ public class TodoDocumentAppController implements DocumentListener<TodoModel, Fi
     Iterator<String> segments = List.of(path).iterator();
     while (segments.hasNext()) {
       String segment = segments.next();
-      if (node instanceof ObjectNode) {
+      if (node instanceof ObjectNode objectNode) {
         if (! segments.hasNext()) {
-          ((ObjectNode) node).set(segment, newNode);
+          objectNode.set(segment, newNode);
           return;
         } else {
-          ObjectNode objectNode = JsonNodeFactory.instance.objectNode();
-          ((ObjectNode) node).set(segment, objectNode);
-          node = objectNode;
+          ObjectNode objectNode2 = JsonNodeFactory.instance.objectNode();
+          objectNode.set(segment, objectNode2);
+          node = objectNode2;
         }
       }
     }

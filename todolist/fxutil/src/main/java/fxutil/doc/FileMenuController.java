@@ -1,5 +1,6 @@
 package fxutil.doc;
 
+import fxutil.SuppressFBWarnings;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -23,6 +24,9 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextInputDialog;
 import javafx.stage.FileChooser;
 
+/**
+ * Controller for the file menu.
+ */
 public class FileMenuController {
 
   private DocumentStorage<File> documentStorage;
@@ -32,13 +36,16 @@ public class FileMenuController {
    *
    * @param documentStorage the document storage
    */
+  @SuppressFBWarnings(
+      value = "EI_EXPOSE_REP2", 
+      justification = "We intentioanlly don't deep copy documentStorage")
   public void setDocumentStorage(final DocumentStorage<File> documentStorage) {
     this.documentStorage = documentStorage;
     if (importMenu != null) {
       importMenu.setDisable(documentStorage.getDocumentImporters().isEmpty());
     }
   }
-
+  
   @FXML
   public void handleNewAction() {
     documentStorage.newDocument();
@@ -119,8 +126,8 @@ public class FileMenuController {
   @FXML
   public void handleOpenAction(final ActionEvent event) {
     File selection = null;
-    if (event.getSource() instanceof MenuItem) {
-      final File file = new File(((MenuItem) event.getSource()).getText());
+    if (event.getSource() instanceof MenuItem menuItem) {
+      final File file = new File(menuItem.getText());
       if (file.exists()) {
         selection = file;
       }

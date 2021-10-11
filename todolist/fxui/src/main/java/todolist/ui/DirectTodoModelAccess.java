@@ -1,11 +1,5 @@
 package todolist.ui;
 
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.Writer;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collection;
 import todolist.core.AbstractTodoList;
@@ -126,12 +120,6 @@ public class DirectTodoModelAccess implements TodoModelAccess {
     }
   }
 
-  private String userTodoModelPath;
-
-  public void setUserTodoModelPath(String userTodoModelPath) {
-    this.userTodoModelPath = userTodoModelPath;
-  }
-
   private boolean autosaveOn = false;
 
   public void setAutosaveOn(boolean autosaveOn) {
@@ -140,16 +128,16 @@ public class DirectTodoModelAccess implements TodoModelAccess {
 
   private TodoPersistence todoPersistence = null;
 
-  private void autoSaveTodoModel() {
-    if (userTodoModelPath != null) {
-      if (todoPersistence == null) {
-        todoPersistence = new TodoPersistence();
-      }
-      Path path = Paths.get(System.getProperty("user.home"), userTodoModelPath);
-      try (Writer writer = new FileWriter(path.toFile(), StandardCharsets.UTF_8)) {
-        todoPersistence.writeTodoModel(todoModel, writer);
-      } catch (IOException e) {
-        System.err.println("Fikk ikke skrevet til " + userTodoModelPath + " på hjemmeområdet");
+  public void setTodoPersistence(TodoPersistence todoPersistence) {
+    this.todoPersistence = todoPersistence;
+  }
+
+  private void autoSaveTodoModel() {    
+    if (todoPersistence != null) {
+      try {
+        todoPersistence.saveTodoModel(todoModel);
+      } catch (Exception e) {
+        System.err.println("Fikk ikke lagret TodoModel: " + e.getMessage());
       }
     }
   }

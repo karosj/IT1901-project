@@ -2,6 +2,9 @@ package todolist.core;
 
 import java.time.LocalDateTime;
 
+/**
+ * Core data of items in a TodoList.
+ */
 public class TodoItem {
 
   private String text;

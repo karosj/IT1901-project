@@ -1,11 +1,16 @@
 package todolist.core;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
+/**
+ * Lists of items in a todo list.
+ */
 public class TodoList extends AbstractTodoList {
 
   private List<TodoItem> items = new ArrayList<>();
@@ -23,7 +28,7 @@ public class TodoList extends AbstractTodoList {
 
   @Override
   public TodoItem createTodoItem() {
-    return new TodoListItem(this);
+    return new TodoListItem();
   }
 
   /**
@@ -32,18 +37,22 @@ public class TodoList extends AbstractTodoList {
    * its contents is copied in to a new TodoListItem and that is added instead.
    *
    * @param items the TodoItems to add
+   * @throws IllegalStateException if an item is a TodoListItem not belonging to this TodoList
    */
   @Override
-  public void addTodoItems(TodoItem... items) {
+  public void addTodoItems(TodoItem... items) throws IllegalStateException {
     for (TodoItem item : items) {
       TodoListItem todoListItem = null;
-      if (item instanceof TodoListItem) {
-        todoListItem = (TodoListItem) item;
+      if (item instanceof TodoListItem tli) {
+        todoListItem = tli;
       } else {
-        todoListItem = new TodoListItem(this);
+        todoListItem = new TodoListItem();
         todoListItem.setText(item.getText());
         todoListItem.setChecked(item.isChecked());
         todoListItem.setDeadline(item.getDeadline());
+      }
+      if (todoListItem.getTodoList() != this) {
+        throw new IllegalStateException("TodoListItem does not belong to this list TodoList");
       }
       this.items.add(todoListItem);
     }
@@ -106,5 +115,47 @@ public class TodoList extends AbstractTodoList {
   @Override
   protected void fireTodoListChanged(TodoListListener listener) {
     listener.todoListChanged(this);
+  }
+
+  private class TodoListItem extends TodoItem {
+
+    TodoList getTodoList() {
+      return TodoList.this;
+    }
+  
+    @Override
+    public void setText(String text) {
+      if (! Objects.equals(text, getText())) {
+        super.setText(text);
+        fireTodoListChanged(this);
+      }
+    }
+  
+    @Override
+    public void setChecked(boolean checked) {
+      if (checked != isChecked()) {
+        super.setChecked(checked);
+        fireTodoListChanged(this);
+      }
+    }
+  
+    @Override
+    public void setDeadline(LocalDateTime deadline) {
+      if (! Objects.equals(deadline, getDeadline())) {
+        super.setDeadline(deadline);
+        fireTodoListChanged(this);
+      }
+    }
+  
+    @Override
+    public void setAs(TodoItem other) {
+      boolean equals = isChecked() == other.isChecked()
+          && Objects.equals(getText(), other.getText())
+          && Objects.equals(getDeadline(), other.getDeadline());
+      if (! equals) {
+        super.setAs(other);
+        fireTodoListChanged(this);
+      }
+    }
   }
 }
