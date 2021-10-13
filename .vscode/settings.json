@@ -4,4 +4,9 @@
     "[java]": {
         "editor.tabSize": 2
     },
+    "java.test.config": {
+        "name": "fxuiTesting",
+        "vmArgs": ["--add-exports", "javafx.graphics/com.sun.javafx.application=ALL-UNNAMED"],
+        "env": {}
+    }
 }
