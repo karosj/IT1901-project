@@ -209,7 +209,7 @@
                 <version>1.4.0</version>
                 <configuration>
                     <name>TodoListFX</name>
-                    <appVersion>0.0.1</appVersion>
+                    <appVersion>1.0.0</appVersion>
                     <vendor>it1901</vendor>
                     <destination>target/dist</destination>
                     <module>todolist.ui/todolist.ui.TodoApp</module>
