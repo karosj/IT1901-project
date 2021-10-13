@@ -1,3 +1,16 @@
 {
     "java.configuration.updateBuildConfiguration": "automatic",
+    "java.test.config": 
+    [
+        {
+            "name": "fxuiTesting",
+            "vmArgs": ["--add-opens", "todolist.ui/todolist.ui=ALL-UNNAMED", "--add-exports", "javafx.graphics/com.sun.javafx.application=ALL-UNNAMED"]
+        },
+        {
+            "name": "coreTesting",
+            "vmArgs": []
+        }
+
+    ],
+    "java.test.defaultConfig": "fxuiTesting"
 }
