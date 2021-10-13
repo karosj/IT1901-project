@@ -8,13 +8,16 @@ import java.util.function.Predicate;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.ContextMenu;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
 import javafx.util.Callback;
 import todolist.core.TodoItem;
 import todolist.core.TodoList;
 import todolist.core.TodoListListener;
+import todolist.ui.util.DynamicContextMenu;
 
 /**
  * Controller for a TodoList.
@@ -41,6 +44,8 @@ public class TodoListController {
   TodoList getTodoList() {
     return todoList;
   }
+
+  ContextMenu cm;
 
   /**
    * Sets the TodoList managed by this controller.
@@ -82,11 +87,25 @@ public class TodoListController {
     todoItemsView.setCellFactory(listView -> {
       TodoItemListCell listCell = new TodoItemListCell();
       dragHandler.registerHandlers(listCell);
+      listCell.setContextMenu(new DynamicContextMenu(() -> createTodoListCellMenuItems(listCell)));
       return listCell;
     });
     todoItemsView.getSelectionModel().selectedItemProperty()
         .addListener((prop, oldValue, newValue) -> updateTodoListButtons());
     todoItemsView.setEditable(true);
+  }
+
+  private Collection<MenuItem> createTodoListCellMenuItems(TodoItemListCell listCell) {
+    TodoItem todoItem = listCell.getItem();
+    MenuItem toggleMenuItem = new MenuItem(todoItem.isChecked() ? "Uncheck" : "Check");
+    toggleMenuItem.setOnAction(event -> {
+      todoItem.setChecked(! todoItem.isChecked());
+    });
+    MenuItem deleteMenuItem = new MenuItem("Delete");
+    deleteMenuItem.setOnAction(event -> {
+      deleteTodoItem(todoItem, listCell.getIndex());
+    });
+    return List.of(toggleMenuItem, deleteMenuItem);
   }
 
   private Function<TodoList, Collection<TodoItem>> todoItemsProvider = TodoList::getTodoItems;
@@ -163,9 +182,13 @@ public class TodoListController {
     int index = todoItemsView.getSelectionModel().getSelectedIndex();
     TodoItem item = todoItemsView.getItems().get(index);
     if (item != null) {
-      getTodoList().removeTodoItem(item);
-      selectWithinBounds(index);
+      deleteTodoItem(item, index);
     }
+  }
+
+  private void deleteTodoItem(TodoItem item, int index) {
+    getTodoList().removeTodoItem(item);
+    selectWithinBounds(index);
   }
 
   private int selectWithinBounds(int index) {
