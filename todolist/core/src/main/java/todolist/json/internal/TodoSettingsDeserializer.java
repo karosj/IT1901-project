@@ -29,7 +29,7 @@ class TodoSettingsDeserializer extends JsonDeserializer<TodoSettings> {
       if (todoItemsSortOrderNode instanceof TextNode) {
         try {
           TodoItemsSortOrder sortOrder = TodoItemsSortOrder.valueOf(todoItemsSortOrderNode.asText());
-          settings.setTodoItemSortOrder(sortOrder);
+          settings.setTodoItemsSortOrder(sortOrder);
         } catch (IllegalArgumentException iae) {
           // ignore unknown sort order constant
         }

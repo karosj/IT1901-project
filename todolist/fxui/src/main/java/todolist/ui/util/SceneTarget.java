@@ -6,6 +6,9 @@ import javafx.scene.Scene;
 import javafx.scene.control.Control;
 import javafx.stage.Stage;
 
+/**
+ * Helper class for buttons that transition to a specific scene.
+ */
 public class SceneTarget {
 
   private Scene scene;

@@ -44,8 +44,7 @@ public class TodoSettingsResource {
   /**
    * Replaces the TodoSettings.
    *
-   * @param todoSettings the todoSettings to set
-   * @return true if it was added, false if it replaced
+   * @param todoSettings the new TodoSettings to use
    */
   @PUT
   @Consumes(MediaType.APPLICATION_JSON)

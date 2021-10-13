@@ -7,6 +7,9 @@ import todolist.core.TodoSettings;
 import todolist.core.TodoSettings.TodoItemsSortOrder;
 import todolist.ui.util.SceneTarget;
 
+/**
+ * Controller for editing TodoSettings.
+ */
 public class TodoSettingsController {
   
   private TodoSettings todoSettings = new TodoSettings();
@@ -30,7 +33,7 @@ public class TodoSettingsController {
   void initialize() {
     todoItemsSortOrderSelector.setOnAction(actionEvent -> {
       int ordinal = todoItemsSortOrderSelector.getSelectionModel().getSelectedIndex();
-      getTodoSettings().setTodoItemSortOrder(TodoItemsSortOrder.values()[ordinal]);
+      getTodoSettings().setTodoItemsSortOrder(TodoItemsSortOrder.values()[ordinal]);
     });
     updateView();
   }
@@ -40,7 +43,7 @@ public class TodoSettingsController {
   }
 
   private void updateView() {
-    TodoItemsSortOrder sortOrder = getTodoSettings().getTodoItemSortOrder();
+    TodoItemsSortOrder sortOrder = getTodoSettings().getTodoItemsSortOrder();
     todoItemsSortOrderSelector.getSelectionModel().select(sortOrder.ordinal());
   }
 }

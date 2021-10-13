@@ -15,8 +15,8 @@ import todolist.core.AbstractTodoList;
 import todolist.core.TodoList;
 import todolist.core.TodoModel;
 import todolist.core.TodoSettings;
-import todolist.core.TodoSettingsListener;
 import todolist.core.TodoSettings.TodoItemsSortOrder;
+import todolist.core.TodoSettingsListener;
 import todolist.ui.util.SceneTarget;
 
 /**
@@ -40,6 +40,12 @@ public class TodoModelController implements TodoSettingsListener {
   @FXML
   TodoListController todoListViewController;
 
+  /**
+   * Sets the TodoModelAccess for this controller,
+   * so data can come from different sources.
+   *
+   * @param todoModelAccess the new TodoModelAccess to use
+   */
   public void setTodoModelAccess(TodoModelAccess todoModelAccess) {
     this.todoModelAccess = todoModelAccess;
     updateTodoItemsProvider();
@@ -47,6 +53,7 @@ public class TodoModelController implements TodoSettingsListener {
     todoModelAccess.getTodoSettings().addTodoSettingsListener(this);
   }
   
+  @Override
   public void todoSettingsChanged(TodoSettings settings, Collection<String> changedProperties) {
     if (changedProperties.contains(TodoSettings.TODO_ITEM_SORT_ORDER_SETTING)) {
       updateTodoItemsProvider();
@@ -54,7 +61,7 @@ public class TodoModelController implements TodoSettingsListener {
   }
 
   private void updateTodoItemsProvider() {
-    TodoItemsSortOrder sortOrder = this.todoModelAccess.getTodoSettings().getTodoItemSortOrder();
+    TodoItemsSortOrder sortOrder = this.todoModelAccess.getTodoSettings().getTodoItemsSortOrder();
     todoListViewController.setTodoItemsProvider(TodoModel.getSortedTodoItemsProvider(sortOrder));
   }
 

@@ -132,12 +132,12 @@ public class TodoModuleTest {
   @Test
   public void testTodoSettings() {
     TodoSettings settings = new TodoSettings();
-    settings.setTodoItemSortOrder(TodoItemsSortOrder.UNCHECKED_CHECKED);
+    settings.setTodoItemsSortOrder(TodoItemsSortOrder.UNCHECKED_CHECKED);
     try {
       String json = mapper.writeValueAsString(settings);
       assertEquals(defaultTodoSettings.replaceAll("\\s+", ""), mapper.writeValueAsString(settings));
       TodoSettings settings2 = mapper.readValue(json, TodoSettings.class);
-      assertEquals(settings.getTodoItemSortOrder(), settings2.getTodoItemSortOrder());
+      assertEquals(settings.getTodoItemsSortOrder(), settings2.getTodoItemsSortOrder());
     } catch (JsonProcessingException e) {
       fail(e.getMessage());
     }

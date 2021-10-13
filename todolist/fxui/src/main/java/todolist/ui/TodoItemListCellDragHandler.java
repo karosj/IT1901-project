@@ -8,6 +8,9 @@ import javafx.scene.input.TransferMode;
 import todolist.core.TodoItem;
 import todolist.core.TodoList;
 
+/**
+ * Handles dragging of ListCells in a ListView of TodoItems in a TodoList.
+ */
 public class TodoItemListCellDragHandler {
 
   private TodoList todoList;

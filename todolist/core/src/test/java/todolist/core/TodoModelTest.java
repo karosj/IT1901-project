@@ -78,7 +78,7 @@ public class TodoModelTest {
     List<TodoItem> allAddedItems = new ArrayList<>(todoList.getTodoItems());
     Collection<TodoItem> expectedOrder = Stream.of(sortedTodoItemIndices).map(allAddedItems::get).collect(Collectors.toList());
     TodoListTest.checkItems(TodoModel.getSortedTodoItemsProvider(sortOrder).apply(todoList), expectedOrder.toArray(new TodoItem[expectedOrder.size()]));
-    todoModel.getSettings().setTodoItemSortOrder(sortOrder);
+    todoModel.getSettings().setTodoItemsSortOrder(sortOrder);
     TodoListTest.checkItems(todoModel.getSortedTodoItemsProvider().apply(todoList), expectedOrder.toArray(new TodoItem[expectedOrder.size()]));
   }
 

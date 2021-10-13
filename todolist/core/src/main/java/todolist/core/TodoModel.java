@@ -125,6 +125,6 @@ public class TodoModel implements Iterable<AbstractTodoList> {
    * @return a function that gets the todo items of a todo list in the corresponding sort order
    */
   public Function<TodoList, Collection<TodoItem>> getSortedTodoItemsProvider() {
-    return getSortedTodoItemsProvider(getSettings().getTodoItemSortOrder());
+    return getSortedTodoItemsProvider(getSettings().getTodoItemsSortOrder());
   }
 }
