@@ -13,3 +13,4 @@ vscode:
   extensions:
     - jebbs.plantuml@2.13.12:q7DiD6H5NTesaWYIXmeMMQ==
     - vsls-contrib.codetour@0.0.37:n/LcXr1DIqz+xFGficwDHA==
+    - ritwickdey.liveserver
