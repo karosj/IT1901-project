@@ -5,6 +5,7 @@ component core {
 	package todolist.json
 }
 
+todolist.core ..> todolist.json
 component jackson {
 }
 
@@ -15,9 +16,10 @@ component fxutil {
 
 component fxui {
 	package todolist.ui
+	package todolist.ui.util
 }
 
-
+todolist.ui ..> todolist.ui.util
 todolist.ui ..> todolist.core
 todolist.ui ..> todolist.json
 
@@ -54,17 +56,5 @@ component grizzly2 {
 
 rest ..> jersey
 rest ..> grizzly2
-
-component "springboot/restserver" as springboot.restserver {
-	package todolist.springboot.restserver
-}
-
-todolist.springboot.restserver ..> todolist.core
-todolist.springboot.restserver ..> todolist.json
-
-component "spring boot" as springboot {
-}
-
-springboot.restserver ..> springboot
 
 @enduml
