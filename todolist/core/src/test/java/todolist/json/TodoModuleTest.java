@@ -28,7 +28,7 @@ public class TodoModuleTest {
     mapper = TodoPersistence.createObjectMapper();
   }
 
-  private final static String todoListWithTwoItems = """
+  final static String todoListWithTwoItemsAndSettings = """
     {
       "lists": [
         {
@@ -45,12 +45,14 @@ public class TodoModuleTest {
             }
           ]
         }
-      ]
+      ],
+      "settings" : {
+        "todoItemsSortOrder" : "CHECKED_UNCHECKED"
+      }
     }
     """;
 
-  @Test
-  public void testSerializers() {
+  static TodoModel createTodoListWithTwoItemsAndSettings() {
     TodoModel model = new TodoModel();
     TodoList list = new TodoList("todo");
     model.addTodoList(list);
@@ -62,8 +64,15 @@ public class TodoModuleTest {
     item2.setDeadline(LocalDateTime.parse("2020-10-01T14:53:11"));
     list.addTodoItem(item1);
     list.addTodoItem(item2);
+    model.getSettings().setTodoItemsSortOrder(TodoItemsSortOrder.CHECKED_UNCHECKED);
+    return model;
+  }
+
+  @Test
+  public void testSerializers() {
+    TodoModel model = createTodoListWithTwoItemsAndSettings();
     try {
-      assertEquals(todoListWithTwoItems.replaceAll("\\s+", ""), mapper.writeValueAsString(model));
+      assertEquals(todoListWithTwoItemsAndSettings.replaceAll("\\s+", ""), mapper.writeValueAsString(model));
     } catch (JsonProcessingException e) {
       fail(e.getMessage());
     }
@@ -82,7 +91,7 @@ public class TodoModuleTest {
   @Test
   public void testDeserializers() {
     try {
-      TodoModel model = mapper.readValue(todoListWithTwoItems, TodoModel.class);
+      TodoModel model = mapper.readValue(todoListWithTwoItemsAndSettings, TodoModel.class);
       assertTrue(model.iterator().hasNext());
       AbstractTodoList list = model.iterator().next();
       assertEquals("todo", list.getName());
@@ -92,6 +101,7 @@ public class TodoModuleTest {
       assertTrue(it.hasNext());
       checkTodoItem(it.next(), "item2", true, LocalDateTime.parse("2020-10-01T14:53:11"));
       assertFalse(it.hasNext());
+      assertEquals(TodoItemsSortOrder.CHECKED_UNCHECKED, model.getSettings().getTodoItemsSortOrder());
     } catch (JsonProcessingException e) {
       fail(e.getMessage());
     }

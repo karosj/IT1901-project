@@ -11,12 +11,15 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.io.IOException;
 import todolist.core.AbstractTodoList;
 import todolist.core.TodoModel;
+import todolist.core.TodoSettings;
 
 class TodoModelDeserializer extends JsonDeserializer<TodoModel> {
 
   private TodoListDeserializer todoListDeserializer = new TodoListDeserializer();
+  private TodoSettingsDeserializer todoSettingsDeserializer = new TodoSettingsDeserializer();
+
   /*
-   * format: { "lists": [ ... ] }
+   * format: { "lists": [ ... ], "settings": ... }
    */
 
   @Override
@@ -37,6 +40,10 @@ class TodoModelDeserializer extends JsonDeserializer<TodoModel> {
             model.addTodoList(list);
           }
         }
+      }
+      if (objectNode.has("settings")) {
+        TodoSettings settings = todoSettingsDeserializer.deserialize(objectNode.get("settings"));
+        model.setSettings(settings);
       }
       return model;
     }

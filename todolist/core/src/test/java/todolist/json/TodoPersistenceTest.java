@@ -14,6 +14,7 @@ import todolist.core.AbstractTodoList;
 import todolist.core.TodoItem;
 import todolist.core.TodoList;
 import todolist.core.TodoModel;
+import todolist.core.TodoSettings.TodoItemsSortOrder;
 
 public class TodoPersistenceTest {
 
@@ -32,6 +33,7 @@ public class TodoPersistenceTest {
     item2.setChecked(true);
     item2.setDeadline(LocalDateTime.parse("2020-10-01T14:53:11"));
     list.addTodoItem(item2);
+    model.getSettings().setTodoItemsSortOrder(TodoItemsSortOrder.CHECKED_UNCHECKED);
     try {
       StringWriter writer = new StringWriter();
       todoPersistence.writeTodoModel(model, writer);

@@ -42,6 +42,8 @@ class TodoModelSerializer extends JsonSerializer<TodoModel> {
       }
     }
     jsonGen.writeEndArray();
+    jsonGen.writeFieldName("settings");
+    jsonGen.writeObject(model.getSettings());
     jsonGen.writeEndObject();
   }
 }
