@@ -45,8 +45,6 @@ public class TodoListController {
     return todoList;
   }
 
-  ContextMenu cm;
-
   /**
    * Sets the TodoList managed by this controller.
    * The corresponding views will be updated.
