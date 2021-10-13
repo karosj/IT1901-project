@@ -3,7 +3,6 @@ package todolist.ui.util;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.function.Supplier;
-
 import javafx.geometry.Side;
 import javafx.scene.Node;
 import javafx.scene.control.ContextMenu;
