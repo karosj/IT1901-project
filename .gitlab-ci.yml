@@ -1,4 +1,4 @@
-image: gitpod/workspace-full-vnc
+image: maven:3.8.3-openjdk-17
 
 stages:
   - test
@@ -7,10 +7,10 @@ stages:
 test:
   stage: test
   script:
-    - cd todolist; mvn test -B -P headless
+    - cd todolist; mvn test -B -P headless "-DskipUiTests=true"
 
 build:
   stage: build
   when: manual
   script:
-    - cd todolist; mvn install -B -P headless
+    - cd todolist; mvn install -B -P headless "-DskipUiTests=true"
