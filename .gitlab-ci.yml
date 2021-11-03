@@ -1,16 +1,25 @@
 image: maven:3.8.3-openjdk-17
 
+variables:
+  MAVEN_OPTS: "-DskipUiTests=true"
+  MAVEN_CLI_OPTS: "--batch-mode -P headless"
+
 stages:
   - test
   - build
 
+cache:
+  paths:
+    - .m2/repository
+  key: "$CI_BUILD_REF_NAME"
+
 test:
   stage: test
   script:
-    - cd todolist; mvn test -B -P headless "-DskipUiTests=true"
+    - mvn clean test -f todolist/pom.xml
 
 build:
   stage: build
   when: manual
   script:
-    - cd todolist; mvn install -B -P headless "-DskipUiTests=true"
+    - mvn clean install -f todolist/pom.xml
