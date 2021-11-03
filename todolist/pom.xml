@@ -12,6 +12,8 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <jupiter.version>5.8.1</jupiter.version>
         <jackson.version>2.12.5</jackson.version>
+        <skipUiTests>false</skipUiTests>
+        <headlessTests>false</headlessTests>
     </properties>
 
     <dependencyManagement>

@@ -11,11 +11,17 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.net.URI;
 import java.net.URISyntaxException;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.testfx.framework.junit5.ApplicationTest;
 
 public class TodoAppIT extends ApplicationTest {
+
+  @BeforeAll
+  public static void setupHeadless() {
+    TodoApp.supportHeadless();
+  }
 
   private TodoModelController controller;
 
