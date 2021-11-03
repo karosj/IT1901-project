@@ -1,3 +1,5 @@
+image: maven:3.8.3-openjd-17
+
 stages:
   - test
   - build
@@ -5,10 +7,10 @@ stages:
 test:
   stage: test
   script:
-    - cd todolist; mvn test -P headless
+    - cd todolist; mvn test -B -P headless
 
 build:
   stage: build
   when: manual
   script:
-    - cd todolist; mvn install -P headless
+    - cd todolist; mvn install -B -P headless
