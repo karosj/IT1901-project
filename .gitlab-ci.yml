@@ -16,10 +16,10 @@ cache:
 test:
   stage: test
   script:
-    - "mvn clean test -f todolist/pom.xml $MAVEN_CLI_OPTS"
+    - "cd todolist; mvn clean test $MAVEN_CLI_OPTS"
 
 build:
   stage: build
   when: manual
   script:
-    - "mvn clean install -f todolist/pom.xml $MAVEN_CLI_OPTS"
+    - "cd todolist; mvn clean install $MAVEN_CLI_OPTS"
