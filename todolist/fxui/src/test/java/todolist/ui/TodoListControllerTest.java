@@ -16,6 +16,8 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -30,6 +32,11 @@ import todolist.core.TodoSettings.TodoItemsSortOrder;
 import todolist.json.TodoPersistence;
 
 public class TodoListControllerTest extends ApplicationTest {
+
+  @BeforeAll
+  public static void setupHeadless() {
+    TodoAppTest.supportHeadlessTest();
+  }
 
   private TodoListController controller;
 

@@ -10,11 +10,28 @@ import static org.junit.jupiter.api.Assertions.fail;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
+
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.testfx.framework.junit5.ApplicationTest;
 
 public class TodoAppTest extends ApplicationTest {
+
+  static void supportHeadlessTest() {
+    if (Boolean.getBoolean("headless")) {
+        System.setProperty("testfx.robot", "glass");
+        System.setProperty("testfx.headless", "true");
+        System.setProperty("prism.order", "sw");
+        System.setProperty("prism.text", "t2k");
+        System.setProperty("java.awt.headless", "true");
+    }
+  }
+
+  @BeforeAll
+  public static void setupHeadless() {
+    supportHeadlessTest();
+  }
 
   private TodoModelController controller;
 
@@ -26,7 +43,7 @@ public class TodoAppTest extends ApplicationTest {
     stage.setScene(new Scene(root));
     stage.show();
   }
-  
+
   private TodoPersistence todoPersistence = new TodoPersistence();
 
   @BeforeEach
