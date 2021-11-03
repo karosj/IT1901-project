@@ -1,8 +1,8 @@
 image: maven:3.8.3-openjdk-17
 
 variables:
-  MAVEN_OPTS: "-Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository"
-  MAVEN_CLI_OPTS: "--batch-mode -P headless"
+  MAVEN_OPTS: "-Djava.awt.headless=true -Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository"
+  MAVEN_CLI_OPTS: "--batch-mode -P headless -DskipUiTests=true"
 
 stages:
   - test
@@ -16,10 +16,10 @@ cache:
 test:
   stage: test
   script:
-    - mvn clean test -f todolist/pom.xml "-DskipUiTests=true"
+    - "mvn clean test -f todolist/pom.xml $MAVEN_CLI_OPTS"
 
 build:
   stage: build
   when: manual
   script:
-    - mvn clean install -f todolist/pom.xml "-DskipUiTests=true"
+    - "mvn clean install -f todolist/pom.xml $MAVEN_CLI_OPTS"
