@@ -1,0 +1,14 @@
+stages:
+  - test
+  - build
+
+test:
+  stage: test
+  script:
+    - cd todolist; mvn test -P headless
+
+build:
+  stage: build
+  when: manual
+  script:
+    - cd todolist; mvn install -P headless
