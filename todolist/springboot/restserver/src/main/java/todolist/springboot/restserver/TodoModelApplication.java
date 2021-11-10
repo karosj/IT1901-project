@@ -4,10 +4,11 @@ import com.fasterxml.jackson.databind.Module;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-
 import todolist.json.TodoPersistence;
-import todolist.json.internal.TodoModule;
 
+/**
+ * The Spring application.
+ */
 @SpringBootApplication
 public class TodoModelApplication {
 

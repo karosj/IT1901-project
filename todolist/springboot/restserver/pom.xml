@@ -92,6 +92,11 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <argLine>
+                    @{jaCoCoArgLine} --add-opens todolist.springboot.rest/todolist.springboot.restserver=ALL-UNNAMED
+                    </argLine>
+                </configuration>
             </plugin>
             <!-- Run the checkstyle code quality tool -->
             <plugin>
@@ -109,7 +114,10 @@
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
-            </plugin>
+                <configuration>
+                    <propertyName>jaCoCoArgLine</propertyName>
+                </configuration>
+           </plugin>
             
             <plugin>
                 <groupId>org.springframework.boot</groupId>

@@ -10,12 +10,22 @@ import todolist.core.TodoList;
 import todolist.core.TodoModel;
 import todolist.json.TodoPersistence;
 
+/**
+ * Configures the todo service,
+ * including autowired objects.
+ */
+
 @Service
 public class TodoModelService {
 
   private TodoModel todoModel;
   private TodoPersistence todoPersistence;
 
+  /**
+   * Initializes the service with a specific TodoModel.
+   *
+   * @param todoModel the TodoModel
+   */
   public TodoModelService(TodoModel todoModel) {
     this.todoModel = todoModel;
     this.todoPersistence = new TodoPersistence();
@@ -51,6 +61,10 @@ public class TodoModelService {
     return todoModel;
   }
 
+  /**
+   * Saves the TodoModel to disk.
+   * Should be called after each update.
+   */
   public void autoSaveTodoModel() {
     if (todoPersistence != null) {
       try {
