@@ -10,11 +10,18 @@ import static org.junit.jupiter.api.Assertions.fail;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
+
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.testfx.framework.junit5.ApplicationTest;
 
 public class TodoAppTest extends ApplicationTest {
+
+  @BeforeAll
+  public static void setupHeadless() {
+    TodoApp.supportHeadless();
+  }
 
   private TodoModelController controller;
 
@@ -26,7 +33,7 @@ public class TodoAppTest extends ApplicationTest {
     stage.setScene(new Scene(root));
     stage.show();
   }
-  
+
   private TodoPersistence todoPersistence = new TodoPersistence();
 
   @BeforeEach

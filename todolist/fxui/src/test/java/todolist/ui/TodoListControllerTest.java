@@ -16,10 +16,11 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
 import org.testfx.framework.junit5.ApplicationTest;
 import org.testfx.util.WaitForAsyncUtils;
 import todolist.core.AbstractTodoList;
@@ -30,6 +31,11 @@ import todolist.core.TodoSettings.TodoItemsSortOrder;
 import todolist.json.TodoPersistence;
 
 public class TodoListControllerTest extends ApplicationTest {
+
+  @BeforeAll
+  public static void setupHeadless() {
+    TodoApp.supportHeadless();
+  }
 
   private TodoListController controller;
 
@@ -123,7 +129,6 @@ public class TodoListControllerTest extends ApplicationTest {
   /** Test - virker ikke i gitpod */
   @Test
   @DisplayName("Test dragging a ToDo list item")
-  @DisabledIfEnvironmentVariable(named = "GITPOD_WORKSPACE_ID", matches = ".*")
   public void testDragTodoItem() {
     Predicate<TodoItemListCell> draggableCell = cell -> cell.lookup(".label") != null;
     // drag the first item in the list view, which is the second item in the model
