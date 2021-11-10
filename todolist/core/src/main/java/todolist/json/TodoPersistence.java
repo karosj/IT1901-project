@@ -48,6 +48,10 @@ public class TodoPersistence {
     this.saveFilePath = Paths.get(System.getProperty("user.home"), saveFile);
   }
 
+  public Path getSaveFilePath() {
+    return this.saveFilePath;
+  }
+
   /**
    * Loads a TodoModel from the saved file (saveFilePath) in the user.home folder.
    *
