@@ -10,6 +10,9 @@ import java.io.Writer;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.EnumSet;
+import java.util.Set;
+
 import todolist.core.TodoModel;
 import todolist.json.internal.TodoModule;
 
@@ -19,19 +22,27 @@ import todolist.json.internal.TodoModule;
  */
 public class TodoPersistence {
 
+  public enum TodoModelParts {
+    SETTINGS, LISTS, LIST_CONTENTS
+  }
+
   private ObjectMapper mapper;
 
   public TodoPersistence() {
     mapper = createObjectMapper();
   }
 
-  public static SimpleModule createJacksonModule(boolean deep) {
-    return new TodoModule(deep);
+  public static SimpleModule createJacksonModule(Set<TodoModelParts> parts) {
+    return new TodoModule(parts);
+  }
+
+  public static ObjectMapper createObjectMapper(Set<TodoModelParts> parts) {
+    return new ObjectMapper()
+      .registerModule(createJacksonModule(parts));
   }
 
   public static ObjectMapper createObjectMapper() {
-    return new ObjectMapper()
-      .registerModule(createJacksonModule(true));
+    return createObjectMapper(EnumSet.allOf(TodoModelParts.class));
   }
 
   public TodoModel readTodoModel(Reader reader) throws IOException {

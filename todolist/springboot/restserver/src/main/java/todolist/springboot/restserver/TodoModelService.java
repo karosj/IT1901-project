@@ -6,6 +6,8 @@ import java.io.Reader;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import org.springframework.stereotype.Service;
+
+import todolist.core.TodoItem;
 import todolist.core.TodoList;
 import todolist.core.TodoModel;
 import todolist.json.TodoPersistence;
@@ -56,7 +58,9 @@ public class TodoModelService {
       }
     }
     TodoModel todoModel = new TodoModel();
-    todoModel.addTodoList(new TodoList("todo1"));
+    TodoList todoList1 = new TodoList("todo1");
+    todoList1.addTodoItem(new TodoItem());
+    todoModel.addTodoList(todoList1);
     todoModel.addTodoList(new TodoList("todo2"));
     return todoModel;
   }

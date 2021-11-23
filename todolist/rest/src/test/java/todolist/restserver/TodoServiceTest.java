@@ -17,6 +17,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import todolist.core.AbstractTodoList;
+import todolist.core.TodoList;
 import todolist.core.TodoModel;
 import todolist.restapi.TodoModelService;
 
@@ -84,6 +85,8 @@ public class TodoServiceTest extends JerseyTest {
     try {
       AbstractTodoList todoList = objectMapper.readValue(getResponse.readEntity(String.class), AbstractTodoList.class);
       assertEquals("todo1", todoList.getName());
+      assertTrue(todoList instanceof TodoList);
+      assertTrue(((TodoList) todoList).iterator().hasNext());
     } catch (JsonProcessingException e) {
       fail(e.getMessage());
     }

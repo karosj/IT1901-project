@@ -4,19 +4,19 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import java.io.IOException;
+import java.util.EnumSet;
+import java.util.Set;
+
 import todolist.core.AbstractTodoList;
 import todolist.core.TodoModel;
+import todolist.json.TodoPersistence.TodoModelParts;
 
 class TodoModelSerializer extends JsonSerializer<TodoModel> {
 
-  private final boolean deep;
+  private final Set<TodoModelParts> parts;
 
-  public TodoModelSerializer(boolean deep) {
-    this.deep = deep;
-  }
-
-  public TodoModelSerializer() {
-    this(true);
+  public TodoModelSerializer(Set<TodoModelParts> parts) {
+    this.parts = parts;
   }
 
   /*
@@ -27,23 +27,27 @@ class TodoModelSerializer extends JsonSerializer<TodoModel> {
   public void serialize(TodoModel model, JsonGenerator jsonGen, SerializerProvider
       serializerProvider) throws IOException {
     jsonGen.writeStartObject();
-    jsonGen.writeArrayFieldStart("lists");
-    for (AbstractTodoList list : model) {
-      if (deep) {
-        jsonGen.writeObject(list);
-      } else {
-        jsonGen.writeStartObject();
-        jsonGen.writeStringField("name", list.getName());
-        if (list.getDeadline() != null) {
-          jsonGen.writeStringField("deadline", list.getDeadline().toString());
+    if (parts.contains(TodoModelParts.LIST_CONTENTS) || parts.contains(TodoModelParts.LISTS)) {
+      jsonGen.writeArrayFieldStart("lists");
+      for (AbstractTodoList list : model) {
+        if (parts.contains(TodoModelParts.LIST_CONTENTS)) {
+          jsonGen.writeObject(list);
+        } else if (parts.contains(TodoModelParts.LISTS)) {
+          jsonGen.writeStartObject();
+          jsonGen.writeStringField("name", list.getName());
+          if (list.getDeadline() != null) {
+            jsonGen.writeStringField("deadline", list.getDeadline().toString());
+          }
+          // no items!
+          jsonGen.writeEndObject();
         }
-        // no items!
-        jsonGen.writeEndObject();
       }
+      jsonGen.writeEndArray();
     }
-    jsonGen.writeEndArray();
-    jsonGen.writeFieldName("settings");
-    jsonGen.writeObject(model.getSettings());
+    if (parts.contains(TodoModelParts.SETTINGS)) {
+      jsonGen.writeFieldName("settings");
+      jsonGen.writeObject(model.getSettings());
+    }
     jsonGen.writeEndObject();
   }
 }

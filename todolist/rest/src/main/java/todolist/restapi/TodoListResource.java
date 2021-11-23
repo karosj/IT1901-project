@@ -3,6 +3,7 @@ package todolist.restapi;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;
+import jakarta.ws.rs.NotFoundException;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
@@ -51,9 +52,11 @@ public class TodoListResource {
     this.todoList = todoList;
   }
 
+  // throw an exception in case of missing todolist
+  // hopefully this will give an appropriate http response code
   private void checkTodoList() {
     if (this.todoList == null) {
-      throw new IllegalArgumentException("No TodoList named \"" + name + "\"");
+      throw new NotFoundException("No TodoList named \"" + name + "\"");
     }
   }
 
@@ -74,7 +77,7 @@ public class TodoListResource {
       try {
         todoPersistence.saveTodoModel(todoModel);
       } catch (IllegalStateException | IOException e) {
-        System.err.println("Couldn't auto-save TodoModel: " + e);
+        LOG.error("Couldn't auto-save TodoModel: ", e);
       }
     }
   }
