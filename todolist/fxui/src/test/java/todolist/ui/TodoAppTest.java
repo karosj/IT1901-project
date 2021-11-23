@@ -4,6 +4,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.stage.Window;
 import todolist.json.TodoPersistence;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -15,6 +16,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.testfx.framework.junit5.ApplicationTest;
+import org.testfx.util.WaitForAsyncUtils;
 
 public class TodoAppTest extends ApplicationTest {
 
@@ -54,5 +56,24 @@ public class TodoAppTest extends ApplicationTest {
   @Test
   public void testSelectedTodoList_initial() {
     assertNotNull(this.controller.getSelectedTodoList());
+  }
+
+  @Test
+  public void testTodoSettings() {
+    clickOn("#todoSettingsButton");
+    WaitForAsyncUtils.waitForFxEvents();
+    assertNotNull(findSceneRootWithId("todoSettingsRoot"));
+  }
+
+  private Parent findSceneRootWithId(String id) {
+    for (Window window : Window.getWindows()) {
+      if (window instanceof Stage && window.isShowing()) {
+        var root = window.getScene().getRoot();
+        if (id.equals(root.getId())) {
+          return root;
+        }
+      }
+    }
+    return null;
   }
 }

@@ -9,7 +9,7 @@
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.collections.FXCollections?>
 
-<VBox xmlns:fx="http://javafx.com/fxml" fx:controller="todolist.ui.TodoSettingsController">
+<VBox fx:id="todoSettingsRoot" xmlns:fx="http://javafx.com/fxml" fx:controller="todolist.ui.TodoSettingsController">
     <Label text="Settings"/>
     <GridPane alignment="center" hgap="10" vgap="10">
         <!-- <padding><Insets top="25" right="25" bottom="25" left="25"/></padding> -->
