@@ -1,10 +1,9 @@
 package todolist.json.internal;
 
-import java.util.EnumSet;
-import java.util.Set;
-
 import com.fasterxml.jackson.core.Version;
 import com.fasterxml.jackson.databind.module.SimpleModule;
+import java.util.EnumSet;
+import java.util.Set;
 import todolist.core.AbstractTodoList;
 import todolist.core.TodoItem;
 import todolist.core.TodoModel;

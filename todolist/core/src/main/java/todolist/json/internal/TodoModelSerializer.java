@@ -4,9 +4,7 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import java.io.IOException;
-import java.util.EnumSet;
 import java.util.Set;
-
 import todolist.core.AbstractTodoList;
 import todolist.core.TodoModel;
 import todolist.json.TodoPersistence.TodoModelParts;

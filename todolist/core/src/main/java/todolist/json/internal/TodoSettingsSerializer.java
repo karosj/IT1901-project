@@ -17,7 +17,8 @@ class TodoSettingsSerializer extends JsonSerializer<TodoSettings> {
       SerializerProvider serializerProvider)
       throws IOException {
     jsonGen.writeStartObject();
-    jsonGen.writeStringField(TodoSettings.TODO_ITEM_SORT_ORDER_SETTING, settings.getTodoItemsSortOrder().name());
+    var sortOrderName = settings.getTodoItemsSortOrder().name();
+    jsonGen.writeStringField(TodoSettings.TODO_ITEM_SORT_ORDER_SETTING, sortOrderName);
     jsonGen.writeEndObject();
   }
 }

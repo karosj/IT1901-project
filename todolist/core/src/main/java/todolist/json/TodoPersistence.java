@@ -12,7 +12,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.EnumSet;
 import java.util.Set;
-
 import todolist.core.TodoModel;
 import todolist.json.internal.TodoModule;
 
@@ -22,6 +21,9 @@ import todolist.json.internal.TodoModule;
  */
 public class TodoPersistence {
 
+  /**
+   * Used to indicate what parts of a TodoModel to serialize.
+   */
   public enum TodoModelParts {
     SETTINGS, LISTS, LIST_CONTENTS
   }

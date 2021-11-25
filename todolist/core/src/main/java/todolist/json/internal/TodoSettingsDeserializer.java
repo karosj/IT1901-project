@@ -23,12 +23,12 @@ class TodoSettingsDeserializer extends JsonDeserializer<TodoSettings> {
 
   TodoSettings deserialize(JsonNode jsonNode) {
     if (jsonNode instanceof ObjectNode) {
-      ObjectNode objectNode = (ObjectNode) jsonNode;
-      TodoSettings settings = new TodoSettings();
-      JsonNode todoItemsSortOrderNode = objectNode.get(TodoSettings.TODO_ITEM_SORT_ORDER_SETTING);
+      var objectNode = (ObjectNode) jsonNode;
+      var settings = new TodoSettings();
+      var todoItemsSortOrderNode = objectNode.get(TodoSettings.TODO_ITEM_SORT_ORDER_SETTING);
       if (todoItemsSortOrderNode instanceof TextNode) {
         try {
-          TodoItemsSortOrder sortOrder = TodoItemsSortOrder.valueOf(todoItemsSortOrderNode.asText());
+          var sortOrder = TodoItemsSortOrder.valueOf(todoItemsSortOrderNode.asText());
           settings.setTodoItemsSortOrder(sortOrder);
         } catch (IllegalArgumentException iae) {
           // ignore unknown sort order constant
