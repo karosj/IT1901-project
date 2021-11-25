@@ -119,6 +119,12 @@ public class TodoList extends AbstractTodoList {
 
   private class TodoListItem extends TodoItem {
 
+    @Override
+    public String toString() {
+      return String.format("[TodoItem text=%s checked=%s deadline=%s @ %s]", getText(), isChecked(),
+          getDeadline(), items.indexOf(this));
+    }
+  
     TodoList getTodoList() {
       return TodoList.this;
     }
