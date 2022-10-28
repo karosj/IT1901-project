@@ -118,7 +118,7 @@ public class RemoteTodoModelAccess implements TodoModelAccess {
   }
 
   private URI todoListUri(String name) {
-    return endpointBaseUri.resolve("list").resolve(uriParam(name));
+    return endpointBaseUri.resolve("list/").resolve(uriParam(name));
   }
 
   /**
@@ -129,6 +129,7 @@ public class RemoteTodoModelAccess implements TodoModelAccess {
    */
   @Override
   public AbstractTodoList getTodoList(String name) {
+    System.out.println("getTodoList(String name) :" + todoListUri(name));
     AbstractTodoList oldTodoList = this.todoModel.getTodoList(name);
     // if existing list has no todo items, try to (re)load
     if (oldTodoList == null || (! (oldTodoList instanceof TodoList))) {
