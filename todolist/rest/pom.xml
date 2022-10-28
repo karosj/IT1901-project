@@ -12,7 +12,7 @@
     <artifactId>rest</artifactId>
 
     <properties>
-        <slf4jVersion>2.0.0-alpha5</slf4jVersion>
+        <slf4jVersion>2.0.3</slf4jVersion>
         <jerseyVersion>3.0.3</jerseyVersion>
     </properties>
 
@@ -136,8 +136,8 @@
         </dependency>
         <dependency>
             <groupId>javax.activation</groupId>
-            <artifactId>activation</artifactId>
-            <version>1.1.1</version>
+            <artifactId>javax.activation-api</artifactId>
+            <version>1.2.0</version>
             <scope>runtime</scope>
         </dependency>
     </dependencies>

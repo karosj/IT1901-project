@@ -14,7 +14,8 @@
 
     <properties>
         <slf4jVersion>1.7.25</slf4jVersion>
-        <jerseyVersion>3.0.1</jerseyVersion>
+        <jerseyVersion>3.1.0-M8</jerseyVersion>
+        <jetty.port>8080</jetty.port>
     </properties>
 
     <dependencies>
@@ -126,10 +127,7 @@
             <plugin>
                 <groupId>org.eclipse.jetty</groupId>
                 <artifactId>jetty-maven-plugin</artifactId>
-                <version>11.0.2</version>
-                <!--
-                <version>9.4.31.v20200723</version>
-                -->
+                <version>11.0.12</version>
                 <configuration>
                     <httpConnector>
                         <port>${jetty.port}</port>

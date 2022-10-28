@@ -5,7 +5,7 @@
 
 <VBox xmlns:fx="http://javafx.com/fxml/1" fx:controller="todolist.ui.TodoAppController">
     <fx:define>
-        <String fx:id="endpointUri" fx:value="http://localhost:8999/todo/"/>
+        <String fx:id="endpointUri" fx:value="http://localhost:8080/todo/"/>
     </fx:define>
     <fx:include fx:id="todoModelView" source="TodoModel.fxml"/>
 </VBox>
