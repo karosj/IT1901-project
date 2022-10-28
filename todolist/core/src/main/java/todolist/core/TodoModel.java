@@ -137,7 +137,8 @@ public class TodoModel implements Iterable<AbstractTodoList> {
    * @param sortOrder the desired sort order of the todo items
    * @return a function that gets the todo items of a todo list in the corresponding sort order
    */
-  public static Function<TodoList, Collection<TodoItem>> getSortedTodoItemsProvider(TodoItemsSortOrder sortOrder) {
+  public static Function<TodoList, Collection<TodoItem>> getSortedTodoItemsProvider(
+      TodoItemsSortOrder sortOrder) {
     switch (sortOrder) {
       case UNCHECKED_CHECKED: 
         return todoList -> todoItemsProviderHelper(todoList,
