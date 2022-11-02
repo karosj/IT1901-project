@@ -166,8 +166,7 @@ public abstract class AbstractDocumentStorage<D, L> implements DocumentStorage<L
     saveDocument(getDocument(), documentLocation);
   }
 
-  //
-
+  
   @Override
   public Collection<DocumentImporter> getDocumentImporters() {
     return Collections.emptyList();
