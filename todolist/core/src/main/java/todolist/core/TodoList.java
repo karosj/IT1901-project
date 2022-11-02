@@ -59,6 +59,7 @@ public class TodoList extends AbstractTodoList {
     fireTodoListChanged();
   }
 
+  @Override
   public void removeTodoItem(TodoItem item) {
     items.remove(item);
     fireTodoListChanged();
@@ -78,10 +79,6 @@ public class TodoList extends AbstractTodoList {
       }
     }
     return result;
-    // same as
-    // return items.stream()
-    // .filter(item -> checked == null || item.isChecked() == checked)
-    // .collect(Collectors.toList());
   }
 
   @Override
