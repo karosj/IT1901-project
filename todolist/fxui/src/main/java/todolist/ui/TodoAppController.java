@@ -85,9 +85,12 @@ public class TodoAppController {
         reader = new StringReader(todoListWithTwoItems);
       }
       try {
-        todoModel = todoPersistence.readTodoModel(reader);
+        if (todoPersistence != null) {
+          todoModel = todoPersistence.readTodoModel(reader);
+        }   
       } catch (IOException e) {
         // ignore
+        System.err.println(e.toString());
       } finally {
         try {
           if (reader != null) {
@@ -95,6 +98,7 @@ public class TodoAppController {
           }
         } catch (IOException e) {
           // ignore
+          System.err.println(e.toString());
         }
       }
     }
