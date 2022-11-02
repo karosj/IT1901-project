@@ -19,7 +19,7 @@ import todolist.json.TodoPersistence;
  */
 public class TodoAppController {
 
-  private static final String todoListWithTwoItems = """
+  private static final String TODO_LIST_WITH_2_ITEMS = """
       {
         "lists" : [
           {
@@ -82,7 +82,7 @@ public class TodoAppController {
       }
       if (reader == null) {
         // use embedded String
-        reader = new StringReader(todoListWithTwoItems);
+        reader = new StringReader(TODO_LIST_WITH_2_ITEMS);
       }
       try {
         if (todoPersistence != null) {
