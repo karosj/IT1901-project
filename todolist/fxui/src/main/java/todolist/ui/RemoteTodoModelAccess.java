@@ -25,6 +25,14 @@ public class RemoteTodoModelAccess implements TodoModelAccess {
 
   private final URI endpointBaseUri;
 
+  private static final String APPLICATION_JSON = "application/json";
+
+  private static final String APPLICATION_FORM_URLENCODED = "application/x-www-form-urlencoded";
+
+  private static final String ACCEPT_HEADER = "Accept";
+
+  private static final String CONTENT_TYPE_HEADER = "Content-Type";
+
   private ObjectMapper objectMapper;
 
   private TodoModel todoModel;
@@ -37,7 +45,7 @@ public class RemoteTodoModelAccess implements TodoModelAccess {
   private TodoModel getTodoModel() {
     if (todoModel == null) {
       HttpRequest request = HttpRequest.newBuilder(endpointBaseUri)
-          .header("Accept", "application/json")
+          .header(ACCEPT_HEADER, APPLICATION_JSON)
           .GET()
           .build();
       try {
@@ -63,7 +71,7 @@ public class RemoteTodoModelAccess implements TodoModelAccess {
     TodoSettings settings = todoModel.getSettings();
     if (isDefaultSettings(settings)) {
       HttpRequest request = HttpRequest.newBuilder(endpointBaseUri.resolve("settings"))
-          .header("Accept", "application/json")
+          .header(ACCEPT_HEADER, APPLICATION_JSON)
           .GET()
           .build();
       try {
@@ -135,7 +143,7 @@ public class RemoteTodoModelAccess implements TodoModelAccess {
     if (oldTodoList == null || (! (oldTodoList instanceof TodoList))) {
       HttpRequest request =
           HttpRequest.newBuilder(todoListUri(name))
-              .header("Accept", "application/json").GET().build();
+              .header(ACCEPT_HEADER, APPLICATION_JSON).GET().build();
       try {
         final HttpResponse<String> response =
             HttpClient.newBuilder().build().send(request, HttpResponse.BodyHandlers.ofString());
@@ -159,8 +167,8 @@ public class RemoteTodoModelAccess implements TodoModelAccess {
     try {
       String json = objectMapper.writeValueAsString(todoList);
       HttpRequest request = HttpRequest.newBuilder(todoListUri(todoList.getName()))
-          .header("Accept", "application/json")
-          .header("Content-Type", "application/json")
+          .header(ACCEPT_HEADER, APPLICATION_JSON)
+          .header(CONTENT_TYPE_HEADER, APPLICATION_JSON)
           .PUT(BodyPublishers.ofString(json))
           .build();
       final HttpResponse<String> response =
@@ -194,7 +202,7 @@ public class RemoteTodoModelAccess implements TodoModelAccess {
   public void removeTodoList(String name) {
     try {
       HttpRequest request = HttpRequest.newBuilder(todoListUri(name))
-          .header("Accept", "application/json")
+          .header(ACCEPT_HEADER, APPLICATION_JSON)
           .DELETE()
           .build();
       final HttpResponse<String> response =
@@ -219,8 +227,8 @@ public class RemoteTodoModelAccess implements TodoModelAccess {
   public void renameTodoList(String oldName, String newName) {
     try {
       HttpRequest request = HttpRequest.newBuilder(todoListUri(oldName))
-          .header("Accept", "application/json")
-          .header("Content-Type", "application/x-www-form-urlencoded")
+          .header(ACCEPT_HEADER, APPLICATION_JSON)
+          .header(CONTENT_TYPE_HEADER, APPLICATION_FORM_URLENCODED)
           .POST(BodyPublishers.ofString("newName=" + uriParam(newName)))
           .build();
       final HttpResponse<String> response =
