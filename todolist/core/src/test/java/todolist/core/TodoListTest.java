@@ -35,7 +35,7 @@ public class TodoListTest {
     TodoItem addedItem = newList.iterator().next();
     // check that values are correctly copied
     assertEquals(item.getText(), addedItem.getText());
-    assertTrue(item.isOverdue() == addedItem.isOverdue());
+    assertEquals(item.isOverdue(),addedItem.isOverdue());
     assertEquals(item.getDeadline(), addedItem.getDeadline());
   }
 
