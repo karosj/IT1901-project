@@ -2,13 +2,13 @@ package todolist.restapi;
 
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
+import jakarta.ws.rs.FormParam;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.NotFoundException;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
-import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
 import java.io.IOException;
@@ -114,14 +114,15 @@ public class TodoListResource {
    */
   @POST
   @Path("/rename")
-  public boolean renameTodoList(@QueryParam("newName") String newName) {
+  @Consumes("application/x-www-form-urlencoded")
+  public boolean renameTodoList(@FormParam("newName") String newName) {
     checkTodoList();
     if (this.todoModel.getTodoList(newName) != null) {
       throw new IllegalArgumentException("A TodoList named \"" + newName + "\" already exists");
     }
     this.todoList.setName(newName);
     autoSaveTodoModel();
-    return true;
+    return true;  
   }
 
   /**
