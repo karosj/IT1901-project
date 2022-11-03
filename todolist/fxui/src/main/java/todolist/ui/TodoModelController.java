@@ -80,11 +80,6 @@ public class TodoModelController implements TodoSettingsListener {
   private void initializeTodoListsView() {
     todoListsView.setEditable(true);
     todoListsView.valueProperty().addListener((prop, oldName, newName) -> {
-      // System.out.println("valueProperty: -> "
-      //    + todoListsView.getSelectionModel().getSelectedItem() + " @ " 
-      //    + todoListsView.getSelectionModel().getSelectedIndex() + " -> "
-      //    + (oldName != null ? ("\"" + oldName + "\"") : null) + " -> " 
-      //    + (newName != null ? ("\"" + newName + "\"") : null));
       if (newName != null && (! todoModelAccess.isValidTodoListName(newName))) {
         // allow user to edit name
       } else if (oldName != null && newName != null
