@@ -226,7 +226,7 @@ public class RemoteTodoModelAccess implements TodoModelAccess {
   @Override
   public void renameTodoList(String oldName, String newName) {
     try {
-      HttpRequest request = HttpRequest.newBuilder(todoListUri(oldName))
+      HttpRequest request = HttpRequest.newBuilder(todoListUri(oldName).resolve(uriParam(oldName)+"/rename"))
           .header(ACCEPT_HEADER, APPLICATION_JSON)
           .header(CONTENT_TYPE_HEADER, APPLICATION_FORM_URLENCODED)
           .POST(BodyPublishers.ofString("newName=" + uriParam(newName)))
