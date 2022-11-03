@@ -21,7 +21,7 @@ import todolist.core.TodoModel;
 @RequestMapping(TodoModelController.TODO_MODEL_SERVICE_PATH)
 public class TodoModelController {
 
-  public static final String TODO_MODEL_SERVICE_PATH = "springboot/todo";
+  public static final String TODO_MODEL_SERVICE_PATH = "todo";
 
   @Autowired
   private TodoModelService todoModelService;
@@ -47,7 +47,7 @@ public class TodoModelController {
    * @param name the name of the TodoList
    * @return the corresponding TodoList
    */
-  @GetMapping(path = "/{name}")
+  @GetMapping(path = "/list/{name}")
   public AbstractTodoList getTodoList(@PathVariable("name") String name) {
     AbstractTodoList todoList = getTodoModel().getTodoList(name);
     checkTodoList(todoList, name);
@@ -61,7 +61,7 @@ public class TodoModelController {
    * @param todoList the todoList to add
    * @return true if it was added, false if it replaced
    */
-  @PutMapping(path = "/{name}")
+  @PutMapping(path = "/list/{name}")
   public boolean putTodoList(@PathVariable("name") String name,
       @RequestBody AbstractTodoList todoList) {
     boolean added = getTodoModel().putTodoList(todoList) == null;
@@ -75,7 +75,7 @@ public class TodoModelController {
    * @param name the name of the TodoList
    * @param newName the new name
    */
-  @PostMapping(path = "/{name}/rename")
+  @PostMapping(path = "/list/{name}/rename")
   public boolean renameTodoList(@PathVariable("name") String name,
       @RequestParam("newName") String newName) {
     AbstractTodoList todoList = getTodoModel().getTodoList(name);
@@ -93,7 +93,7 @@ public class TodoModelController {
    *
    * @param name the name of the TodoList
    */
-  @DeleteMapping(path = "/{name}")
+  @DeleteMapping(path = "/list/{name}")
   public boolean removeTodoList(@PathVariable("name") String name) {
     AbstractTodoList todoList = getTodoModel().getTodoList(name);
     checkTodoList(todoList, name);
