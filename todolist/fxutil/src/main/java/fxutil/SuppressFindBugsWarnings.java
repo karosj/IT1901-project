@@ -8,7 +8,7 @@ import java.lang.annotation.RetentionPolicy;
  * Must have this specific name to be considered by spotbugs.
  */
 @Retention(RetentionPolicy.CLASS)
-public @interface SuppressFBWarnings {
+public @interface SuppressFindBugsWarnings {
   /**
    * The set of FindBugs warnings that are to be suppressed in
    * annotated element. The value can be a bug category, kind or pattern.

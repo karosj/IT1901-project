@@ -1,6 +1,6 @@
 package fxutil.doc;
 
-import fxutil.SuppressFBWarnings;
+import fxutil.SuppressFindBugsWarnings;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -36,7 +36,7 @@ public class FileMenuController {
    *
    * @param documentStorage the document storage
    */
-  @SuppressFBWarnings(
+  @SuppressFindBugsWarnings(
       value = "EI_EXPOSE_REP2", 
       justification = "We intentioanlly don't deep copy documentStorage")
   public void setDocumentStorage(final DocumentStorage<File> documentStorage) {
