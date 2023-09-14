@@ -1,6 +1,5 @@
 {
     "java.configuration.updateBuildConfiguration": "automatic",
-    "java.format.settings.url": "todolist/config/checkstyle/eclipse-java-google-style.xml",
     "[java]": {
         "editor.tabSize": 2
     },
@@ -10,9 +9,11 @@
             "vmArgs": []
         },
         {
-            "name": "fxuiTesting",
-            "vmArgs": ["--add-opens", "todolist.ui/todolist.ui=ALL-UNNAMED", "--add-exports", "javafx.graphics/com.sun.javafx.application=ALL-UNNAMED"]
+            "name": "modules-template testing",
+            "vmArgs": ["--add-opens", "calc.ui/ui=ALL-UNNAMED", "--add-exports", "javafx.graphics/com.sun.javafx.application=ALL-UNNAMED"]
         }
     ],
-    "java.test.defaultConfig": "fxuiTesting"
+    "java.test.defaultConfig": "modules-template testing",
+    "java.compile.nullAnalysis.mode": "automatic",
+    "java.debug.settings.onBuildFailureProceed": true
 }
