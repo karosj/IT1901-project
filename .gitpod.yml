@@ -1,0 +1,16 @@
+image:
+  file: .gitpod.Dockerfile
+
+tasks:
+  - init: sdk use java 17.0.2-tem
+    command: cd todolist
+
+ports:
+  # used by virtual desktop and vnc, supports JavaFX
+  - port: 6080
+
+vscode:
+  extensions:
+    - vsls-contrib.codetour
+    - ritwickdey.liveserver
+    - jebbs.plantuml

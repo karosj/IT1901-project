@@ -1,0 +1,18 @@
+{
+    "java.configuration.updateBuildConfiguration": "automatic",
+    "java.format.settings.url": "todolist/config/checkstyle/eclipse-java-google-style.xml",
+    "[java]": {
+        "editor.tabSize": 2
+    },
+    "java.test.config": [
+        {
+            "name": "coreTesting",
+            "vmArgs": []
+        },
+        {
+            "name": "fxuiTesting",
+            "vmArgs": ["--add-opens", "todolist.ui/todolist.ui=ALL-UNNAMED", "--add-exports", "javafx.graphics/com.sun.javafx.application=ALL-UNNAMED"]
+        }
+    ],
+    "java.test.defaultConfig": "fxuiTesting"
+}
