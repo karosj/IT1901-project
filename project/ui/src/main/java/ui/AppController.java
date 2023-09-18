@@ -13,6 +13,14 @@ import javafx.scene.control.Labeled;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.Scanner;
+
+
 public class AppController {
 
     private Calc calc;
@@ -31,27 +39,68 @@ public class AppController {
     }
 
     @FXML
-    private Label textView;
+    private Label label;
 
     @FXML
     private TextField textInput;
 
     @FXML
     void initialize() {
-        setTextViewString(getTextFromFile());
+        setInitialLabelContent();
+    }
+
+    private void setInitialLabelContent() {
+        label.setText(getTextFromFile());
     }
 
     private String getTextFromFile() {
-        // TODO
-        return "Hello world!";
+        String content = "";
+        try {
+            File file = new File("content.txt");
+            Scanner reader = new Scanner(file);
+            while (reader.hasNextLine()) {
+              content += reader.nextLine();
+            }
+            reader.close();
+          } catch (FileNotFoundException e) {
+                System.out.println("No file found.");
+                content = "No file found.";
+            e.printStackTrace();
+          }
+
+        return content;
     }
 
     private void setTextFile(String text) {
-        // TODO
+        try {
+            File file = new File("content.txt");
+        if (file.createNewFile()) {
+            System.out.println("File created: " + file.getName());
+
+        } else {
+            System.out.println("File already exists.");
+        }
+        try {
+            PrintWriter writer = new PrintWriter("content.txt");
+            writer.print(text);
+            writer.close();
+            System.out.println("Successfully wrote to the file.");
+        } catch (IOException e) {
+            System.out.println("An error occurred.");
+        e.printStackTrace();
+        }
+        } catch (IOException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+        }
     }
 
-    private String getTextViewString() {
-        return textView.getText();
+    private void clearTextInput() {
+        textInput.setText("");
+    }
+
+    private String getLabelString() {
+        return label.getText();
     }
 
     private String getTextInputString() {
@@ -59,12 +108,13 @@ public class AppController {
     }
 
     private boolean hasText() {
-        return ! getTextViewString().isBlank();
+        return ! getLabelString().isBlank();
     }
 
     private void setTextViewString(String textViewString) {
-        textView.setText(textViewString);
+        label.setText(textViewString);
         setTextFile(textViewString);
+        clearTextInput();
     }
 
     @FXML
