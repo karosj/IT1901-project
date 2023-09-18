@@ -11,6 +11,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.Labeled;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
 
 public class AppController {
 
@@ -26,110 +27,50 @@ public class AppController {
 
     public void setCalc(Calc calc) {
         this.calc = calc;
-        updateOperandsView();
+        //updateOperandsView();
     }
 
     @FXML
-    private ListView<Double> operandsView;
+    private Label textView;
 
     @FXML
-    private Label operandView;
+    private TextField textInput;
 
     @FXML
     void initialize() {
-        updateOperandsView();
+        setTextViewString(getTextFromFile());
     }
 
-    private void updateOperandsView() {
-        List<Double> operands = operandsView.getItems();
-        operands.clear();
-        int elementCount = Math.min(calc.getOperandCount(), 3);
-        for (int i = 0; i < elementCount; i++) {
-            operands.add(calc.peekOperand(elementCount - i - 1));
-        }
+    private String getTextFromFile() {
+        // TODO
+        return "Hello world!";
     }
 
-    private String getOperandString() {
-        return operandView.getText();
-    }
-
-    private boolean hasOperand() {
-        return ! getOperandString().isBlank();
-    }
-
-    private double getOperand() {
-        return Double.valueOf(operandView.getText());
-    }
-    
-    private void setOperand(String operandString) {
-        operandView.setText(operandString);
-    }
-
-    @FXML
-    void handleEnter() {
-        if (hasOperand()) {
-            calc.pushOperand(getOperand());
-        } else {
-            calc.dup();
-        }
-        setOperand("");
-        updateOperandsView();
-    }
-
-    private void appendToOperand(String s) {
+    private void setTextFile(String text) {
         // TODO
     }
 
-    @FXML
-    void handleDigit(ActionEvent ae) {
-        if (ae.getSource() instanceof Labeled l) {
-            // TODO append button label to operand
-        }
+    private String getTextViewString() {
+        return textView.getText();
+    }
+
+    private String getTextInputString() {
+        return textInput.getText();
+    }
+
+    private boolean hasText() {
+        return ! getTextViewString().isBlank();
+    }
+
+    private void setTextViewString(String textViewString) {
+        textView.setText(textViewString);
+        setTextFile(textViewString);
     }
 
     @FXML
-    void handlePoint() {
-        var operandString = getOperandString();
-        if (operandString.contains(".")) {
-            // TODO remove characters after point
-        } else {
-            // TODO append point
-        }
-    }
-
-    @FXML
-    void handleClear() {
-        // TODO clear operand
-    }
-
-    @FXML
-    void handleSwap() {
-        // TODO clear operand
-    }
-
-    private void performOperation(UnaryOperator<Double> op) {
+    void handleSubmit() {
         // TODO
+        setTextViewString(getTextInputString());
     }
 
-    private void performOperation(boolean swap, BinaryOperator<Double> op) {
-        if (hasOperand()) {
-            // TODO push operand first
-        }
-        // TODO perform operation, but swap first if needed
-    }
-
-    @FXML
-    void handleOpAdd() {
-        // TODO
-    }
-
-    @FXML
-    void handleOpSub() {
-        // TODO
-    }
-
-    @FXML
-    void handleOpMult() {
-        // TODO
-    }
 }
