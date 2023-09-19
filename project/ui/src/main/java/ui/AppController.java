@@ -50,7 +50,7 @@ public class AppController {
     }
 
     private void setInitialLabelContent() {
-        label.setText(getTextFromFile());
+        label.setText(calc.getTextFromFile());
     }
 
     private String getTextFromFile() {
@@ -113,7 +113,7 @@ public class AppController {
 
     private void setTextViewString(String textViewString) {
         label.setText(textViewString);
-        setTextFile(textViewString);
+        calc.setTextFile(textViewString);
         clearTextInput();
     }
 
