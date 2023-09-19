@@ -11,6 +11,15 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.Labeled;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.Scanner;
+
 
 public class AppController {
 
@@ -26,110 +35,92 @@ public class AppController {
 
     public void setCalc(Calc calc) {
         this.calc = calc;
-        updateOperandsView();
+        //updateOperandsView();
     }
 
     @FXML
-    private ListView<Double> operandsView;
+    private Label label;
 
     @FXML
-    private Label operandView;
+    private TextField textInput;
 
     @FXML
     void initialize() {
-        updateOperandsView();
+        setInitialLabelContent();
     }
 
-    private void updateOperandsView() {
-        List<Double> operands = operandsView.getItems();
-        operands.clear();
-        int elementCount = Math.min(calc.getOperandCount(), 3);
-        for (int i = 0; i < elementCount; i++) {
-            operands.add(calc.peekOperand(elementCount - i - 1));
-        }
+    private void setInitialLabelContent() {
+        label.setText(getTextFromFile());
     }
 
-    private String getOperandString() {
-        return operandView.getText();
+    private String getTextFromFile() {
+        String content = "";
+        try {
+            File file = new File("content.txt");
+            Scanner reader = new Scanner(file);
+            while (reader.hasNextLine()) {
+              content += reader.nextLine();
+            }
+            reader.close();
+          } catch (FileNotFoundException e) {
+                System.out.println("No file found.");
+                content = "No file found.";
+            e.printStackTrace();
+          }
+
+        return content;
     }
 
-    private boolean hasOperand() {
-        return ! getOperandString().isBlank();
-    }
+    private void setTextFile(String text) {
+        try {
+            File file = new File("content.txt");
+        if (file.createNewFile()) {
+            System.out.println("File created: " + file.getName());
 
-    private double getOperand() {
-        return Double.valueOf(operandView.getText());
-    }
-    
-    private void setOperand(String operandString) {
-        operandView.setText(operandString);
-    }
-
-    @FXML
-    void handleEnter() {
-        if (hasOperand()) {
-            calc.pushOperand(getOperand());
         } else {
-            calc.dup();
+            System.out.println("File already exists.");
         }
-        setOperand("");
-        updateOperandsView();
-    }
-
-    private void appendToOperand(String s) {
-        // TODO
-    }
-
-    @FXML
-    void handleDigit(ActionEvent ae) {
-        if (ae.getSource() instanceof Labeled l) {
-            // TODO append button label to operand
+        try {
+            PrintWriter writer = new PrintWriter("content.txt");
+            writer.print(text);
+            writer.close();
+            System.out.println("Successfully wrote to the file.");
+        } catch (IOException e) {
+            System.out.println("An error occurred.");
+        e.printStackTrace();
         }
-    }
-
-    @FXML
-    void handlePoint() {
-        var operandString = getOperandString();
-        if (operandString.contains(".")) {
-            // TODO remove characters after point
-        } else {
-            // TODO append point
+        } catch (IOException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
         }
     }
 
-    @FXML
-    void handleClear() {
-        // TODO clear operand
+    private void clearTextInput() {
+        textInput.setText("");
+    }
+
+    private String getLabelString() {
+        return label.getText();
+    }
+
+    private String getTextInputString() {
+        return textInput.getText();
+    }
+
+    private boolean hasText() {
+        return ! getLabelString().isBlank();
+    }
+
+    private void setTextViewString(String textViewString) {
+        label.setText(textViewString);
+        setTextFile(textViewString);
+        clearTextInput();
     }
 
     @FXML
-    void handleSwap() {
-        // TODO clear operand
-    }
-
-    private void performOperation(UnaryOperator<Double> op) {
+    void handleSubmit() {
         // TODO
+        setTextViewString(getTextInputString());
     }
 
-    private void performOperation(boolean swap, BinaryOperator<Double> op) {
-        if (hasOperand()) {
-            // TODO push operand first
-        }
-        // TODO perform operation, but swap first if needed
-    }
-
-    @FXML
-    void handleOpAdd() {
-        // TODO
-    }
-
-    @FXML
-    void handleOpSub() {
-        // TODO
-    }
-
-    @FXML
-    void handleOpMult() {
-        // TODO
-    }
 }
