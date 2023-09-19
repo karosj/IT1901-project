@@ -1,6 +1,6 @@
 package ui;
 
-import core.Calc;
+import core.Core;
 
 import java.util.List;
 import java.util.function.BinaryOperator;
@@ -23,19 +23,18 @@ import java.util.Scanner;
 
 public class AppController {
 
-    private Calc calc;
+    private Core core;
 
     public AppController() {
-        calc = new Calc(0.0, 0.0, 0.0);
+        this.core = new Core(false);
     }
 
-    public Calc getCalc() {
-        return calc;
+    public Core getCore() {
+        return this.core;
     }
 
-    public void setCalc(Calc calc) {
-        this.calc = calc;
-        //updateOperandsView();
+    public void setCore(Core core) {
+        this.core = core;
     }
 
     @FXML
@@ -50,49 +49,7 @@ public class AppController {
     }
 
     private void setInitialLabelContent() {
-        label.setText(getTextFromFile());
-    }
-
-    private String getTextFromFile() {
-        String content = "";
-        try {
-            File file = new File("content.txt");
-            Scanner reader = new Scanner(file);
-            while (reader.hasNextLine()) {
-              content += reader.nextLine();
-            }
-            reader.close();
-          } catch (FileNotFoundException e) {
-                System.out.println("No file found.");
-                content = "No file found.";
-            e.printStackTrace();
-          }
-
-        return content;
-    }
-
-    private void setTextFile(String text) {
-        try {
-            File file = new File("content.txt");
-        if (file.createNewFile()) {
-            System.out.println("File created: " + file.getName());
-
-        } else {
-            System.out.println("File already exists.");
-        }
-        try {
-            PrintWriter writer = new PrintWriter("content.txt");
-            writer.print(text);
-            writer.close();
-            System.out.println("Successfully wrote to the file.");
-        } catch (IOException e) {
-            System.out.println("An error occurred.");
-        e.printStackTrace();
-        }
-        } catch (IOException e) {
-            System.out.println("An error occurred.");
-            e.printStackTrace();
-        }
+        label.setText(core.getTextFromFile());
     }
 
     private void clearTextInput() {
@@ -113,7 +70,7 @@ public class AppController {
 
     private void setTextViewString(String textViewString) {
         label.setText(textViewString);
-        setTextFile(textViewString);
+        core.setTextFile(textViewString);
         clearTextInput();
     }
 
