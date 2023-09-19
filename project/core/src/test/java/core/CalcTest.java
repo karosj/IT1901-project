@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 
 public class CalcTest {
 
-    private static void checkCalc(Calc calc, double... operands) {
+    private static void checkCalc(FileStorage calc, double... operands) {
         /*Assertions.assertEquals(operands.length, calc.getOperandCount(), "Wrong operand count");
         for (int i = 0; i < operands.length; i++) {
             Assertions.assertEquals(operands[i], calc.peekOperand(i), "Wrong value at #" + i + " of operand stack");

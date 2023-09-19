@@ -11,16 +11,7 @@ import java.util.function.BinaryOperator;
 import java.util.function.UnaryOperator;
 
 
-public class Calc {
-    
-    private final List<Double> operandStack;
-
-    public Calc(double... operands) {
-        operandStack = new ArrayList<>(operands.length + 2);
-        for (var d : operands) {
-            operandStack.add(d);
-        }
-    }
+public class FileStorage {
     
     public String getTextFromFile() {
         String content = "";

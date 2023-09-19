@@ -39,7 +39,7 @@ public class AppTest extends ApplicationTest {
     public Parent getRootNode() {
         return root;
     }
-
+/* 
     private String enterLabel = """
         E
         n
@@ -126,5 +126,5 @@ public class AppTest extends ApplicationTest {
     public void testPi() {
         click("π");
         checkView("", Math.PI);
-    }
+    }*/
 }
