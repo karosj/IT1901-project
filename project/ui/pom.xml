@@ -74,13 +74,13 @@
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-        		<artifactId>maven-surefire-plugin</artifactId>
+                <artifactId>maven-surefire-plugin</artifactId>
                 <configuration>
                     <argLine>
-                    --add-opens calc.ui/ui=ALL-UNNAMED --add-exports javafx.graphics/com.sun.javafx.application=ALL-UNNAMED
+                        ${argLine} --add-opens calc.ui/ui=ALL-UNNAMED --add-exports javafx.graphics/com.sun.javafx.application=ALL-UNNAMED
                     </argLine>
                 </configuration>
-	        </plugin>
+            </plugin>
 
             <plugin>
                 <groupId>org.openjfx</groupId>
@@ -92,6 +92,23 @@
                     <!-- syntax: module-name/full-app-class-name -->
                     <mainClass>calc.ui/ui.App</mainClass>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>0.8.10</version>
+                                  
+                <executions>
+                    <execution>
+                        <id>prepare-agent</id>
+                        <goals><goal>prepare-agent</goal></goals>
+                    </execution>
+                    <execution>
+                        <id>report</id>
+                        <phase>test</phase>
+                        <goals><goal>report</goal></goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
