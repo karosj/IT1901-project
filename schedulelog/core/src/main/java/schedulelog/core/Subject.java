@@ -1,4 +1,4 @@
-package core;
+package schedulelog;
 
 import java.util.Arrays;
 import java.util.HashMap;

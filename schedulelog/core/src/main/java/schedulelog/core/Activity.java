@@ -1,4 +1,4 @@
-package core;
+package schedulelog;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;

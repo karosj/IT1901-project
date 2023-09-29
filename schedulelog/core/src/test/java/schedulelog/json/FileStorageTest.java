@@ -3,6 +3,8 @@ package core;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import schedulelog.FileStorage;
+
 public class FileStorageTest {
 
     @Test

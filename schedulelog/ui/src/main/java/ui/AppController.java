@@ -1,7 +1,5 @@
 package ui;
 
-import core.FileStorage;
-
 import java.util.List;
 import java.util.function.BinaryOperator;
 import java.util.function.UnaryOperator;
@@ -12,6 +10,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Labeled;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import schedulelog.FileStorage;
 
 import java.io.File;
 import java.io.FileNotFoundException;
