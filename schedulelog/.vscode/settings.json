@@ -10,7 +10,7 @@
         },
         {
             "name": "modules-template testing",
-            "vmArgs": ["--add-opens", "calc.ui/ui=ALL-UNNAMED", "--add-exports", "javafx.graphics/com.sun.javafx.application=ALL-UNNAMED"]
+            "vmArgs": ["--add-opens", "ui/ui=ALL-UNNAMED", "--add-exports", "javafx.graphics/com.sun.javafx.application=ALL-UNNAMED"]
         }
     ],
     "java.test.defaultConfig": "modules-template testing",
