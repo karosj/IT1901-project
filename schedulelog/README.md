@@ -14,7 +14,6 @@ This sequence diagram illustrates how a student interacts with a system named "S
 
 
 
-
 ## Requirements to run
 Java 17.0.8
 Javafx 17.0.8
