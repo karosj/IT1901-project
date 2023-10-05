@@ -34,7 +34,7 @@ components:
 commands:
   - id: changedir
     exec:
-      component: todolist
-      commandLine: cd todolist
+      component: schedulelog
+      commandLine: cd schedulelog
       label: change directory
 
