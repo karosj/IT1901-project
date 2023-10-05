@@ -11,6 +11,8 @@
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <skipTests>false</skipTests>
+        <spotbugs.version>4.3.0</spotbugs.version> 
+        <checkstyle.version>3.1.2</checkstyle.version>
     </properties>
 
     <dependencyManagement>
@@ -44,6 +46,31 @@
                     <artifactId>maven-compiler-plugin</artifactId>
                     <version>3.11.0</version>
                     <configuration>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>com.github.spotbugs</groupId>
+                    <artifactId>spotbugs-maven-plugin</artifactId>
+                    <version>4.7.3.6</version>
+                    <configuration>
+                        <excludeFilterFile>schedulelog/config/spotbugs/exclude.xml</excludeFilterFile>
+                    </configuration>
+                </plugin>
+                <!-- Adding Checkstyle plugin -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-checkstyle-plugin</artifactId>
+                    <version>3.3.0</version>
+                    <dependencies>
+                        <dependency>
+                            <groupId>com.puppycrawl.tools</groupId>
+                            <artifactId>checkstyle</artifactId>
+                            <version>8.45</version> <!-- Change as needed -->
+                        </dependency>
+                    </dependencies>
+                    <configuration>
+                        <configLocation>schedulelog/config/checkstyle/eclipse-java-google-style.xml</configLocation>
+                        <failsOnError>true</failsOnError>
                     </configuration>
                 </plugin>
                 <plugin>
