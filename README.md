@@ -1,4 +1,4 @@
-https://che.stud.ntnu.no/marcula-stud-ntnu-no/gr2319/3100/
+https://che.stud.ntnu.no/#https://gitlab.stud.idi.ntnu.no/it1901/groups-2023/gr2319/gr2319/
 
 # ScheduleLog
 
