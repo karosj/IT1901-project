@@ -8,7 +8,11 @@ This app is designed to provide an overview of your schoolwork. You add the acti
 I'm wondering how much I actually spend on different subjects during the week to plan next week better. Every time after I've worked on a subject, I go into the app and press the "add" button. Today, I worked on a ITP project. I choose the subject from the dropdown menu and enter 2 hours in the hours field, and some notes. It then appears on top of the list of entries sorted by timestamp when I'm done.
 
 ## Sequence diagram
-This sequence diagram includes steps for filling out a logging form, saving the log, viewing previous logs, and displaying a list of past activities using a Schedule Logger system.
+This sequence diagram illustrates how a student interacts with a system named "ScheduleLog." The student fills out a logging form, saves the log, and then views previous logs. The "ScheduleLog" system stores and retrieves the necessary information for logging and displaying previous activities.
+
+
+
+
 
 
 ## Requirements to run
