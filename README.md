@@ -1,3 +1,5 @@
+https://che.stud.ntnu.no/marcula-stud-ntnu-no/gr2319/3100/
+
 # ScheduleLog
 
 ## Contents
@@ -12,6 +14,9 @@ Maven 3.9.4
 
 ## How to run the application
 In terminal, run "mvn clean install", then "mvn test".
+
+
+
 
 
 
