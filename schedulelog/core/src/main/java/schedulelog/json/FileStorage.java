@@ -3,63 +3,70 @@ package schedulelog;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.Scanner;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
-/**
- * The FileStorage class provides methods to read from and write to a text file.
- */
 public class FileStorage {
-    
+
     /**
-     * Reads the content of the "content.txt" file and returns it as a string.
+     * Reads the content of the "content.json" file and returns it as a string.
      * @return The content of the file, or "No file found." if the file does not exist.
      */
     public String getTextFromFile() {
-        StringBuilder content = new StringBuilder();
         try {
-            File file = new File("content.txt");
-            Scanner reader = new Scanner(file);
-            while (reader.hasNextLine()) {
-                content.append(reader.nextLine()).append("\n");
-            }
-            reader.close();
-        } catch (FileNotFoundException e) {
+            File file = new File("content.json");
+            ObjectMapper mapper = new ObjectMapper();
+            Content content = mapper.readValue(file, Content.class);
+            return content.getContent();
+        } catch (IOException e) {
             System.out.println("No file found.");
-            content = new StringBuilder("No file found.");
             e.printStackTrace();
+            return "No file found.";
         }
-        return content.toString().trim();
     }
 
     /**
-     * Writes the provided text to the "content.txt" file.
+     * Writes the provided text to the "content.json" file.
      * If the file does not exist, it will be created.
      * @param text The text to be written to the file.
      */
     public void setTextFile(String text) {
         try {
-            File file = new File("content.txt");
+            File file = new File("content.json");
             if (file.createNewFile()) {
                 System.out.println("File created: " + file.getName());
             } else {
                 System.out.println("File already exists.");
             }
-            
-            try (PrintWriter writer = new PrintWriter("content.txt")) {
-                writer.print(text);
-                System.out.println("Successfully wrote to the file.");
-            } catch (IOException e) {
-                System.out.println("An error occurred while writing to the file.");
-                e.printStackTrace();
-            }
+
+            ObjectMapper mapper = new ObjectMapper();
+            Content content = new Content(text);
+            mapper.writeValue(file, content);
+            System.out.println("Successfully wrote to the file.");
         } catch (IOException e) {
             System.out.println("An error occurred.");
             e.printStackTrace();
         }
     }
+
+    // Inner class to model the JSON object
+    public static class Content {
+        private String content;
+
+        public Content() {
+            // Default constructor for Jackson
+        }
+
+        public Content(String content) {
+            this.content = content;
+        }
+
+        public String getContent() {
+            return content;
+        }
+
+        public void setContent(String content) {
+            this.content = content;
+        }
+    }
 }
-
-
-
-           

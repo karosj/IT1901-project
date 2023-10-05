@@ -1,3 +1,5 @@
+https://che.stud.ntnu.no/#https://gitlab.stud.idi.ntnu.no/it1901/groups-2023/gr2319/gr2319/
+
 # ScheduleLog
 
 ## Contents
@@ -12,6 +14,9 @@ Maven 3.9.4
 
 ## How to run the application
 In terminal, run "mvn clean install", then "mvn test".
+
+
+
 
 
 
