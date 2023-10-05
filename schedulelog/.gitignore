@@ -7,3 +7,5 @@ target/
 org.eclipse.*.prefs
 
 content.txt
+
+.DS_Store
