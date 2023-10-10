@@ -1,38 +1,40 @@
 schemaVersion: 2.1.0
 metadata:
-  attributes:
-    metadata-name-field: generateName
-    metadata-name-original-value: gr2319
-  name: gr2319
-  namespace: marcula-stud-ntnu-no-che-kz9orh
-attributes:
-  che-theia.eclipse.org/sidecar-policy: mergeImage
-  controller.devfile.io/devworkspace-config:
-    name: devworkspace-config
-    namespace: eclipse-che
-  controller.devfile.io/storage-type: per-user
-  dw.metadata.annotations:
-    che.eclipse.org/devfile-source: |
-      url:
-        location: https://gitlab.stud.idi.ntnu.no/it1901/groups-2023/gr2319/gr2319.git
-      factory:
-        params: url=https://gitlab.stud.idi.ntnu.no/it1901/groups-2023/gr2319/gr2319.git
-projects:
-  - git:
-      remotes:
-        origin: https://gitlab.stud.idi.ntnu.no/it1901/groups-2023/gr2319/gr2319.git
-    name: gr2319
+  name: schedulelog
 components:
-  - container:
-      env:
-        - name: CHE_DASHBOARD_URL
-          value: https://che.stud.ntnu.no
-        - name: CHE_PLUGIN_REGISTRY_URL
-          value: https://che.stud.ntnu.no/plugin-registry/v3
-        - name: CHE_PLUGIN_REGISTRY_INTERNAL_URL
-          value: http://plugin-registry.eclipse-che.svc:8080/v3
-        - name: OPENVSX_REGISTRY_URL
-          value: https://open-vsx.org
-      image: quay.io/devfile/universal-developer-image:ubi8-latest
-      sourceMapping: /projects
-    name: universal-developer-image
+  - name: schedulelog
+    container:
+      image: adrianstoica/it1901:latest
+      memoryLimit: 3Gi
+      endpoints:
+        - exposure: public
+          name: 6080-tcp-desktop-ui
+          protocol: http
+          targetPort: 6080
+        - exposure: public
+          name: 3000-tcp
+          protocol: http
+          targetPort: 3000
+        - exposure: public
+          name: 5900-tcp
+          protocol: http
+          targetPort: 5900
+        - exposure: public
+          name: 5901-tcp
+          protocol: http
+          targetPort: 5901
+        - exposure: public
+          name: 8080-tcp
+          protocol: http
+          targetPort: 8080
+        - exposure: public
+          name: 5500-tcp
+          protocol: http
+          targetPort: 5500
+commands:
+  - id: changedir
+    exec:
+      component: schedulelog
+      commandLine: cd schedulelog
+      label: change directory
+
