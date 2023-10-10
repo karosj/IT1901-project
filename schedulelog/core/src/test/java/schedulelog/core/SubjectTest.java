@@ -32,14 +32,14 @@ public class SubjectTest {
     // Testing the constructor with custom subject codes and names.
     @Test
     public void testConstructorWithParameters() {
-        assertEquals("Software Engineering", subject.getSubjectName("TDT4140"));
+        assertEquals("Programvareutvikling", subject.getSubjectName("TDT4140"));
     }
 
     // Testing invalid constructor input.
     @Test
     public void testConstructorWithInvalidParameters() {
         List<String> codes = Arrays.asList("TDT4140");
-        List<String> names = Arrays.asList("Software Engineering", "Advanced Software Engineering");
+        List<String> names = Arrays.asList("Programvareutvikling", "Avansert programvareutvikling");
         assertThrows(IllegalArgumentException.class, () -> new Subject(codes, names));
     }
 
@@ -47,7 +47,7 @@ public class SubjectTest {
     @Test
     public void testAddSubject() {
         subject.addSubject("TDT4170", "Maskinlæring");
-        assertEquals("Machine Learning", subject.getSubjectName("TDT4170"));
+        assertEquals("Maskinæring", subject.getSubjectName("TDT4170"));
     }
 
     // Testing adding a subject with existing code.
