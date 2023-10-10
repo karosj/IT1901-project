@@ -22,6 +22,8 @@ Maven 3.9.4
 
 ### Test application: 
 1. mvn test
+2. mvn spotbugs:check
+3. mvn checkstyle:check
 
 ### Run application: 
 1. cd ui
