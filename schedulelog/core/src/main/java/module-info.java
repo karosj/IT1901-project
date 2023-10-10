@@ -1,4 +1,4 @@
 module core {
-    exports schedulelog;
+    exports schedulelog.core;
     requires com.fasterxml.jackson.databind;
 }
