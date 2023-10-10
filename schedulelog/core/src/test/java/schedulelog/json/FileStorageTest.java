@@ -1,9 +1,7 @@
-package core;
+package schedulelog.json;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-
-import schedulelog.FileStorage;
 
 public class FileStorageTest {
 

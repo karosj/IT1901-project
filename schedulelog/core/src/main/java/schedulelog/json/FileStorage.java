@@ -1,4 +1,4 @@
-package schedulelog;
+package schedulelog.json;
 
 import java.io.File;
 import java.io.FileNotFoundException;
