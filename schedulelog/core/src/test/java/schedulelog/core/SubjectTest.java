@@ -47,7 +47,7 @@ public class SubjectTest {
     @Test
     public void testAddSubject() {
         subject.addSubject("TDT4170", "Maskinlæring");
-        assertEquals("Maskinæring", subject.getSubjectName("TDT4170"));
+        assertEquals("Maskinlæring", subject.getSubjectName("TDT4170"));
     }
 
     // Testing adding a subject with existing code.
