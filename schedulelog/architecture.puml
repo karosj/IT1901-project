@@ -14,3 +14,4 @@ Logger --> Student: List of previous logs
 deactivate Logger
 deactivate Student
 @enduml
+
