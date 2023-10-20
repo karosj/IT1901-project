@@ -13,6 +13,7 @@ import java.util.stream.Stream;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -25,6 +26,7 @@ import org.testfx.matcher.control.LabeledMatchers;
 public class AppTest extends ApplicationTest {
 
     private AppController controller;
+    private App app;
     private Parent root;
 
     @Override
@@ -34,6 +36,7 @@ public class AppTest extends ApplicationTest {
         controller = fxmlLoader.getController();
         stage.setScene(new Scene(root));
         stage.show();
+        app = new App();
     }
 
     public Parent getRootNode() {
@@ -46,6 +49,15 @@ public class AppTest extends ApplicationTest {
         }
     }
 
+    @Test
+    public void testControllerInitial() {
+        assertNotNull(this.controller);
+    }
+
+    @Test
+    public void testAppInitial() {
+        assertNotNull(this.app);
+    }
 
     @Test
     public void checkTextBoxAndLabel() {
