@@ -1,4 +1,4 @@
-@startuml
+@startuml ScheduleLog
 actor Student
 participant "ScheduleLog" as Logger
 
