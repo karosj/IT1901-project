@@ -3,6 +3,7 @@ package schedulelog.core;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
@@ -23,13 +24,15 @@ public class ActivityTest {
 
         subject1 = new Subject("TDT4140", courses);
         subject2 = new Subject("TDT4242", courses);
+
+        activity = new Activity(Arrays.asList(subject1), LocalDateTime.of(2023, 10, 29, 10, 0), LocalDateTime.of(2023, 10, 29, 12, 0), "Lecture on software development techniques");
+
+
     }
 
     @Test
     public void testActivityConstruction() {
-        assertEquals(
-                "Activity for Programvareutvikling (TDT4140): 10:00 - 12:00. Description: Lecture on software development techniques",
-                activity.toString());
+        assertEquals("Activity for Programvareutvikling (TDT4140): 10:00 - 12:00. Description: Lecture on software development techniques", activity.toString());
     }
 
     @Test

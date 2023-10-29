@@ -14,7 +14,7 @@ import java.util.List;
 public class Activity {
 
     // List of subjects associated with the activity.
-    private List<Subject> subjects;
+    private List<Subject> subjects = new ArrayList<>();
 
     // Start time of the activity.
     private LocalDateTime startTime;
@@ -37,7 +37,7 @@ public class Activity {
         // Validating the input parameters.
         validateInput(subjects, startTime, endTime, description);
 
-        this.subjects = new ArrayList<>(subjects);
+        this.subjects.addAll(subjects);
         this.startTime = startTime;
         this.endTime = endTime;
         this.description = description;
@@ -51,8 +51,7 @@ public class Activity {
      * @param endTime     End time of the activity.
      * @param description A textual description of the activity.
      */
-    private void validateInput(List<Subject> subjects, LocalDateTime startTime, LocalDateTime endTime,
-            String description) {
+    private void validateInput(List<Subject> subjects, LocalDateTime startTime, LocalDateTime endTime, String description) {
         if (subjects == null || subjects.isEmpty()) {
             throw new IllegalArgumentException("List of subjects cannot be null or empty.");
         }
@@ -76,12 +75,12 @@ public class Activity {
         if (subject == null) {
             throw new IllegalArgumentException("Subject cannot be null.");
         }
-        if (!subjects.contains(subject)) {
-            subjects.add(subject);
-        } else {
+        if (subjects.contains(subject)) {
             throw new IllegalArgumentException("Subject already associated with this activity.");
         }
+        subjects.add(subject);
     }
+
 
     /**
      * Removes a subject from the activity.
@@ -113,19 +112,11 @@ public class Activity {
 
         // Loop through all subjects associated with the activity.
         for (Subject subject : subjects) {
-            representation.append("Activity for ")
-                    .append(subject.getName())
-                    .append(" (")
-                    .append(subject.getCode())
-                    .append("): ");
+            representation.append("Activity for ").append(subject.getCourseName()).append(" (").append(subject.getCode()).append("): ");
         }
 
         // Format the start and end times.
-        representation.append(startTime.format(timeFormatter))
-                .append(" - ")
-                .append(endTime.format(timeFormatter))
-                .append(". Description: ")
-                .append(description);
+        representation.append(startTime.format(timeFormatter)).append(" - ").append(endTime.format(timeFormatter)).append(". Description: ").append(description);
 
         return representation.toString();
     }
