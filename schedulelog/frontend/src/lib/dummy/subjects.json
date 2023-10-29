@@ -1,0 +1,6 @@
+[
+    { "code": "MATH101", "name": "Calculus" },
+    { "code": "MATH102", "name": "Linear Algebra" },
+    { "code": "PHYS101", "name": "Physics I" },
+    { "code": "CHEM101", "name": "Chemistry I" }
+]
