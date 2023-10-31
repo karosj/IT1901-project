@@ -5,68 +5,87 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Scanner;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import schedulelog.core.Activity;
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class FileStorage {
 
+    private static final String FILE_NAME = "activities.json";
+
     /**
-     * Reads the content of the "content.json" file and returns it as a string.
-     * @return The content of the file, or "No file found." if the file does not exist.
+     * Retrieves the list of activities from the "activities.json" file.
+     * @return List of activities, or an empty list if the file does not exist.
      */
-    public String getTextFromFile() {
+    public List<Activity> getActivities() {
+        File file = new File(FILE_NAME);
+        if (!file.exists()) {
+            return new ArrayList<>();
+        }
         try {
-            File file = new File("content.json");
-            ObjectMapper mapper = new ObjectMapper();
-            Content content = mapper.readValue(file, Content.class);
-            return content.getContent();
+            ObjectMapper mapper = getConfiguredMapper();
+            return mapper.readValue(file, new TypeReference<List<Activity>>() {});
         } catch (IOException e) {
-            System.out.println("No file found.");
+            System.out.println("Error reading file.");
             e.printStackTrace();
-            return "No file found.";
+            return new ArrayList<>();
         }
     }
 
     /**
-     * Writes the provided text to the "content.json" file.
-     * If the file does not exist, it will be created.
-     * @param text The text to be written to the file.
+     * Retrieves the list of activities from the "activities.json" file as a JSON string.
+     * @return JSON string representation of the list of activities.
      */
-    public void setTextFile(String text) {
+    public String getActivitiesJSON() {
+        ObjectMapper mapper = getConfiguredMapper();
         try {
-            File file = new File("content.json");
+            return mapper.writeValueAsString(getActivities());
+        } catch (IOException e) {
+            System.out.println("Error converting activities to JSON.");
+            e.printStackTrace();
+            return "[]";
+        }
+    }
+
+    /**
+     * Adds a new activity to the "activities.json" file.
+     * @param activity The activity to be added.
+     */
+    public void addActivity(Activity activity) {
+        try {
+            File file = new File(FILE_NAME);
             if (file.createNewFile()) {
                 System.out.println("File created: " + file.getName());
             } else {
                 System.out.println("File already exists.");
             }
+            System.out.println("to add:");
+            System.out.println(activity);
 
-            ObjectMapper mapper = new ObjectMapper();
-            Content content = new Content(text);
-            mapper.writeValue(file, content);
-            System.out.println("Successfully wrote to the file.");
+            ObjectMapper mapper = getConfiguredMapper();
+
+            List<Activity> activities = getActivities();
+            activities.add(activity);
+
+            System.out.println(activities);
+            System.out.println("activities");
+            
+            mapper.writeValue(file, activities);
+            System.out.println("Successfully added activity to the file.");
         } catch (IOException e) {
             System.out.println("An error occurred.");
             e.printStackTrace();
         }
     }
 
-    // Inner class to model the JSON object
-    public static class Content {
-        private String content;
-
-        public Content() {
-            // Default constructor for Jackson
-        }
-
-        public Content(String content) {
-            this.content = content;
-        }
-
-        public String getContent() {
-            return content;
-        }
-
-        public void setContent(String content) {
-            this.content = content;
-        }
+    private ObjectMapper getConfiguredMapper() {
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.registerModule(new JavaTimeModule());
+        mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+        return mapper;
     }
 }
