@@ -33,7 +33,7 @@ public class Controller {
 
     @GetMapping("/courses")
     public String Courses() {
-        return "this.courses.getCoursesJSON()"; // TODO
+        return this.courses.getCoursesJSON();
     }
 
     @PostMapping("/addActivity")
