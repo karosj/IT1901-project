@@ -25,6 +25,9 @@ public class Activity {
     // A textual description of the activity.
     private String description;
 
+    // Default constructor for Jackson
+    public Activity() {}
+
     /**
      * Constructor to initialize an activity.
      *
@@ -96,7 +99,21 @@ public class Activity {
         }
     }
 
-    // Standard getters and setters for the member variables (omitted for brevity).
+    public List<Subject> getSubjects() {
+        return subjects;
+    }
+
+    public LocalDateTime getStartTime() {
+        return startTime;
+    }
+
+    public LocalDateTime getEndTime() {
+        return endTime;
+    }
+
+    public String getDescription() {
+        return description;
+    }
 
     /**
      * Provides a string representation of the activity.
@@ -112,7 +129,7 @@ public class Activity {
 
         // Loop through all subjects associated with the activity.
         for (Subject subject : subjects) {
-            representation.append("Activity for ").append(subject.getCourseName()).append(" (").append(subject.getCode()).append("): ");
+            representation.append("Activity for ").append(subject.getName()).append(" (").append(subject.getCode()).append("): ");
         }
 
         // Format the start and end times.

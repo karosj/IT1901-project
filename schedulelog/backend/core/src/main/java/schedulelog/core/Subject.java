@@ -1,37 +1,46 @@
 package schedulelog.core;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 
 /**
  * The Subject class represents an individual course with its code and name.
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Subject {
 
     // Variables to store the course code and course name
-    private final String code;
-    private final Courses name;
+    private String code;
+    private String name;
+    private Courses courses;
+
+    // Default constructor for Jackson
+    public Subject() {
+        this.courses = new Courses();
+    }
 
     /**
      * Constructor to initialize the course code and retrieve its name from the
      * provided Courses.
      *
      * @param code The course code.
-     * @param name The name of the course.
+     * @param courses The courses available.
      * @throws IllegalArgumentException if code is null or empty or if the
      *                                  code is not found in the courses.
      */
-    public Subject(String code, Courses name) {
+    public Subject(String code, Courses courses) {
         if (code == null || code.trim().isEmpty()) {
             throw new IllegalArgumentException("Course code cannot be null or empty");
         }
-        if (name == null) {
-            throw new IllegalArgumentException("Course name cannot be null");
+        if (courses == null) {
+            throw new IllegalArgumentException("Courses name cannot be null");
         }
-        String courseName = name.getCourseName(code);
-        if (courseName == null) {
+        this.name = courses.getCourseName(code);
+        if (this.name == null) {
             throw new IllegalArgumentException("Invalid course code. It is not part of the courses.");
         }
 
         this.code = code;
-        this.name = name;
+        this.courses = courses;
     }
 
     /**
@@ -48,8 +57,12 @@ public class Subject {
      *
      * @return The name of the course.
      */
-    public String getCourseName() {
-        return name.getCourseName(code);
+    public String getName() {
+        return name;
+    }
+
+    public void resetName() {
+        this.name = courses.getCourseName(code);
     }
 
     /**
@@ -59,6 +72,6 @@ public class Subject {
      */
     @Override
     public String toString() {
-        return "Course Code: " + code + ", Course Name: " + getCourseName();
+        return "Course Code: " + code + ", Course Name: " + name;
     }
 }

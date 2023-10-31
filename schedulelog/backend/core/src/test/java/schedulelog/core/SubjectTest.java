@@ -23,7 +23,7 @@ public class SubjectTest {
     public void testSubjectConstructionWithValidCode() {
         Subject subject = new Subject("TDT4140", courses);
         assertEquals("TDT4140", subject.getCode());
-        assertEquals("Programvareutvikling", subject.getCourseName());
+        assertEquals("Programvareutvikling", subject.getName());
     }
 
     @Test
