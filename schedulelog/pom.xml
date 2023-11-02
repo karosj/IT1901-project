@@ -122,5 +122,6 @@
     <modules>
         <module>core</module>
         <module>rest</module>
+        <module>ui</module>
     </modules>
 </project>

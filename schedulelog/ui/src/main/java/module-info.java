@@ -1,4 +1,4 @@
-module schedulelog.ui {
+module ui {
     requires schedulelog.core;
     requires javafx.controls;
     requires javafx.fxml;

@@ -48,7 +48,7 @@ public class AppController {
     }
 
     private void setInitialLabelContent() {
-        label.setText(fileStorage.getTextFromFile());
+        label.setText("hey");
     }
 
     private void clearTextInput() {
@@ -62,7 +62,7 @@ public class AppController {
 
     private void setLabelString(String labelString) {
         label.setText(labelString);
-        fileStorage.setTextFile(labelString);
+        //fileStorage.setTextFile(labelString);
         clearTextInput();
     }
 
