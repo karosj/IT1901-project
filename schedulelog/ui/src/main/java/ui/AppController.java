@@ -35,7 +35,7 @@ public class AppController {
     public void setFileStorage(FileStorage fileStorage) {
         this.fileStorage = fileStorage;
     }
-
+/* 
     @FXML
     private Label label;
 
@@ -70,6 +70,6 @@ public class AppController {
     void handleSubmit() {
         // TODO
         setLabelString(getTextInputString());
-    }
+    }*/
 
 }
