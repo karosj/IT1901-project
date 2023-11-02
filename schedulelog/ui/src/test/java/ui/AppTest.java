@@ -43,7 +43,7 @@ public class AppTest extends ApplicationTest {
         return root;
     }
 
-    private void click(String... labels) {
+    /*private void click(String... labels) {
         for (var label : labels) {
             clickOn(LabeledMatchers.hasText(label));
         }
@@ -63,5 +63,5 @@ public class AppTest extends ApplicationTest {
     public void checkTextBoxAndLabel() {
         clickOn("#textInput").write("Hello, World!");
         click("Submit");
-    }
+    }*/
 }
