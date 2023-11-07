@@ -124,4 +124,8 @@ public class Courses {
     public String toString() {
         return "Courses: " + courseMap;
     }
+
+    public Map<String, String> getCourses() {
+        return courseMap;
+    }
 }
