@@ -5,8 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 /**
  * The Course class represents a collection of courses with their codes and
  * names.
@@ -98,21 +96,6 @@ public class Courses {
         }
 
         courseMap.remove(code);
-    }
-
-    /**
-     * Retrieves courseMap as a JSON string
-     * 
-     * @return JSON string or null if exceptions
-     */
-    public String getCoursesJSON() {
-        try {
-            ObjectMapper mapper = new ObjectMapper();
-            return mapper.writeValueAsString(courseMap);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
     }
 
     /**

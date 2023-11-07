@@ -31,11 +31,6 @@ public class Controller {
         return this.fileStorage.getActivitiesJSON();
     }
 
-    @GetMapping("/courses")
-    public String Courses() {
-        return this.courses.getCoursesJSON();
-    }
-
     @PostMapping("/addActivity")
     public ResponseEntity<String> addActivity(@RequestBody Activity activity) {
         StringBuilder errorMessage = new StringBuilder();
@@ -43,8 +38,7 @@ public class Controller {
         // Validate fields of the Activity object
         if (activity.getSubjects() == null || activity.getSubjects().isEmpty()) {
             errorMessage.append("Subjects are missing. ");
-        }
-        else {
+        } else {
             for (Subject subject : activity.getSubjects()) {
                 if (subject.getCode() == null || subject.getCode().trim().isEmpty()) {
                     errorMessage.append("One or more subjects have a missing or empty code. ");
@@ -62,7 +56,7 @@ public class Controller {
                 }
             }
         }
-        
+
         if (activity.getStartTime() == null) {
             errorMessage.append("Start time is missing. ");
         }
