@@ -6,6 +6,8 @@ target/
 .classpath
 org.eclipse.*.prefs
 
+.idea
+
 content.txt
 content.json
 activities.json
