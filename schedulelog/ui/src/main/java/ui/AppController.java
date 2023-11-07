@@ -77,8 +77,12 @@ public class AppController {
 
     public void initialize() {
         descriptionColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getDescription()));
-        startTimeColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getStartTime().format(DateTimeFormatter.ofPattern("HH:mm"))));
-        endTimeColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getEndTime().format(DateTimeFormatter.ofPattern("HH:mm"))));
+        startTimeColumn.setCellValueFactory(cellData -> new SimpleStringProperty(
+            cellData.getValue().getStartTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"))
+        ));
+        endTimeColumn.setCellValueFactory(cellData -> new SimpleStringProperty(
+            cellData.getValue().getEndTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"))
+        ));
         subjectsColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSubjects().stream()
             .map(Subject::getCode)
             .collect(Collectors.joining(", "))));
