@@ -1,0 +1,31 @@
+@startuml ScheduleLog
+actor User
+participant UIController
+participant AppController
+participant RestConsumer
+participant Controller
+participant FileStorage
+
+User -> UIController: Enter activity details
+UIController -> UIController: Validate input
+alt Validation Successful
+    UIController -> UIController: Create Activity object
+    UIController -> UIController: Display entered details
+else Validation Failed
+    UIController --> User: Display validation error message
+    deactivate UIController
+end
+
+alt Validation Successful
+    UIController -> AppController: Create Activity object
+    AppController -> RestConsumer: Send activity details
+    RestConsumer -> Controller: Send POST request
+    Controller -> FileStorage: Add activity to file
+    FileStorage --> Controller: Success/Failure response
+    Controller --> RestConsumer: Response
+    RestConsumer --> AppController: Response
+    AppController -> UIController: Refresh activities list
+    UIController -> UIController: Update activities list
+    UIController --> User: Show updated activities list
+end
+@enduml
