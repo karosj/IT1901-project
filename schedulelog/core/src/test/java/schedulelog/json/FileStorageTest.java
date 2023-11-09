@@ -7,7 +7,6 @@ import org.junit.jupiter.api.Test;
 import schedulelog.core.Activity;
 import schedulelog.core.Subject;
 import schedulelog.core.Courses;
-import schedulelog.json.FileStorage;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
@@ -55,7 +54,7 @@ public class FileStorageTest {
         storage.addActivity(activity);
 
         // Retrieve the activities from the storage
-        String activitiesJSON = storage.getActivitiesJSON();
+        storage.getActivitiesJSON();
 
         // Assertions.assertTrue(activitiesJSON.contains("{\"code\":\"TMA4240\",\"name\":\"Statistikk\"},\"startTime\":\"2023-10-30T10:00:00\",\"endTime\":\"2023-10-30T12:00:00\",\"description\":\"Math class\""));
     }

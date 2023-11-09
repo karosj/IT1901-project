@@ -11,9 +11,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 import schedulelog.core.Activity;
-import schedulelog.core.Courses;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.io.OutputStream;
 
