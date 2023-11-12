@@ -1,17 +1,16 @@
 package schedulelog.json;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.Scanner;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import schedulelog.core.Activity;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+
+import schedulelog.core.Activity;
 
 public class FileStorage {
 
@@ -19,6 +18,7 @@ public class FileStorage {
 
     /**
      * Retrieves the list of activities from the "activities.json" file.
+     * 
      * @return List of activities, or an empty list if the file does not exist.
      */
     public List<Activity> getActivities() {
@@ -28,7 +28,8 @@ public class FileStorage {
         }
         try {
             ObjectMapper mapper = getConfiguredMapper();
-            return mapper.readValue(file, new TypeReference<List<Activity>>() {});
+            return mapper.readValue(file, new TypeReference<List<Activity>>() {
+            });
         } catch (IOException e) {
             System.out.println("Error reading file.");
             e.printStackTrace();
@@ -37,7 +38,9 @@ public class FileStorage {
     }
 
     /**
-     * Retrieves the list of activities from the "activities.json" file as a JSON string.
+     * Retrieves the list of activities from the "activities.json" file as a JSON
+     * string.
+     * 
      * @return JSON string representation of the list of activities.
      */
     public String getActivitiesJSON() {
@@ -53,6 +56,7 @@ public class FileStorage {
 
     /**
      * Adds a new activity to the "activities.json" file.
+     * 
      * @param activity The activity to be added.
      */
     public void addActivity(Activity activity) {
@@ -73,7 +77,7 @@ public class FileStorage {
 
             System.out.println(activities);
             System.out.println("activities");
-            
+
             mapper.writeValue(file, activities);
             System.out.println("Successfully added activity to the file.");
         } catch (IOException e) {
