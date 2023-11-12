@@ -13,7 +13,15 @@ import java.util.List;
 
 public class FileStorage {
 
-    private static final String FILE_NAME = "activities.json";
+    private final String FILE_NAME;
+
+    public FileStorage() {
+        this.FILE_NAME = "activities.json";
+    }
+
+    public FileStorage(String fileName) {
+        this.FILE_NAME = fileName;
+    }
 
     /**
      * Retrieves the list of activities from the "activities.json" file.

@@ -9,6 +9,5 @@ org.eclipse.*.prefs
 .idea
 
 content.txt
-content.json
-activities.json
+*.json
 .DS_Store

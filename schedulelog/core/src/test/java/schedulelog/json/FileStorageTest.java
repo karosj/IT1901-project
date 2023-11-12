@@ -15,10 +15,11 @@ public class FileStorageTest {
 
     private FileStorage storage;
     private Courses courses;
+    private final String FILE_NAME = "test.json";
 
     @BeforeEach
     public void setUp() {
-        this.storage = new FileStorage();
+        this.storage = new FileStorage(FILE_NAME);
         this.courses = new Courses();
     }
 
@@ -34,7 +35,7 @@ public class FileStorageTest {
         storage.addActivity(activity);
 
         // Retrieve the activities from the storage
-        FileStorage anotherStorage = new FileStorage();
+        FileStorage anotherStorage = new FileStorage(FILE_NAME);
         Activity retrievedActivity = anotherStorage.getActivities().get(0);
 
         // Assert that the added and retrieved activities are the same
