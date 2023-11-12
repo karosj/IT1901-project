@@ -11,9 +11,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 import schedulelog.core.Activity;
-import schedulelog.core.Courses;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.io.OutputStream;
 
@@ -47,11 +45,10 @@ public class RestConsumer {
             conn.disconnect();
 
             // Now result.toString() contains the full JSON response
-            System.out.println("Output from Server .... \n" + result.toString());
+            // System.out.println("Output from Server .... \n" + result.toString());
 
             // Deserialize JSON response to List of Activity objects
-            List<Activity> activities = mapper.readValue(result.toString(), new TypeReference<List<Activity>>() {
-            });
+            List<Activity> activities = mapper.readValue(result.toString(), new TypeReference<List<Activity>>() {});
             return activities;
 
         } catch (Exception e) {
@@ -60,7 +57,7 @@ public class RestConsumer {
         }
     }
 
-    public void addActivity(Activity activity) {
+    public String addActivity(Activity activity) {
         try {
             System.out.println("Sending POST request to server...");
             URL url = new URL("http://localhost:8080/addActivity");
@@ -93,8 +90,10 @@ public class RestConsumer {
             conn.disconnect();
 
             System.out.println("Server response .... \n" + response.toString());
+            return response.toString();
         } catch (Exception e) {
             e.printStackTrace();
+            return null;
         }
     }
 

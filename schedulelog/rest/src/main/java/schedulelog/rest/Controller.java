@@ -10,7 +10,6 @@ import org.springframework.http.HttpStatus;
 
 import schedulelog.core.Activity;
 import schedulelog.core.Subject;
-import schedulelog.core.Courses;
 import schedulelog.json.FileStorage;
 
 @CrossOrigin(origins = "http://localhost:5173")
@@ -18,11 +17,9 @@ import schedulelog.json.FileStorage;
 public class Controller {
 
     private FileStorage fileStorage;
-    private Courses courses;
 
     public Controller() {
         this.fileStorage = new FileStorage();
-        this.courses = new Courses();
     }
 
     // Use FileStorage to run getActivitiesJSON, which returns an activities json
