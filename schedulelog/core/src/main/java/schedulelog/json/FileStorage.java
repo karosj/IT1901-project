@@ -68,9 +68,6 @@ public class FileStorage {
 
             List<Activity> activities = getActivities();
             activities.add(activity);
-
-            System.out.println(activities);
-            System.out.println("activities");
             
             mapper.writeValue(file, activities);
             System.out.println("Successfully added activity to the file.");

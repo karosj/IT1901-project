@@ -15,6 +15,7 @@ public class Subject {
 
     // Default constructor for Jackson
     public Subject() {
+        this.courses = new Courses();
     }
 
     /**

@@ -45,7 +45,7 @@ public class RestConsumer {
             conn.disconnect();
 
             // Now result.toString() contains the full JSON response
-            System.out.println("Output from Server .... \n" + result.toString());
+            // System.out.println("Output from Server .... \n" + result.toString());
 
             // Deserialize JSON response to List of Activity objects
             List<Activity> activities = mapper.readValue(result.toString(), new TypeReference<List<Activity>>() {
