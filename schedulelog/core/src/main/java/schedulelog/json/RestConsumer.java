@@ -58,7 +58,7 @@ public class RestConsumer {
         }
     }
 
-    public void addActivity(Activity activity) {
+    public String addActivity(Activity activity) {
         try {
             System.out.println("Sending POST request to server...");
             URL url = new URL("http://localhost:8080/addActivity");
@@ -91,8 +91,10 @@ public class RestConsumer {
             conn.disconnect();
 
             System.out.println("Server response .... \n" + response.toString());
+            return response.toString();
         } catch (Exception e) {
             e.printStackTrace();
+            return null;
         }
     }
 
