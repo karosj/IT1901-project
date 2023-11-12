@@ -1,21 +1,13 @@
 package ui;
 
 import java.util.List;
-import java.util.function.BinaryOperator;
-import java.util.function.UnaryOperator;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
-import javafx.scene.control.Labeled;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.util.Callback;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.DatePicker;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -33,7 +25,6 @@ import schedulelog.core.Courses;
 import java.util.stream.Collectors;
 
 import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.value.ObservableValue;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -93,7 +84,12 @@ public class AppController {
         subjectSelector.setItems(subjectsList);
         subjectSelector.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
-        setActivitiesList(this.activities);
+        if (activities != null) {
+            activitiesTableView.getItems().setAll(activities);
+        } else {
+            // Handle the case where activities is null, e.g., clear the table or show a message
+            activitiesTableView.getItems().clear();
+        }
     }
 
     public void setActivitiesList(List<Activity> activities) {
@@ -145,6 +141,12 @@ public class AppController {
         endDateInput.setValue(null);
         endTimeInput.clear();
         subjectSelector.getSelectionModel().clearSelection();
+    }
+
+    private void handleConnectionError(Exception e) {
+        System.err.println("Error connecting to backend: " + e.getMessage());
+        // You might want to show an alert to the user or take other appropriate actions
+        showAlert("Connection Error", "Unable to connect to the backend. Please check your network connection and try again.");
     }
 
     private void showAlert(String title, String content) {
