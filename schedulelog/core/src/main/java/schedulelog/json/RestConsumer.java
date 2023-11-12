@@ -14,6 +14,26 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import schedulelog.core.Activity;
 
+/**
+ * Manages HTTP communication with a RESTful service for operations related to
+ * Activity objects.
+ *
+ * RestConsumer provides functionalities to interact with a RESTful API,
+ * particularly for
+ * retrieving and adding Activity objects. Encapsulates the complexities of
+ * making HTTP
+ * requests and processing responses. Supports operations such as fetching a
+ * list
+ * of activities from a remote server and posting new activity data.
+ *
+ * Utilizes Jackson for JSON serialization and deserialization, making sure that
+ * Activity
+ * objects are correctly mapped to and from JSON format when communicating with
+ * the server.
+ * The class is configured to handle Java time objects properly when serializing
+ * and
+ * deserializing JSON data.
+ */
 public class RestConsumer {
 
     private final ObjectMapper mapper;

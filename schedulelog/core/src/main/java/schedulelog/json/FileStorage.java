@@ -12,6 +12,19 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import schedulelog.core.Activity;
 
+/**
+ * FileStorage functionality for managing the storage and retrieval of Activity
+ * objects.
+ * 
+ * Handles interactions with a JSON file (activities.json) for persisting
+ * activity data. Offers methods to read activities from the file, convert them
+ * to
+ * JSON format, add new activities, and configure JSON processing for proper
+ * handling
+ * of date and time formats. This class is essential for maintaining the
+ * persistent state
+ * of activities across application restarts.
+ */
 public class FileStorage {
 
     private static final String FILE_NAME = "activities.json";
@@ -86,6 +99,15 @@ public class FileStorage {
         }
     }
 
+    /**
+     * Creates and configures an ObjectMapper for JSON processing.
+     *
+     * Initializes a new ObjectMapper and configures it for handling
+     * Java time objects by registering the JavaTimeModule. It also adjusts the
+     * ObjectMapper's settings to not write dates as timestamps.
+     *
+     * @return A configured ObjectMapper instance.
+     */
     private ObjectMapper getConfiguredMapper() {
         ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new JavaTimeModule());
