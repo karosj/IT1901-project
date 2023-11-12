@@ -1,6 +1,7 @@
-https://che.stud.ntnu.no/#https://gitlab.stud.idi.ntnu.no/it1901/groups-2023/gr2319/gr2319/
-
 # ScheduleLog
+
+## Eclipse Che
+https://che.stud.ntnu.no/#https://gitlab.stud.idi.ntnu.no/it1901/groups-2023/gr2319/gr2319/
 
 ## Contents
 The code for ScheduleLog app is located in the schedulelog folder.
@@ -47,9 +48,11 @@ The code for the UI of the app is located in the ui folder
 ```
 
 ## Requirements to run
-Java 17.0.8
-Javafx 17.0.8
-Maven 3.9.4
+- Java 17.0.8
+
+- JavaFX 17.0.8
+
+- Maven 3.9.4
 
 ## How to run the application
 ### Install
