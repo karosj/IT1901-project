@@ -54,27 +54,28 @@ public class AppTest extends ApplicationTest {
   // Sets up the test environment including the mock RestConsumer and loading the
   // FXML.
   @Override
-    public void start(Stage stage) throws IOException {
-        // Create and configure the mock RestConsumer
-        when(mockRestConsumer.getActivities()).thenReturn(mockActivities);
-        when(mockRestConsumer.addActivity(any(Activity.class))).thenReturn("Mocked server response");
+  public void start(Stage stage) throws IOException {
+    // Create and configure the mock RestConsumer
+    mockRestConsumer = mock(RestConsumer.class);
+    when(mockRestConsumer.getActivities()).thenReturn(mockActivities);
+    when(mockRestConsumer.addActivity(any(Activity.class))).thenReturn("Mocked server response");
 
-        // Load the FXML and set the controller
-        FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource("App.fxml"));
-        root = fxmlLoader.load();
-        controller = fxmlLoader.getController();
+    // Load the FXML and set the controller
+    FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource("App.fxml"));
+    root = fxmlLoader.load();
+    controller = fxmlLoader.getController();
 
-        // Set the mocked RestConsumer in the controller
-        controller.setRestConsumer(mockRestConsumer);
+    // Set the mocked RestConsumer in the controller
+    controller.setRestConsumer(mockRestConsumer);
 
-        // Now initialize the controller
-        controller.initialize();
+    // Now initialize the controller
+    controller.initialize();
 
-        // Set up the stage
-        stage.setScene(new Scene(root));
-        stage.show();
-        app = new App();
-    }
+    // Set up the stage
+    stage.setScene(new Scene(root));
+    stage.show();
+    app = new App();
+  }
 
   public Parent getRootNode() {
     return root;
