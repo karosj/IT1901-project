@@ -54,7 +54,7 @@ public class Activity {
      * @param endTime     End time of the activity.
      * @param description A textual description of the activity.
      */
-    private void validateInput(List<Subject> subjects, LocalDateTime startTime, LocalDateTime endTime, String description) {
+    public void validateInput(List<Subject> subjects, LocalDateTime startTime, LocalDateTime endTime, String description) {
         if (subjects == null || subjects.isEmpty()) {
             throw new IllegalArgumentException("List of subjects cannot be null or empty.");
         }

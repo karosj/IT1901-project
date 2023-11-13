@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -43,6 +44,12 @@ public class CoursesTest {
         assertThrows(IllegalArgumentException.class, () -> new Courses(codes, names));
     }
 
+    // Testing invalid constructor input.
+    @Test
+    public void testConstructorWithNullCourseCodes() {
+        assertThrows(IllegalArgumentException.class, () -> new Courses(null, null));
+    }
+
     // Testing adding a new course.
     @Test
     public void testAddCourse() {
@@ -74,6 +81,16 @@ public class CoursesTest {
     @Test
     public void testRemoveNonExistingCourse() {
         assertThrows(IllegalArgumentException.class, () -> course.removeCourse("TDT4180"));
+    }
+
+    // Testing getting courses
+    @Test
+    public void testGetCourses() {
+        Map<String, String> expectedCourses = Map.of(
+            "TDT4140", "Programvareutvikling",
+            "TDT4242", "Avansert programvareutvikling"
+        );
+        assertTrue(course.getCourses().equals(expectedCourses), "Courses map should match the expected map");
     }
     
     // Testing the string representation of the Courses class.
