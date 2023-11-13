@@ -129,12 +129,58 @@ public class AppTest extends ApplicationTest {
         String addActivityButtonId = "#addActivityButton";
 
         // Simulate user input
-        clickOn("#descriptionInput").write("Not good format session");
+        clickOn("#descriptionInput").write("too little");
 
         // Click the button to add the activity
         clickOn(addActivityButtonId);
         
-        assertEquals("Not good format session", lookup("#descriptionInput").queryTextInputControl().getText());
+        assertEquals("too little", lookup("#descriptionInput").queryTextInputControl().getText());
+    }
+
+    @Test
+    public void testStrangeDates() {
+        // Assuming you have a button with fx:id "addActivityButton" in your FXML
+        String addActivityButtonId = "#addActivityButton";
+
+        // Simulate user input
+        clickOn("#descriptionInput").write("Strange dates");
+        clickOn("#startDateInput").write("10/27/2023");
+        type(KeyCode.ENTER);
+        clickOn("#startTimeInput").write("10:00");
+        clickOn("#endDateInput").write("10/25/2023");
+        type(KeyCode.ENTER);
+        clickOn("#endTimeInput").write("12:00");
+
+        // Assuming you have a ListView for subjects with fx:id "subjectSelector"
+        // Select a subject from the list
+        clickOn("#subjectSelector");
+        type(KeyCode.DOWN); // Navigate in the list
+        type(KeyCode.ENTER); // Select an item
+
+        // Click the button to add the activity
+        clickOn(addActivityButtonId);
+        
+        assertEquals("Strange dates", lookup("#descriptionInput").queryTextInputControl().getText());
+    }
+
+    @Test
+    public void testNoSubjects() {
+        // Assuming you have a button with fx:id "addActivityButton" in your FXML
+        String addActivityButtonId = "#addActivityButton";
+
+        // Simulate user input
+        clickOn("#descriptionInput").write("No subjects");
+        clickOn("#startDateInput").write("10/27/2023");
+        type(KeyCode.ENTER);
+        clickOn("#startTimeInput").write("10:00");
+        clickOn("#endDateInput").write("10/27/2023");
+        type(KeyCode.ENTER);
+        clickOn("#endTimeInput").write("12:00");
+
+        // Click the button to add the activity
+        clickOn(addActivityButtonId);
+        
+        assertEquals("No subjects", lookup("#descriptionInput").queryTextInputControl().getText());
     }
 
 }

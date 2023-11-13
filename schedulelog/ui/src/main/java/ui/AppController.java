@@ -42,11 +42,6 @@ public class AppController {
         courses = new Courses();
     }
 
-    public AppController(RestConsumer restConsumer) {
-        this.restConsumer = restConsumer;
-        courses = new Courses();
-    }
-
     @FXML
     private TableView<Activity> activitiesTableView;
     @FXML
@@ -92,8 +87,11 @@ public class AppController {
     }
 
     public void setActivitiesList(List<Activity> activities) {
-        if (activities != null && !activities.isEmpty()) {
+        if (activities != null) {
             activitiesTableView.getItems().setAll(activities);
+        }
+        else {
+            showAlert("Error", "An error occurred while retrieving the activities.");
         }
     }
 
