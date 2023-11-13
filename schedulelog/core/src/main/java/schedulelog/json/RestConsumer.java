@@ -5,6 +5,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -71,7 +72,8 @@ public class RestConsumer {
                 throw new RuntimeException("Failed : HTTP error code : " + conn.getResponseCode());
             }
 
-            BufferedReader br = new BufferedReader(new InputStreamReader((conn.getInputStream())));
+            BufferedReader br = new BufferedReader(
+                    new InputStreamReader((conn.getInputStream()), StandardCharsets.UTF_8));
 
             String output;
             while ((output = br.readLine()) != null) {
@@ -79,9 +81,6 @@ public class RestConsumer {
             }
             br.close(); // Close the BufferedReader
             conn.disconnect();
-
-            // Now result.toString() contains the full JSON response
-            // System.out.println("Output from Server .... \n" + result.toString());
 
             // Deserialize JSON response to List of Activity objects
             List<Activity> activities = mapper.readValue(result.toString(), new TypeReference<List<Activity>>() {
@@ -117,7 +116,7 @@ public class RestConsumer {
             String jsonInput = mapper.writeValueAsString(activity);
 
             OutputStream os = conn.getOutputStream();
-            os.write(jsonInput.getBytes());
+            os.write(jsonInput.getBytes(StandardCharsets.UTF_8));
             os.flush();
             os.close();
 
@@ -126,7 +125,7 @@ public class RestConsumer {
                 throw new RuntimeException("Failed : HTTP error code : " + conn.getResponseCode());
             }
 
-            BufferedReader br = new BufferedReader(new InputStreamReader((conn.getInputStream())));
+            BufferedReader br = new BufferedReader(new InputStreamReader((conn.getInputStream()), StandardCharsets.UTF_8));
             String output;
             StringBuilder response = new StringBuilder();
             while ((output = br.readLine()) != null) {
