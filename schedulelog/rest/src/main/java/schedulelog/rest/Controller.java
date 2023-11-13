@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import schedulelog.core.Activity;
-import schedulelog.core.Courses;
 import schedulelog.core.Subject;
 import schedulelog.json.FileStorage;
 
@@ -24,11 +23,9 @@ import schedulelog.json.FileStorage;
 public class Controller {
 
     private FileStorage fileStorage;
-    private Courses courses;
 
     public Controller() {
         this.fileStorage = new FileStorage();
-        this.courses = new Courses();
     }
 
     /**

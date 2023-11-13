@@ -18,7 +18,31 @@
             <artifactId>spring-boot-starter-web</artifactId>
             <version>2.6.1</version> <!-- Specify the appropriate version -->
         </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <version>2.6.1</version> <!-- Specify the appropriate version -->
+            <scope>test</scope>
+        </dependency>
+        <!-- Mockito (if not already included in Spring Boot Test Starter) -->
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>3.3.3</version> <!-- Use the latest version -->
+            <scope>test</scope>
+        </dependency>
 
+        <!-- Jackson for JSON processing -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>2.15.2</version> <!-- Check for the latest version -->
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-jsr310</artifactId>
+            <version>2.15.2</version> <!-- Use the version that matches your Jackson version -->
+        </dependency>
 
         <!-- Dependency on core module -->
         <dependency>
