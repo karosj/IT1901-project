@@ -110,7 +110,7 @@ public class AppTest extends ApplicationTest {
     WaitForAsyncUtils.waitForFxEvents();
 
     // Assert that the activities list is empty or null
-    verifyThat(".alert .content", hasText("An error occurred while retrieving the activities."),"Expected error message for failed activities retrieval not displayed.");
+    verifyThat(".alert .content", hasText("An error occurred while retrieving the activities."));
 
     // Reset the mock to its original state
     when(mockRestConsumer.getActivities()).thenReturn(mockActivities);

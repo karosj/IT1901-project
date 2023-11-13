@@ -114,15 +114,15 @@ public class ActivityTest {
     @Test
     public void testValidateInputWithEmptyDescription() {
         assertThrows(IllegalArgumentException.class, () -> {
-            activity.validateInput(List.of(new Subject("TDT4140", courses)), LocalDateTime.now(), LocalDateTime.now().plusHours(1), "Validating input with an empty description should throw an IllegalArgumentException.");
-        });
+            activity.validateInput(List.of(new Subject("TDT4140", courses)), LocalDateTime.now(), LocalDateTime.now().plusHours(1), "");
+        }, "Validating input with an empty description should throw an IllegalArgumentException.");
     }
 
     @Test
     public void testValidateInputWithWhitespaceDescription() {
         assertThrows(IllegalArgumentException.class, () -> {
-            activity.validateInput(List.of(new Subject("TDT4140", courses)), LocalDateTime.now(), LocalDateTime.now().plusHours(1), "Validating input with a whitespace-only description should throw an IllegalArgumentException.");
-        });
+            activity.validateInput(List.of(new Subject("TDT4140", courses)), LocalDateTime.now(), LocalDateTime.now().plusHours(1), "   ");
+        }, "Validating input with a whitespace-only description should throw an IllegalArgumentException.");
     }
     
 }
