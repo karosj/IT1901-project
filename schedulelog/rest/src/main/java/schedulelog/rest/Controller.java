@@ -41,13 +41,8 @@ public class Controller {
                     errorMessage.append("One or more subjects have a missing or empty code. ");
                     break; // Exit the loop once you find an invalid subject to avoid redundant checks
                 }
-                try {
-                    subject.resetName();
-                    if (subject.getName() == null) {
-                        errorMessage.append("One or more subjects have an invalid code. ");
-                        break; // Exit the loop once you find an invalid subject to avoid redundant checks
-                    }
-                } catch (IllegalArgumentException e) {
+                subject.resetName();
+                if (subject.getName() == null) {
                     errorMessage.append("One or more subjects have an invalid code. ");
                     break; // Exit the loop once you find an invalid subject to avoid redundant checks
                 }
