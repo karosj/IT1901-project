@@ -37,7 +37,7 @@ import schedulelog.core.Activity;
  */
 public class RestConsumer {
 
-    private final ObjectMapper mapper;
+  private final ObjectMapper mapper;
 
     /**
      * Initializes a new instance of RestConsumer with a configured ObjectMapper.
@@ -49,6 +49,7 @@ public class RestConsumer {
     public RestConsumer() {
         this.mapper = getConfiguredMapper();
     }
+  }
 
     /**
      * Retrieves a list of Activity objects from a RESTful API.
@@ -68,19 +69,16 @@ public class RestConsumer {
             conn.setRequestMethod("GET");
             conn.setRequestProperty("Accept", "application/json");
 
-            if (conn.getResponseCode() != 200) {
-                throw new RuntimeException("Failed : HTTP error code : " + conn.getResponseCode());
-            }
+      ObjectMapper mapper = getConfiguredMapper();
+      String jsonInput = mapper.writeValueAsString(activity);
 
             BufferedReader br = new BufferedReader(
                     new InputStreamReader((conn.getInputStream()), StandardCharsets.UTF_8));
 
-            String output;
-            while ((output = br.readLine()) != null) {
-                result.append(output);
-            }
-            br.close(); // Close the BufferedReader
-            conn.disconnect();
+      if (conn.getResponseCode() != HttpURLConnection.HTTP_CREATED
+          && conn.getResponseCode() != HttpURLConnection.HTTP_OK) {
+        throw new RuntimeException("Failed : HTTP error code : " + conn.getResponseCode());
+      }
 
             // Deserialize JSON response to List of Activity objects
             List<Activity> activities = mapper.readValue(result.toString(), new TypeReference<List<Activity>>() {
@@ -92,6 +90,7 @@ public class RestConsumer {
             return null;
         }
     }
+  }
 
     /**
      * Adds a new Activity object to the server via a RESTful API.

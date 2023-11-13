@@ -21,10 +21,37 @@ import schedulelog.json.FileStorage;
 @RestController
 public class Controller {
 
-    private FileStorage fileStorage;
+  private FileStorage fileStorage;
 
-    public Controller() {
-        this.fileStorage = new FileStorage();
+  public Controller() {
+    this.fileStorage = new FileStorage();
+  }
+
+  // Use FileStorage to run getActivitiesJSON, which returns an activities json
+  @GetMapping("/activities")
+  public String getActivities() {
+    return this.fileStorage.getActivitiesJSON();
+  }
+
+  @PostMapping("/addActivity")
+  public ResponseEntity<String> addActivity(@RequestBody Activity activity) {
+    StringBuilder errorMessage = new StringBuilder();
+
+    // Validate fields of the Activity object
+    if (activity.getSubjects() == null || activity.getSubjects().isEmpty()) {
+      errorMessage.append("Subjects are missing. ");
+    } else {
+      for (Subject subject : activity.getSubjects()) {
+        if (subject.getCode() == null || subject.getCode().trim().isEmpty()) {
+          errorMessage.append("One or more subjects have a missing or empty code. ");
+          break; // Exit the loop once you find an invalid subject to avoid redundant checks
+        }
+        subject.resetName();
+        if (subject.getName() == null) {
+          errorMessage.append("One or more subjects have an invalid code. ");
+          break; // Exit the loop once you find an invalid subject to avoid redundant checks
+        }
+      }
     }
 
     /**
@@ -94,4 +121,13 @@ public class Controller {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error adding activity");
         }
     }
+
+    // If validation passed, try to add the activity
+    try {
+      fileStorage.addActivity(activity);
+      return ResponseEntity.ok("Activity added successfully");
+    } catch (Exception e) {
+      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error adding activity");
+    }
+  }
 }

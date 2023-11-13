@@ -7,7 +7,6 @@ import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -39,9 +38,9 @@ import schedulelog.json.RestConsumer;
  */
 public class AppController {
 
-    private List<Activity> activities = new ArrayList<>();
-    private RestConsumer restConsumer;
-    private Courses courses;
+  private List<Activity> activities = new ArrayList<>();
+  private RestConsumer restConsumer;
+  private Courses courses;
 
     /**
      * Constructor.
@@ -53,29 +52,12 @@ public class AppController {
         this.restConsumer = new RestConsumer();
         courses = new Courses();
     }
+  }
 
-    @FXML
-    private TableView<Activity> activitiesTableView;
-    @FXML
-    private TableColumn<Activity, String> descriptionColumn;
-    @FXML
-    private TableColumn<Activity, String> startTimeColumn;
-    @FXML
-    private TableColumn<Activity, String> endTimeColumn;
-    @FXML
-    private TableColumn<Activity, String> subjectsColumn;
-    @FXML
-    private TextField descriptionInput;
-    @FXML
-    private DatePicker startDateInput;
-    @FXML
-    private TextField startTimeInput;
-    @FXML
-    private TextField endTimeInput;
-    @FXML
-    private DatePicker endDateInput;
-    @FXML
-    private ListView<String> subjectSelector;
+  public void refreshActivitiesList() {
+    this.activities = this.restConsumer.getActivities();
+    setActivitiesList(this.activities);
+  }
 
     /**
      * Initializes the controller. This method sets up the table columns and
@@ -98,11 +80,35 @@ public class AppController {
         ObservableList<String> subjectsList = FXCollections.observableArrayList();
         courses.getCourses().forEach((code, name) -> subjectsList.add(code + ": " + name));
 
-        subjectSelector.setItems(subjectsList);
-        subjectSelector.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+      // Validate the input and create the activity
+      if (description.isEmpty()) {
+        // Handle invalid input
+        showAlert("Invalid input", "Please check the activity details and try again.");
+        return;
+      } else if (startTime.isAfter(endTime)) {
+        // Handle invalid input
+        showAlert("Invalid input", "Start time cannot be after end time.");
+        return;
+      }
 
-        Platform.runLater(this::refreshActivitiesList);
+      List<Subject> subjects = new ArrayList<Subject>();
+      for (String subjectCode : subjectSelector.getSelectionModel().getSelectedItems()) {
+        subjects.add(new Subject(subjectCode.split(":")[0], courses));
+      }
+
+      Activity newActivity = new Activity(subjects, startTime, endTime, description);
+
+      // Send the activity to the server
+      this.restConsumer.addActivity(newActivity);
+      refreshActivitiesList();
+
+      clearInputs();
+    } catch (DateTimeParseException e) {
+      showAlert("Invalid Time Format", "Please enter the time in HH:mm format.");
+    } catch (Exception e) {
+      showAlert("Error", "An error occurred: " + e.getMessage());
     }
+  }
 
     /**
      * Sets the RestConsumer instance for the AppController class.

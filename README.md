@@ -11,12 +11,15 @@ The logic for the app ScheduleLog is located in the core folder within the sched
 The code for the UI of the app is located in the ui folder
 
 ```
-.:
+Root:.
 ├───assets
+│   └───release1png
 ├───docs
+│   ├───diagrams
 │   ├───release1
 │   └───release2
 └───schedulelog
+    ├───.vscode
     ├───config
     │   ├───checkstyle
     │   ├───eclipse
@@ -30,10 +33,67 @@ The code for the UI of the app is located in the ui folder
     │   │   │           └───json
     │   │   └───test
     │   │       └───java
-    │   │   │       └───schedulelog
-    │   │   │           ├───core
-    │   │   │           └───json
+    │   │           ├───core
+    │   │           └───schedulelog
+    │   │               ├───core
+    │   │               └───json
     │   └───target
+    │       ├───classes
+    │       │   └───schedulelog
+    │       │       ├───core
+    │       │       └───json
+    │       ├───generated-sources
+    │       │   └───annotations
+    │       ├───generated-test-sources
+    │       │   └───test-annotations
+    │       ├───maven-status
+    │       │   └───maven-compiler-plugin
+    │       │       ├───compile
+    │       │       │   └───default-compile
+    │       │       └───testCompile
+    │       │           └───default-testCompile
+    │       ├───surefire-reports
+    │       └───test-classes
+    │           ├───META-INF
+    │           └───schedulelog
+    │               ├───core
+    │               └───json
+    ├───rest
+    │   ├───src
+    │   │   ├───main
+    │   │   │   └───java
+    │   │   │       └───schedulelog
+    │   │   │           └───rest
+    │   │   └───test
+    │   │       ├───java
+    │   │       │   └───schedulelog
+    │   │       │       ├───rest
+    │   │       │       └───ui
+    │   │       └───resources
+    │   └───target
+    │       ├───classes
+    │       │   └───schedulelog
+    │       │       └───rest
+    │       ├───generated-sources
+    │       │   └───annotations
+    │       ├───generated-test-sources
+    │       │   └───test-annotations
+    │       ├───maven-archiver
+    │       ├───maven-status
+    │       │   └───maven-compiler-plugin
+    │       │       ├───compile
+    │       │       │   └───default-compile
+    │       │       └───testCompile
+    │       │           └───default-testCompile
+    │       ├───site
+    │       │   └───jacoco
+    │       │       ├───jacoco-resources
+    │       │       └───schedulelog.rest
+    │       ├───surefire-reports
+    │       └───test-classes
+    │           ├───META-INF
+    │           └───schedulelog
+    │               └───rest
     └───ui
         ├───src
         │   ├───main
@@ -45,6 +105,20 @@ The code for the UI of the app is located in the ui folder
         │       └───java
         │           └───ui
         └───target
+            ├───classes
+            │   └───ui
+            ├───generated-sources
+            │   └───annotations
+            ├───generated-test-sources
+            │   └───test-annotations
+            ├───maven-status
+            │   └───maven-compiler-plugin
+            │       ├───compile
+            │       │   └───default-compile
+            │       └───testCompile
+            │           └───default-testCompile
+            └───test-classes
+                └───META-INF
 ```
 
 ## Requirements to run
