@@ -71,7 +71,7 @@ public void testAddActivity() throws Exception {
     Subject subject = new Subject("TDT4120", new Courses());
     LocalDateTime startTime = LocalDateTime.of(2023, 10, 31, 12, 0);
     LocalDateTime endTime = LocalDateTime.of(2023, 10, 31, 13, 0);
-    Activity activity = new Activity(Arrays.asList(subject), startTime, endTime, "Øving 1");
+    Activity activity = new Activity(Arrays.asList(subject), startTime, endTime, "Test Øving 1");
 
     // Convert the Activity object to JSON string
     String activityJson = objectMapper.writeValueAsString(activity);

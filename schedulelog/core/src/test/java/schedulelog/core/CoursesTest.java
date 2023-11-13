@@ -1,15 +1,13 @@
 package schedulelog.core;
 
-import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 import java.util.List;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-/**
- * Test class for Courses
- */
+import static org.junit.jupiter.api.Assertions.*;
+
 public class CoursesTest {
 
     // Courses instance for testing purposes.
