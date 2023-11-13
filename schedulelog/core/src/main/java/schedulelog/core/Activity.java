@@ -37,6 +37,7 @@ public class Activity {
    * @param endTime     End time of the activity.
    * @param description A textual description of the activity.
    */
+
   public Activity(List<Subject> subjects, LocalDateTime startTime, LocalDateTime endTime, String description) {
     // Validating the input parameters.
     validateInput(subjects, startTime, endTime, description);
@@ -46,6 +47,7 @@ public class Activity {
     this.endTime = endTime;
     this.description = description;
   }
+
 
   /**
    * Validates the input parameters for the constructor.
@@ -130,12 +132,14 @@ public class Activity {
 
     // Loop through all subjects associated with the activity.
     for (Subject subject : subjects) {
-      representation.append("Activity for ").append(subject.getName()).append(" (").append(subject.getCode())
+      representation.append("Activity for ")
+        .append(subject.getName()).append(" (").append(subject.getCode())
           .append("): ");
     }
 
     // Format the start and end times.
-    representation.append(startTime.format(timeFormatter)).append(" - ").append(endTime.format(timeFormatter))
+    representation.append(startTime.format(timeFormatter)).append(" - ")
+      .append(endTime.format(timeFormatter))
         .append(". Description: ").append(description);
 
     return representation.toString();
