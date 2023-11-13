@@ -1,0 +1,17 @@
+@startuml ScheduleLog
+actor Student
+participant "ScheduleLog" as Logger
+
+activate Student
+Student -> Logger: Fill out logging form
+activate Logger
+Logger -> Logger: Save logging
+Logger --> Student: Confirmation of saving
+
+Student -> Logger: View previous logs
+Logger -> Logger: Retrieve past activities
+Logger --> Student: List of previous logs
+deactivate Logger
+deactivate Student
+@enduml
+
