@@ -26,7 +26,9 @@ public class Activity {
     private String description;
 
     // Default constructor for Jackson
-    public Activity() {}
+    public Activity() {
+
+    }
 
     /**
      * Constructor to initialize an activity.
@@ -54,7 +56,8 @@ public class Activity {
      * @param endTime     End time of the activity.
      * @param description A textual description of the activity.
      */
-    public void validateInput(List<Subject> subjects, LocalDateTime startTime, LocalDateTime endTime, String description) {
+    public void validateInput(List<Subject> subjects, LocalDateTime startTime, LocalDateTime endTime,
+            String description) {
         if (subjects == null || subjects.isEmpty()) {
             throw new IllegalArgumentException("List of subjects cannot be null or empty.");
         }
@@ -84,7 +87,6 @@ public class Activity {
         subjects.add(subject);
     }
 
-
     /**
      * Removes a subject from the activity.
      *
@@ -99,18 +101,38 @@ public class Activity {
         }
     }
 
+    /**
+     * Retrieves the list of subjects.
+     * 
+     * @return A list of Subject objects associated with this instance.
+     */
     public List<Subject> getSubjects() {
         return subjects;
     }
 
+    /**
+     * Gets the start time.
+     * 
+     * @return The LocalDateTime representing the start time.
+     */
     public LocalDateTime getStartTime() {
         return startTime;
     }
 
+    /**
+     * Gets the end time.
+     * 
+     * @return The LocalDateTime representing the end time.
+     */
     public LocalDateTime getEndTime() {
         return endTime;
     }
 
+    /**
+     * Gets the description.
+     * 
+     * @return A string representing the description of the instance.
+     */
     public String getDescription() {
         return description;
     }
@@ -129,11 +151,13 @@ public class Activity {
 
         // Loop through all subjects associated with the activity.
         for (Subject subject : subjects) {
-            representation.append("Activity for ").append(subject.getName()).append(" (").append(subject.getCode()).append("): ");
+            representation.append("Activity for ").append(subject.getName()).append(" (").append(subject.getCode())
+                    .append("): ");
         }
 
         // Format the start and end times.
-        representation.append(startTime.format(timeFormatter)).append(" - ").append(endTime.format(timeFormatter)).append(". Description: ").append(description);
+        representation.append(startTime.format(timeFormatter)).append(" - ").append(endTime.format(timeFormatter))
+                .append(". Description: ").append(description);
 
         return representation.toString();
     }

@@ -1,28 +1,64 @@
 package schedulelog.json;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.List;
+
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-
 import schedulelog.core.Activity;
 
-import java.util.List;
-import java.io.OutputStream;
-
+/**
+ * Manages HTTP communication with a RESTful service for operations related to
+ * Activity objects.
+ *
+ * RestConsumer provides functionalities to interact with a RESTful API,
+ * particularly for
+ * retrieving and adding Activity objects. It encapsulates the complexities of
+ * making HTTP
+ * requests and processing responses. The class supports operations such as
+ * fetching a list
+ * of activities from a remote server and posting new activity data.
+ *
+ * It utilizes Jackson for JSON serialization and deserialization, ensuring that
+ * Activity
+ * objects are correctly mapped to and from JSON format when communicating with
+ * the server.
+ * The class is configured to handle Java time objects properly when serializing
+ * and
+ * deserializing JSON data.
+ */
 public class RestConsumer {
 
     private final ObjectMapper mapper;
 
+    /**
+     * Initializes a new instance of RestConsumer with a configured ObjectMapper.
+     *
+     * The ObjectMapper is set up with the JavaTimeModule to handle Java time
+     * objects
+     * and configured to not write dates as timestamps.
+     */
     public RestConsumer() {
         this.mapper = getConfiguredMapper();
     }
 
+    /**
+     * Retrieves a list of Activity objects from a RESTful API.
+     *
+     * This method sends a GET request to the specified URL and processes the
+     * response.
+     * It deserializes the JSON response into a List of Activity objects.
+     *
+     * @return List of Activity objects retrieved from the server, or null if an
+     *         error occurs.
+     */
     public List<Activity> getActivities() {
         StringBuilder result = new StringBuilder();
         try {
@@ -48,7 +84,8 @@ public class RestConsumer {
             // System.out.println("Output from Server .... \n" + result.toString());
 
             // Deserialize JSON response to List of Activity objects
-            List<Activity> activities = mapper.readValue(result.toString(), new TypeReference<List<Activity>>() {});
+            List<Activity> activities = mapper.readValue(result.toString(), new TypeReference<List<Activity>>() {
+            });
             return activities;
 
         } catch (Exception e) {
@@ -57,6 +94,15 @@ public class RestConsumer {
         }
     }
 
+    /**
+     * Adds a new Activity object to the server via a RESTful API.
+     *
+     * This method sends a POST request to the server, including the Activity object
+     * in JSON format in the request body.
+     *
+     * @param activity The Activity object to be added to the server.
+     * @return The server's response as a String, or null if an error occurs.
+     */
     public String addActivity(Activity activity) {
         try {
             System.out.println("Sending POST request to server...");
@@ -97,6 +143,16 @@ public class RestConsumer {
         }
     }
 
+    /**
+     * Configures and returns an ObjectMapper for JSON serialization and
+     * deserialization.
+     *
+     * The returned ObjectMapper is registered with JavaTimeModule and configured to
+     * not write dates as timestamps, suitable for handling JSON data with Java time
+     * objects.
+     *
+     * @return Configured ObjectMapper.
+     */
     private ObjectMapper getConfiguredMapper() {
         ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new JavaTimeModule());
