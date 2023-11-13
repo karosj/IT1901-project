@@ -11,6 +11,8 @@ import schedulelog.core.Courses;
 import schedulelog.core.Subject;
 
 import static org.junit.jupiter.api.Assertions.fail;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doThrow;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
@@ -49,16 +51,16 @@ public class ControllerTest {
   @Test
   public void testGetActivities() throws Exception {
     MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/activities")
-        .accept(MediaType.APPLICATION_JSON))
-        .andExpect(MockMvcResultMatchers.status().isOk())
-        .andReturn();
+      .accept(MediaType.APPLICATION_JSON))
+      .andExpect(MockMvcResultMatchers.status().isOk())
+      .andReturn();
     try {
-        List<Activity> activities = objectMapper.readValue(result.getResponse().getContentAsString(), new TypeReference<List<Activity>>() {});
+      List<Activity> activities = objectMapper.readValue(result.getResponse().getContentAsString(), new TypeReference<List<Activity>>() {});
 
-        System.out.println("activities:");
-        System.out.println(activities);
+      System.out.println("activities:");
+      System.out.println(activities);
 
-        assertNotNull(activities);
+      assertNotNull(activities);
 
     } catch (JsonProcessingException e) {
       fail(e.getMessage());
@@ -66,7 +68,7 @@ public class ControllerTest {
   }
 
   @Test
-public void testAddActivity() throws Exception {
+  public void testAddActivity() throws Exception {
     // Create a sample Activity object
     Subject subject = new Subject("TDT4120", new Courses());
     LocalDateTime startTime = LocalDateTime.of(2023, 10, 31, 12, 0);
@@ -78,22 +80,179 @@ public void testAddActivity() throws Exception {
 
     // Perform POST request
     MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/addActivity")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(activityJson))
-            .andExpect(MockMvcResultMatchers.status().isOk())
-            .andReturn();
+      .contentType(MediaType.APPLICATION_JSON)
+      .content(activityJson))
+      .andExpect(MockMvcResultMatchers.status().isOk())
+      .andReturn();
 
     // Assert the response
     String response = result.getResponse().getContentAsString();
 
     assertEquals("Activity added successfully", response);
-}
+  }
 
+  @Test
+  public void testAddActivityNoSubjects() throws Exception {
+
+    String activityJson = "{\n" + //
+        "    \"description\": \"ggdssdwdG\",\n" + //
+        "    \"subjects\": [],\n" + //
+        "    \"startTime\": \"2010-02-22T20:10\",\n" + //
+        "    \"endTime\": \"2010-02-22T20:50\"\n" + //
+        "}";
+
+    // Perform POST request
+    MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/addActivity")
+      .contentType(MediaType.APPLICATION_JSON)
+      .content(activityJson))
+      .andExpect(MockMvcResultMatchers.status().isBadRequest()) // Expecting BAD_REQUEST status
+      .andReturn();
+
+    // Assert the response
+    String response = result.getResponse().getContentAsString();
+
+    assertEquals("Subjects are missing. ", response);
+  }
+
+  @Test
+  public void testAddActivityWrongSubjects() throws Exception {
+
+    String activityJson = "{\n" + //
+      "    \"description\": \"ggdssdwdG\",\n" + //
+      "    \"subjects\": [\n" + //
+      "        {\n" + //
+      "            \"code\": \"Lol\"\n" + //
+      "        }\n" + //
+      "    ],\n" + //
+      "    \"startTime\": \"2010-02-22T20:10\",\n" + //
+      "    \"endTime\": \"2010-02-22T20:50\"\n" + //
+      "}";
+
+    // Perform POST request
+    MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/addActivity")
+      .contentType(MediaType.APPLICATION_JSON)
+      .content(activityJson))
+      .andExpect(MockMvcResultMatchers.status().isBadRequest()) // Expecting BAD_REQUEST status
+      .andReturn();
+
+    // Assert the response
+    String response = result.getResponse().getContentAsString();
+
+    assertEquals("One or more subjects have an invalid code. ", response);
+  }
+
+  @Test
+  public void testAddActivityNoSubjectCode() throws Exception {
+
+    String activityJson = "{\n" + //
+      "    \"description\": \"ggdssdwdG\",\n" + //
+      "    \"subjects\": [\n" + //
+      "        {}\n" + //
+      "    ],\n" + //
+      "    \"startTime\": \"2010-02-22T20:10\",\n" + //
+      "    \"endTime\": \"2010-02-22T20:50\"\n" + //
+      "}";
+
+    // Perform POST request
+    MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/addActivity")
+      .contentType(MediaType.APPLICATION_JSON)
+      .content(activityJson))
+      .andExpect(MockMvcResultMatchers.status().isBadRequest()) // Expecting BAD_REQUEST status
+      .andReturn();
+
+    // Assert the response
+    String response = result.getResponse().getContentAsString();
+
+    assertEquals("One or more subjects have a missing or empty code. ", response);
+  }
+
+  @Test
+  public void testAddActivityNoStartTime() throws Exception {
+
+    String activityJson = "{\n" + //
+      "    \"description\": \"ggdssdwdG\",\n" + //
+      "    \"subjects\": [\n" + //
+      "        {\n" + //
+      "            \"code\": \"TDT4120\"\n" + //
+      "        }\n" + //
+      "    ],\n" + //
+      "    \"endTime\": \"2010-02-22T20:50\"\n" + //
+      "}";
+
+    // Perform POST request
+    MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/addActivity")
+      .contentType(MediaType.APPLICATION_JSON)
+      .content(activityJson))
+      .andExpect(MockMvcResultMatchers.status().isBadRequest()) // Expecting BAD_REQUEST status
+      .andReturn();
+
+    // Assert the response
+    String response = result.getResponse().getContentAsString();
+
+    assertEquals("Start time is missing. ", response);
+  }
+
+  @Test
+  public void testAddActivityNoEndTime() throws Exception {
+
+    String activityJson = "{\n" + //
+      "    \"description\": \"ggdssdwdG\",\n" + //
+      "    \"subjects\": [\n" + //
+      "        {\n" + //
+      "            \"code\": \"TDT4120\"\n" + //
+      "        }\n" + //
+      "    ],\n" + //
+      "    \"startTime\": \"2010-02-22T20:50\"\n" + //
+      "}";
+
+    // Perform POST request
+    MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/addActivity")
+      .contentType(MediaType.APPLICATION_JSON)
+      .content(activityJson))
+      .andExpect(MockMvcResultMatchers.status().isBadRequest()) // Expecting BAD_REQUEST status
+      .andReturn();
+
+    // Assert the response
+    String response = result.getResponse().getContentAsString();
+
+    assertEquals("End time is missing. ", response);
+  }
+
+  @Test
+  public void testAddActivityNoDesc() throws Exception {
+
+    String activityJson = "{\n" + //
+      "    \"subjects\": [\n" + //
+      "        {\n" + //
+      "            \"code\": \"TDT4160\",\n" + //
+      "            \"name\": \"TDT4160: Datamaskiner og digitalteknikk\"\n" + //
+      "        },\n" + //
+      "        {\n" + //
+      "            \"code\": \"TMA4240\",\n" + //
+      "            \"name\": \"TMA4240: Statistikk\"\n" + //
+      "        }\n" + //
+      "    ],\n" + //
+      "    \"startTime\": \"2010-02-22T20:10\",\n" + //
+      "    \"endTime\": \"2010-02-22T20:50\"\n" + //
+      "}";
+
+    // Perform POST request
+    MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/addActivity")
+      .contentType(MediaType.APPLICATION_JSON)
+      .content(activityJson))
+      .andExpect(MockMvcResultMatchers.status().isBadRequest()) // Expecting BAD_REQUEST status
+      .andReturn();
+
+    // Assert the response
+    String response = result.getResponse().getContentAsString();
+
+    assertEquals("Description is missing. ", response);
+  }
 
   private ObjectMapper getConfiguredMapper() {
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.registerModule(new JavaTimeModule());
-        mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-        return mapper;
-    }
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(new JavaTimeModule());
+    mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+    return mapper;
+  }
 }
