@@ -65,20 +65,6 @@ public class Courses {
     }
 
     /**
-     * Retrieves a map of courses.
-     * 
-     * This method returns a map where each key is a string representing some
-     * identifier
-     * and each corresponding value is a string representing details of the course.
-     * 
-     * @return A Map where keys are course identifiers and values are course
-     *         details.
-     */
-    public Map<String, String> getCourses() {
-        return courseMap;
-    }
-
-    /**
      * Adds a new course to the collection.
      * 
      * @param code The course code.
@@ -120,5 +106,9 @@ public class Courses {
     @Override
     public String toString() {
         return "Courses: " + courseMap;
+    }
+
+    public Map<String, String> getCourses() {
+        return courseMap;
     }
 }

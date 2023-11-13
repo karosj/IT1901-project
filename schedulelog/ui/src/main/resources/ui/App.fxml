@@ -42,7 +42,7 @@
         
     </ListView>
     
-    <Button onAction="#handleAddActivity" text="Add Activity"/>
+    <Button fx:id="addActivityButton" onAction="#handleAddActivity" text="Add Activity"/>
 
     <TableView fx:id="activitiesTableView" layoutX="10" layoutY="10" prefHeight="200" prefWidth="600">
         <columns>
