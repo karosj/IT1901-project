@@ -30,6 +30,7 @@ import static org.mockito.Mockito.when;
 import org.testfx.api.FxToolkit;
 import org.testfx.framework.junit5.ApplicationTest;
 import org.testfx.matcher.base.NodeMatchers;
+import org.testfx.util.WaitForAsyncUtils;
 
 import static org.testfx.api.FxAssert.verifyThat;
 import static org.testfx.matcher.control.LabeledMatchers.hasText;
@@ -112,12 +113,7 @@ public class AppTest extends ApplicationTest {
             controller.initialize();
         });
 
-        try {
-            // Wait for the controller to initialize
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        WaitForAsyncUtils.waitForFxEvents();
             
         // Assert that the activities list is empty or null
         verifyThat(".alert .content", hasText("An error occurred while retrieving the activities."));

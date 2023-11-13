@@ -24,6 +24,7 @@ import schedulelog.core.Courses;
 
 import java.util.stream.Collectors;
 
+import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 
 import javafx.collections.FXCollections;
@@ -83,7 +84,7 @@ public class AppController {
         subjectSelector.setItems(subjectsList);
         subjectSelector.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
-        refreshActivitiesList();
+        Platform.runLater(this::refreshActivitiesList);
     }
 
     public void setActivitiesList(List<Activity> activities) {
