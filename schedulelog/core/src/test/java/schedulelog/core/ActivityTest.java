@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -42,9 +43,19 @@ public class ActivityTest {
     }
 
     @Test
+    public void testAddNullSubject() {
+        assertThrows(IllegalArgumentException.class, () -> activity.addSubject(null));
+    }
+
+    @Test
     public void testRemoveSubject() {
         activity.removeSubject(subject1);
         assertFalse(activity.toString().contains("Programvareutvikling (TDT4140)"));
+    }
+
+    @Test
+    public void testRemoveNullSubject() {
+        assertThrows(IllegalArgumentException.class, () -> activity.removeSubject(null));
     }
 
     @Test
@@ -56,4 +67,62 @@ public class ActivityTest {
     public void testRemoveNonExistingSubject() {
         assertThrows(IllegalArgumentException.class, () -> activity.removeSubject(subject2));
     }
+
+    @Test
+    public void testValidateInputWithNullSubjects() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            activity.validateInput(null, LocalDateTime.now(), LocalDateTime.now().plusHours(1), "Test Description");
+        });
+    }
+
+    @Test
+    public void testValidateInputWithEmptySubjects() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            activity.validateInput(Collections.emptyList(), LocalDateTime.now(), LocalDateTime.now().plusHours(1), "Test Description");
+        });
+    }
+
+    @Test
+    public void testValidateInputWithNullStartTime() {
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            activity.validateInput(List.of(new Subject("TDT4140", courses)), null, LocalDateTime.now().plusHours(1), "Test Description");
+        });
+        assertEquals("Start and end times cannot be null.", exception.getMessage());
+    }
+    
+    @Test
+    public void testValidateInputWithNullEndTime() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            activity.validateInput(List.of(new Subject("TDT4140", courses)), LocalDateTime.now(), null, "Test Description");
+        });
+    }
+
+    @Test
+    public void testValidateInputWithEndTimeBeforeStartTime() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            activity.validateInput(List.of(new Subject("TDT4140", courses)), LocalDateTime.now(), LocalDateTime.now().minusHours(1), "Test Description");
+        });
+    }
+
+    @Test
+    public void testValidateInputWithNullDescription() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            activity.validateInput(List.of(new Subject("TDT4140", courses)), LocalDateTime.now(), LocalDateTime.now().plusHours(1), null);
+        });
+    }
+
+    @Test
+    public void testValidateInputWithEmptyDescription() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            activity.validateInput(List.of(new Subject("TDT4140", courses)), LocalDateTime.now(), LocalDateTime.now().plusHours(1), "");
+        });
+    }
+
+    @Test
+    public void testValidateInputWithWhitespaceDescription() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            activity.validateInput(List.of(new Subject("TDT4140", courses)), LocalDateTime.now(), LocalDateTime.now().plusHours(1), "   ");
+        });
+    }
+    
 }
