@@ -10,13 +10,6 @@ import schedulelog.core.Activity;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-
-import schedulelog.core.Activity;
-
 /**
  * FileStorage functionality for managing the storage and retrieval of Activity
  * objects.
