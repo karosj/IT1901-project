@@ -1,25 +1,13 @@
 package schedulelog.rest;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import static org.junit.jupiter.api.Assertions.*;
 
-import schedulelog.core.Activity;
-import schedulelog.core.Courses;
-import schedulelog.core.Subject;
-
-import static org.junit.jupiter.api.Assertions.fail;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doThrow;
-
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -35,10 +23,21 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
+import schedulelog.core.Activity;
+import schedulelog.core.Courses;
+import schedulelog.core.Subject;
+/**
+ * Test class for the Rest Controller.
+ *
+ * This class contains tests for the Controller class, focusing on its REST API endpoints.
+ * It uses MockMvc for testing Spring MVC controllers without starting a full HTTP server.
+ */
 @AutoConfigureMockMvc
 @ContextConfiguration(classes = { Controller.class })
 @WebMvcTest
@@ -51,12 +50,12 @@ public class ControllerTest {
   private MockMvc mockMvc;
 
   private ObjectMapper objectMapper;
-
+  // Reads the original content of the activities file before all tests.
   @BeforeEach
   public void setup() throws Exception {
     objectMapper = getConfiguredMapper();
   }
-
+  // Restores the original content of the activities file after all tests.
   @BeforeAll
     public static void setUpBeforeClass() throws Exception {
       // Check if the file exists and read its content
@@ -64,7 +63,7 @@ public class ControllerTest {
           originalContent = Files.readString(FILE_PATH);
       }
     }
-
+  // Sets up necessary objects before each test.
   @AfterAll
   public static void tearDownAfterClass() throws Exception {
     // Restore the original content of the file
@@ -72,7 +71,7 @@ public class ControllerTest {
         Files.writeString(FILE_PATH, originalContent);
     }
   }
-
+  // Tests the GET request to fetch activities.
   @Test
   public void testGetActivities() throws Exception {
     MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/activities")
@@ -91,7 +90,7 @@ public class ControllerTest {
       fail(e.getMessage());
     }
   }
-
+  // Tests adding a new activity with a POST request.
   @Test
   public void testAddActivity() throws Exception {
     // Create a sample Activity object
@@ -115,7 +114,7 @@ public class ControllerTest {
 
     assertEquals("Activity added successfully", response);
   }
-
+  // Tests adding an activity with empty subjects list, expecting a BAD_REQUEST response.
   @Test
   public void testAddActivityNoSubjects() throws Exception {
 
@@ -138,7 +137,7 @@ public class ControllerTest {
 
     assertEquals("Subjects are missing. ", response);
   }
-
+  //  Tests adding an activity with invalid subject codes, expecting a BAD_REQUEST response.
   @Test
   public void testAddActivityWrongSubjects() throws Exception {
 
@@ -165,7 +164,7 @@ public class ControllerTest {
 
     assertEquals("One or more subjects have an invalid code. ", response);
   }
-
+  // Tests adding an activity with no subject code provided, expecting a BAD_REQUEST response.
   @Test
   public void testAddActivityNoSubjectCode() throws Exception {
 
@@ -190,7 +189,7 @@ public class ControllerTest {
 
     assertEquals("One or more subjects have a missing or empty code. ", response);
   }
-
+  // Tests adding an activity without a start time, expecting a BAD_REQUEST response.
   @Test
   public void testAddActivityNoStartTime() throws Exception {
 
@@ -216,7 +215,7 @@ public class ControllerTest {
 
     assertEquals("Start time is missing. ", response);
   }
-
+  // Tests adding an activity without an end time, expecting a BAD_REQUEST response.
   @Test
   public void testAddActivityNoEndTime() throws Exception {
 
@@ -242,7 +241,7 @@ public class ControllerTest {
 
     assertEquals("End time is missing. ", response);
   }
-
+  // Tests adding an activity without a description, expecting a BAD_REQUEST response.
   @Test
   public void testAddActivityNoDesc() throws Exception {
 
@@ -273,7 +272,7 @@ public class ControllerTest {
 
     assertEquals("Description is missing. ", response);
   }
-
+  //
   private ObjectMapper getConfiguredMapper() {
     ObjectMapper mapper = new ObjectMapper();
     mapper.registerModule(new JavaTimeModule());
