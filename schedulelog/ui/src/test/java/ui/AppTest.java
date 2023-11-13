@@ -205,6 +205,33 @@ public class AppTest extends ApplicationTest {
     }
 
     @Test
+    public void testWrongTimeFormat() {
+        // Assuming you have a button with fx:id "addActivityButton" in your FXML
+        String addActivityButtonId = "#addActivityButton";
+
+        // Simulate user input
+        clickOn("#descriptionInput").write("Strange times");
+        clickOn("#startDateInput").write("10/27/2023");
+        type(KeyCode.ENTER);
+        clickOn("#startTimeInput").write("wrong");
+        clickOn("#endDateInput").write("10/27/2023");
+        type(KeyCode.ENTER);
+        clickOn("#endTimeInput").write("wrong");
+
+        // Assuming you have a ListView for subjects with fx:id "subjectSelector"
+        // Select a subject from the list
+        clickOn("#subjectSelector");
+        type(KeyCode.DOWN); // Navigate in the list
+        type(KeyCode.ENTER); // Select an item
+
+        // Click the button to add the activity
+        clickOn(addActivityButtonId);
+
+        verifyThat(".alert .content", hasText("Please enter the time in HH:mm format."));
+        assertEquals("Strange times", lookup("#descriptionInput").queryTextInputControl().getText());
+    }
+
+    @Test
     public void testNoSubjects() {
         // Assuming you have a button with fx:id "addActivityButton" in your FXML
         String addActivityButtonId = "#addActivityButton";
