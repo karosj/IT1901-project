@@ -33,13 +33,17 @@ import javafx.scene.control.SelectionMode;
 
 public class AppController {
 
-    private List<Activity> activities;
+    private List<Activity> activities = new ArrayList<>();
     private RestConsumer restConsumer;
     private Courses courses;
 
     public AppController() {
         this.restConsumer = new RestConsumer();
-        this.activities = this.restConsumer.getActivities();
+        courses = new Courses();
+    }
+
+    public AppController(RestConsumer restConsumer) {
+        this.restConsumer = restConsumer;
         courses = new Courses();
     }
 
@@ -84,16 +88,13 @@ public class AppController {
         subjectSelector.setItems(subjectsList);
         subjectSelector.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
-        if (activities != null) {
-            activitiesTableView.getItems().setAll(activities);
-        } else {
-            // Handle the case where activities is null, e.g., clear the table or show a message
-            activitiesTableView.getItems().clear();
-        }
+        refreshActivitiesList();
     }
 
     public void setActivitiesList(List<Activity> activities) {
-        activitiesTableView.getItems().setAll(activities);
+        if (activities != null && !activities.isEmpty()) {
+            activitiesTableView.getItems().setAll(activities);
+        }
     }
 
     public void refreshActivitiesList() {
@@ -102,7 +103,7 @@ public class AppController {
     }
 
     @FXML
-    private void handleAddActivity() {
+    public void handleAddActivity() {
         try {
             String description = descriptionInput.getText();
             LocalDateTime startTime = LocalDateTime.of(startDateInput.getValue(), LocalTime.parse(startTimeInput.getText(), DateTimeFormatter.ofPattern("HH:mm")));
@@ -143,18 +144,16 @@ public class AppController {
         subjectSelector.getSelectionModel().clearSelection();
     }
 
-    private void handleConnectionError(Exception e) {
-        System.err.println("Error connecting to backend: " + e.getMessage());
-        // You might want to show an alert to the user or take other appropriate actions
-        showAlert("Connection Error", "Unable to connect to the backend. Please check your network connection and try again.");
-    }
-
     private void showAlert(String title, String content) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(title);
         alert.setHeaderText(null);
         alert.setContentText(content);
         alert.showAndWait();
+    }
+
+    public void setRestConsumer(RestConsumer restConsumer) {
+        this.restConsumer = restConsumer;
     }
 
 }
