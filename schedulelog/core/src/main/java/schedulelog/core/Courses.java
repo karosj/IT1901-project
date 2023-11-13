@@ -55,6 +55,20 @@ public class Courses {
   }
 
   /**
+   * Retrieves a map of courses.
+   * 
+   * This method returns a map where each key is a string representing some
+   * identifier
+   * and each corresponding value is a string representing details of the course.
+   * 
+   * @return A Map where keys are course identifiers and values are course
+   *         details.
+   */
+  public Map<String, String> getCourses() {
+    return courseMap;
+  }
+
+  /**
    * Retrieves the name of a course given its code.
    * 
    * @param code The course code.
@@ -108,7 +122,4 @@ public class Courses {
     return "Courses: " + courseMap;
   }
 
-  public Map<String, String> getCourses() {
-    return courseMap;
-  }
 }
