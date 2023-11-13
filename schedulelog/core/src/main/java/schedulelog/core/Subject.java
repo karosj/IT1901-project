@@ -1,6 +1,6 @@
 package schedulelog.core;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
  * The Subject class represents an individual course with its code and name.
@@ -22,7 +22,7 @@ public class Subject {
      * Constructor to initialize the course code and retrieve its name from the
      * provided Courses.
      *
-     * @param code The course code.
+     * @param code    The course code.
      * @param courses The courses available.
      * @throws IllegalArgumentException if code is null or empty or if the
      *                                  code is not found in the courses.
@@ -61,6 +61,13 @@ public class Subject {
         return name;
     }
 
+    /**
+     * Resets the name of the current instance based on the course code.
+     * 
+     * This method updates the 'name' field of the current object by fetching the
+     * course name
+     * associated with the 'code' field from a 'courses' data source.
+     */
     public void resetName() {
         this.name = courses.getCourseName(code);
     }
