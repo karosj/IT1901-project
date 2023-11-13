@@ -105,6 +105,19 @@ public class FileStorageTest {
     @Test
     public void testUnreadableFile() throws IOException {
         File file = new File(FILE_NAME);
+        file.createNewFile();
+        file.setReadable(false);
+        file.setWritable(false);
+
+        // Create a sample activity
+        Subject subject = new Subject("TMA4240", courses);
+        LocalDateTime startTime = LocalDateTime.of(2023, 10, 30, 10, 0);
+        LocalDateTime endTime = LocalDateTime.of(2023, 10, 30, 12, 0);
+        Activity activity = new Activity(Arrays.asList(subject), startTime, endTime, "Math class");
+
+        // Add the activity to the storage
+        storage.addActivity(activity);
+
         String jsonResult = storage.getActivitiesJSON();
         System.out.println("jsonResult:");
         System.out.println(jsonResult);
