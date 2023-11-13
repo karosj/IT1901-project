@@ -108,9 +108,14 @@ public class AppController {
             LocalDateTime endTime = LocalDateTime.of(endDateInput.getValue(), LocalTime.parse(endTimeInput.getText(), DateTimeFormatter.ofPattern("HH:mm")));
             
             // Validate the input and create the activity
-            if (description.isEmpty() || startTime.isAfter(endTime)) {
+            if (description.isEmpty()) {
                 // Handle invalid input
                 showAlert("Invalid input", "Please check the activity details and try again.");
+                return;
+            }
+            else if (startTime.isAfter(endTime)) {
+                // Handle invalid input
+                showAlert("Invalid input", "Start time cannot be after end time.");
                 return;
             }
 

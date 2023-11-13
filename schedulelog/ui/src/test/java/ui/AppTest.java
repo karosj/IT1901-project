@@ -22,11 +22,20 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import org.testfx.api.FxToolkit;
 import org.testfx.framework.junit5.ApplicationTest;
+import org.testfx.matcher.base.NodeMatchers;
+
+import static org.testfx.api.FxAssert.verifyThat;
+import static org.testfx.matcher.control.LabeledMatchers.hasText;
+import javafx.application.Platform;
+
+
 
 /**
  * TestFX App test
@@ -91,6 +100,34 @@ public class AppTest extends ApplicationTest {
     }
 
     @Test
+    public void testNoConnectedServer() {
+        System.out.println("testNoConnectedServer start.");
+
+        // Mock the RestConsumer to return null for getActivities
+        when(mockRestConsumer.getActivities()).thenReturn(null);
+
+        Platform.runLater(() -> {
+            // Initialize the controller with the mocked RestConsumer
+            controller.setRestConsumer(mockRestConsumer);
+            controller.initialize();
+        });
+
+        try {
+            // Wait for the controller to initialize
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+            
+        // Assert that the activities list is empty or null
+        verifyThat(".alert .content", hasText("An error occurred while retrieving the activities."));
+
+        // Reset the mock to its original state
+        when(mockRestConsumer.getActivities()).thenReturn(mockActivities);
+        
+    }
+    
+    @Test
     public void testAddActivityClick() {
         // Assuming you have a button with fx:id "addActivityButton" in your FXML
         String addActivityButtonId = "#addActivityButton";
@@ -119,6 +156,7 @@ public class AppTest extends ApplicationTest {
         
         // Because the getActivites is mocked, the new activity will not be added to the list
         // But the fact that no error is shown means that the activity was added successfully
+
         // And that the inputs are cleared:
         assertEquals("", lookup("#descriptionInput").queryTextInputControl().getText());
     }
@@ -129,12 +167,18 @@ public class AppTest extends ApplicationTest {
         String addActivityButtonId = "#addActivityButton";
 
         // Simulate user input
-        clickOn("#descriptionInput").write("too little");
+        clickOn("#startDateInput").write("10/27/2023");
+        type(KeyCode.ENTER);
+        clickOn("#startTimeInput").write("10:00");
+        clickOn("#endDateInput").write("10/27/2023");
+        type(KeyCode.ENTER);
+        clickOn("#endTimeInput").write("12:00");
 
         // Click the button to add the activity
         clickOn(addActivityButtonId);
         
-        assertEquals("too little", lookup("#descriptionInput").queryTextInputControl().getText());
+        verifyThat(".alert .content", hasText("Please check the activity details and try again."));
+        assertEquals("10:00", lookup("#startTimeInput").queryTextInputControl().getText());
     }
 
     @Test
@@ -159,7 +203,8 @@ public class AppTest extends ApplicationTest {
 
         // Click the button to add the activity
         clickOn(addActivityButtonId);
-        
+
+        verifyThat(".alert .content", hasText("Start time cannot be after end time."));
         assertEquals("Strange dates", lookup("#descriptionInput").queryTextInputControl().getText());
     }
 
@@ -180,6 +225,7 @@ public class AppTest extends ApplicationTest {
         // Click the button to add the activity
         clickOn(addActivityButtonId);
         
+        verifyThat(".alert .content", hasText("An error occurred: List of subjects cannot be null or empty."));
         assertEquals("No subjects", lookup("#descriptionInput").queryTextInputControl().getText());
     }
 
