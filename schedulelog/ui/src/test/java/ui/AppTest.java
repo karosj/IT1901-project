@@ -82,19 +82,19 @@ public class AppTest extends ApplicationTest {
 
     @Test
     public void testControllerInitial() {
-        assertNotNull(this.controller);
+        assertNotNull(this.controller, "Controller should be initialized, but it was null.");
     }
 
     @Test
     public void testAppInitial() {
-        assertNotNull(this.app);
+        assertNotNull(this.app, "App instance should be initialized, but it was null");
     }
 
     @Test
     public void testInitialActivitiesList() {
         TableView<Activity> activitiesTableView = lookup("#activitiesTableView").query();
-        assertNotNull(activitiesTableView);
-        assert activitiesTableView.getItems().size() == 1;
+        assertNotNull(activitiesTableView, "Activities List should be loaded, but it was null.");
+        assertEquals(1,activitiesTableView.getItems().size(),"Acitivities List should have 1 activity, but it was: " + activitiesTableView.getItems().size());
     }
 
     @Test
@@ -113,7 +113,7 @@ public class AppTest extends ApplicationTest {
         WaitForAsyncUtils.waitForFxEvents();
             
         // Assert that the activities list is empty or null
-        verifyThat(".alert .content", hasText("An error occurred while retrieving the activities."));
+        verifyThat(".alert .content", hasText("An error occurred while retrieving the activities."),"Expected error message for failed activities retrieval not displayed.");
 
         // Reset the mock to its original state
         when(mockRestConsumer.getActivities()).thenReturn(mockActivities);
@@ -145,13 +145,13 @@ public class AppTest extends ApplicationTest {
 
         TableView<Activity> activitiesTableView = lookup("#activitiesTableView").query();
         ObservableList<Activity> activities = activitiesTableView.getItems(); 
-        assertNotNull(activities);
+        assertNotNull(activities, "Expected an activity in the list, but there was none");
         
         // Because the getActivites is mocked, the new activity will not be added to the list
         // But the fact that no error is shown means that the activity was added successfully
 
         // And that the inputs are cleared:
-        assertEquals("", lookup("#descriptionInput").queryTextInputControl().getText());
+        assertEquals("", lookup("#descriptionInput").queryTextInputControl().getText(),"Description input shpuld be cleared after adding an activity");
     }
 
     @Test
@@ -171,7 +171,7 @@ public class AppTest extends ApplicationTest {
         clickOn(addActivityButtonId);
         
         verifyThat(".alert .content", hasText("Please check the activity details and try again."));
-        assertEquals("10:00", lookup("#startTimeInput").queryTextInputControl().getText());
+        assertEquals("10:00", lookup("#startTimeInput").queryTextInputControl().getText(), "Start time should not be cleared");
     }
 
     @Test
@@ -198,7 +198,7 @@ public class AppTest extends ApplicationTest {
         clickOn(addActivityButtonId);
 
         verifyThat(".alert .content", hasText("Start time cannot be after end time."));
-        assertEquals("Strange dates", lookup("#descriptionInput").queryTextInputControl().getText());
+        assertEquals("Strange dates", lookup("#descriptionInput").queryTextInputControl().getText(),"Description input should not be cleared when the date range is wrong");
     }
 
     @Test
@@ -225,7 +225,7 @@ public class AppTest extends ApplicationTest {
         clickOn(addActivityButtonId);
 
         verifyThat(".alert .content", hasText("Please enter the time in HH:mm format."));
-        assertEquals("Strange times", lookup("#descriptionInput").queryTextInputControl().getText());
+        assertEquals("Strange times", lookup("#descriptionInput").queryTextInputControl().getText(), "Description input should not be cleared when there is an incorrect time format");
     }
 
     @Test
@@ -246,7 +246,7 @@ public class AppTest extends ApplicationTest {
         clickOn(addActivityButtonId);
         
         verifyThat(".alert .content", hasText("An error occurred: List of subjects cannot be null or empty."));
-        assertEquals("No subjects", lookup("#descriptionInput").queryTextInputControl().getText());
+        assertEquals("No subjects", lookup("#descriptionInput").queryTextInputControl().getText(), "Description input should not be cleared when there aren't any subjects");
     }
 
 }
