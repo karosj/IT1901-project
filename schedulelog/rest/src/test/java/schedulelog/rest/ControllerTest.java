@@ -21,6 +21,8 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,10 +35,17 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 @AutoConfigureMockMvc
 @ContextConfiguration(classes = { Controller.class })
 @WebMvcTest
 public class ControllerTest {
+
+  private static String originalContent;
+  private static final Path FILE_PATH = Paths.get("activities.json");
 
   @Autowired
   private MockMvc mockMvc;
@@ -46,6 +55,22 @@ public class ControllerTest {
   @BeforeEach
   public void setup() throws Exception {
     objectMapper = getConfiguredMapper();
+  }
+
+  @BeforeAll
+    public static void setUpBeforeClass() throws Exception {
+      // Check if the file exists and read its content
+      if (Files.exists(FILE_PATH)) {
+          originalContent = Files.readString(FILE_PATH);
+      }
+    }
+
+  @AfterAll
+  public static void tearDownAfterClass() throws Exception {
+    // Restore the original content of the file
+    if (originalContent != null) {
+        Files.writeString(FILE_PATH, originalContent);
+    }
   }
 
   @Test
