@@ -77,38 +77,8 @@ public class Courses {
       throw new IllegalArgumentException("Course code or name cannot be null or empty");
     }
 
-    /**
-     * Retrieves a map of courses.
-     * 
-     * This method returns a map where each key is a string representing some
-     * identifier
-     * and each corresponding value is a string representing details of the course.
-     * 
-     * @return A Map where keys are course identifiers and values are course
-     *         details.
-     */
-    public Map<String, String> getCourses() {
-        return courseMap;
-    }
-
-    /**
-     * Adds a new course to the collection.
-     * 
-     * @param code The course code.
-     * @param name The name of the course.
-     * @throws IllegalArgumentException if code or name is null or empty or if
-     *                                  course with the same code already exists.
-     */
-    public void addCourse(String code, String name) {
-        if (code == null || code.trim().isEmpty() || name == null || name.trim().isEmpty()) {
-            throw new IllegalArgumentException("Course code or name cannot be null or empty");
-        }
-
-        if (courseMap.containsKey(code)) {
-            throw new IllegalArgumentException("Course with code " + code + " already exists");
-        }
-
-        courseMap.put(code, name);
+    if (courseMap.containsKey(code)) {
+      throw new IllegalArgumentException("Course with code " + code + " already exists");
     }
 
     courseMap.put(code, name);
@@ -125,13 +95,20 @@ public class Courses {
       throw new IllegalArgumentException("Courses with code " + code + " does not exist");
     }
 
-    /**
-     * Returns a string representation of the courses in the collection.
-     * 
-     * @return A string representation of the courses.
-     */
-    @Override
-    public String toString() {
-        return "Courses: " + courseMap;
-    }
+    courseMap.remove(code);
+  }
+
+  /**
+   * Returns a string representation of the courses in the collection.
+   * 
+   * @return A string representation of the courses.
+   */
+  @Override
+  public String toString() {
+    return "Courses: " + courseMap;
+  }
+
+  public Map<String, String> getCourses() {
+    return courseMap;
+  }
 }

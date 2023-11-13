@@ -1,6 +1,8 @@
 package schedulelog.json;
 
-import static com.github.tomakehurst.wiremock.client.WireMock.*;
+import schedulelog.core.Activity;
+import schedulelog.core.Courses;
+import schedulelog.core.Subject;
 
 import java.time.LocalDateTime;
 import java.util.Collections;
@@ -9,24 +11,17 @@ import java.util.List;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.client.WireMock;
+import static com.github.tomakehurst.wiremock.client.WireMock.*;
 
-import schedulelog.core.Activity;
-import schedulelog.core.Courses;
-import schedulelog.core.Subject;
 
-/**
- * Test class for FileStorage.
- */
+
 public class RestConsumerTest {
 
     private WireMockServer wireMockServer;
     private RestConsumer restConsumer;
 
-    // Sets up the test environment, including a mock server and RestConsumer
-    // instance.
     @BeforeEach
     public void setup() {
         wireMockServer = new WireMockServer(8080);
@@ -35,14 +30,11 @@ public class RestConsumerTest {
         restConsumer = new RestConsumer();
     }
 
-    // Tears down the test environment, stopping the mock server.
     @AfterEach
     public void teardown() {
         wireMockServer.stop();
     }
 
-    // Tests the getActivities method of RestConsumer to ensure it correctly fetches
-    // activities.
     @Test
     public void testGetActivities() {
         String jsonResponse = "[{\"subjects\":[{\"code\":\"TMA4240\",\"name\":\"Statistikk\"}],\"startTime\":\"2023-10-30T10:00:00\",\"endTime\":\"2023-10-30T12:00:00\",\"description\":\"Math class\"}]";
@@ -61,8 +53,6 @@ public class RestConsumerTest {
         System.out.println("testGetActivities passed.");
     }
 
-    // Tests the addActivity method of RestConsumer to ensure it correctly adds an
-    // activity.
     @Test
     public void testAddActivity() {
         System.out.println("testAddActivity start.");
