@@ -35,7 +35,7 @@ public class Controller {
    * @return A JSON string representing all activities.
    */
   @GetMapping("/activities")
-  public String Activities() {
+  public String activities() {
     return this.fileStorage.getActivitiesJSON();
   }
 
