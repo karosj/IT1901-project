@@ -37,7 +37,6 @@ public class Activity {
    * @param endTime     End time of the activity.
    * @param description A textual description of the activity.
    */
-
   public Activity(List<Subject> subjects, LocalDateTime startTime, LocalDateTime endTime, String description) {
     // Validating the input parameters.
     validateInput(subjects, startTime, endTime, description);
@@ -47,7 +46,6 @@ public class Activity {
     this.endTime = endTime;
     this.description = description;
   }
-
 
   /**
    * Validates the input parameters for the constructor.
@@ -114,6 +112,11 @@ public class Activity {
     return endTime;
   }
 
+  /**
+   * Gets the description.
+   * 
+   * @return A string representing the description of the instance.
+   */
   public String getDescription() {
     return description;
   }
