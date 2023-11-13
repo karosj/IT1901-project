@@ -10,7 +10,26 @@ import schedulelog.core.Activity;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
+import schedulelog.core.Activity;
+
+/**
+ * FileStorage functionality for managing the storage and retrieval of Activity
+ * objects.
+ * 
+ * Handles interactions with a JSON file (activities.json) for persisting
+ * activity data. Offers methods to read activities from the file, convert them
+ * to
+ * JSON format, add new activities, and configure JSON processing for proper
+ * handling
+ * of date and time formats. This class is essential for maintaining the
+ * persistent state
+ * of activities across application restarts.
+ */
 public class FileStorage {
 
     private final String FILE_NAME;
@@ -25,6 +44,7 @@ public class FileStorage {
 
     /**
      * Retrieves the list of activities from the "activities.json" file.
+     * 
      * @return List of activities, or an empty list if the file does not exist.
      */
     public List<Activity> getActivities() {
@@ -34,7 +54,8 @@ public class FileStorage {
         }
         try {
             ObjectMapper mapper = getConfiguredMapper();
-            return mapper.readValue(file, new TypeReference<List<Activity>>() {});
+            return mapper.readValue(file, new TypeReference<List<Activity>>() {
+            });
         } catch (IOException e) {
             System.out.println("Error reading file.");
             e.printStackTrace();
@@ -43,7 +64,9 @@ public class FileStorage {
     }
 
     /**
-     * Retrieves the list of activities from the "activities.json" file as a JSON string.
+     * Retrieves the list of activities from the "activities.json" file as a JSON
+     * string.
+     * 
      * @return JSON string representation of the list of activities.
      */
     public String getActivitiesJSON() {
@@ -59,6 +82,7 @@ public class FileStorage {
 
     /**
      * Adds a new activity to the "activities.json" file.
+     * 
      * @param activity The activity to be added.
      */
     public void addActivity(Activity activity) {
@@ -85,6 +109,15 @@ public class FileStorage {
         }
     }
 
+    /**
+     * Creates and configures an ObjectMapper for JSON processing.
+     *
+     * Initializes a new ObjectMapper and configures it for handling
+     * Java time objects by registering the JavaTimeModule. It also adjusts the
+     * ObjectMapper's settings to not write dates as timestamps.
+     *
+     * @return A configured ObjectMapper instance.
+     */
     private ObjectMapper getConfiguredMapper() {
         ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new JavaTimeModule());
