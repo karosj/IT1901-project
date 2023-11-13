@@ -109,6 +109,15 @@ public class FileStorage {
         }
     }
 
+    /*
+     * Gets the file name.
+     * 
+     * @return The file name.
+     */
+    public String getFileName() {
+        return FILE_NAME;
+    }
+
     /**
      * Creates and configures an ObjectMapper for JSON processing.
      *
