@@ -39,9 +39,26 @@ public class Subject {
       throw new IllegalArgumentException("Invalid course code. It is not part of the courses.");
     }
 
-    this.code = code;
-    this.courses = courses;
-  }
+    /**
+     * Constructor to initialize the course code and retrieve its name from the
+     * provided Courses.
+     *
+     * @param code    The course code.
+     * @param courses The courses available.
+     * @throws IllegalArgumentException if code is null or empty or if the
+     *                                  code is not found in the courses.
+     */
+    public Subject(String code, Courses courses) {
+        if (code == null || code.trim().isEmpty()) {
+            throw new IllegalArgumentException("Course code cannot be null or empty");
+        }
+        if (courses == null) {
+            throw new IllegalArgumentException("Courses name cannot be null");
+        }
+        this.name = courses.getCourseName(code);
+        if (this.name == null) {
+            throw new IllegalArgumentException("Invalid course code. It is not part of the courses.");
+        }
 
   /**
    * Retrieves the course code.
@@ -65,13 +82,24 @@ public class Subject {
     this.name = courses.getCourseName(code);
   }
 
-  /**
-   * Returns a string representation of the course.
-   *
-   * @return A string representation of the course.
-   */
-  @Override
-  public String toString() {
-    return "Course Code: " + code + ", Course Name: " + name;
-  }
+    /**
+     * Resets the name of the current instance based on the course code.
+     * 
+     * This method updates the 'name' field of the current object by fetching the
+     * course name
+     * associated with the 'code' field from a 'courses' data source.
+     */
+    public void resetName() {
+        this.name = courses.getCourseName(code);
+    }
+
+    /**
+     * Returns a string representation of the course.
+     *
+     * @return A string representation of the course.
+     */
+    @Override
+    public String toString() {
+        return "Course Code: " + code + ", Course Name: " + name;
+    }
 }
