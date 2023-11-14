@@ -1,0 +1,14 @@
+# "ScheduleLog" release 3
+
+* We've decided to stick with JavaFX and skip React for now. Our main goal has been to make the JavaFX app better by adding more features and cleaning up the code. We made this call based on how big the project is and how much work it would be. So, we're sticking with JavaFX to make things easier and get the results we want.
+
+* Additionally, we've added the project's features, giving extra attention to the important role of the REST API. Maven has been a big help in handling the whole project. We spent time making detailed tests for all parts, like classes and even JSON files. We made sure to test everything thoroughly to keep the app in top shape. Our main aim was to fix any Spotbugs or Checkstyle issues and make our tests cover more ground for solid quality control.
+
+* Additionally, we've implemented new functionalities in the project, giving special attention to the crucial role played by the REST API. Maven has been a key component in managing the entire project. We've dedicated time to creating comprehensive tests for all components, including classes, JSON files, and extending to the REST products, especially the controllers. Ensuring the quality of the app has been a top priority, driving us to conduct thorough testing. Our focus has been on addressing Spotbugs and Checkstyle errors, with a significant emphasis on expanding test coverage for robust quality control.
+
+* Our work habits have evolved positively since the last exercise. We have maintained the same workflow, linking all issues to new branches, which are then approved by each other before merging into the main branch (master). A notable improvement is our use of appropriate labels for issues, creating a clearer categorization, such as between documentation tasks and frontend tasks. We have also adopted an explanatory practice for commits, including the "#" symbol followed by the issue number. While we primarily work together and code collaboratively, we have been mindful to avoid imbalances in the number of commits by placing importance on the "co-authored-by:" convention. This ensures a transparent and collaborative approach to our development process.
+
+* Our documentation now includes an updated version of the package design, illustrated through a package diagram. Additionally, a class diagram provides insight into the core of our product. A realistic sequence diagram has been developed to clarify internal connections within the system. We have also included a comprehensive explanation of the REST service. Similar to previous release documentations, Release 3 has been used as a tool to document progress throughout the project, providing a holistic and up-to-date overview of the system's structure and functionality.
+
+
+
