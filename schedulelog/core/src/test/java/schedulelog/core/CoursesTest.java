@@ -1,14 +1,17 @@
 package schedulelog.core;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
+/**
+ * JUnit test class for Courses
+ */
 public class CoursesTest {
 
     // Courses instance for testing purposes.
@@ -87,12 +90,11 @@ public class CoursesTest {
     @Test
     public void testGetCourses() {
         Map<String, String> expectedCourses = Map.of(
-            "TDT4140", "Programvareutvikling",
-            "TDT4242", "Avansert programvareutvikling"
-        );
+                "TDT4140", "Programvareutvikling",
+                "TDT4242", "Avansert programvareutvikling");
         assertTrue(course.getCourses().equals(expectedCourses), "Courses map should match the expected map");
     }
-    
+
     // Testing the string representation of the Courses class.
     @Test
     public void testToString() {
