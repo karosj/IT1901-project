@@ -1,13 +1,13 @@
 # ScheduleLog
 This app is designed to provide an overview of your school work. You add the activities including subject you've been working on, and a brief note about your study session, and how many hours you worked. The app adds a timestamp, date and time, to the activity.
 
-# Screenshot from the first draft
-![](/assets/release1png/startMenu.png) 
-![](/assets/release1png/submit.png)
-![](/assets/release1png/readToFile.png)
+# Screenshot from use
+![](/assets/release3png/step1.png) 
+![](/assets/release3png/step2.png)
+![](/assets/release3png/step3.png)
 
 ## User Story
-I'm wondering how much I actually spend on different subjects during the week to plan next week better. Every time after I've worked on a subject, I go into the app and press the "add" button. Today, I worked on a ITP project. I choose the subject from the dropdown menu and enter 2 hours in the hours field, and some notes. It then appears on top of the list of entries sorted by timestamp when I'm done.
+I'm a student wondering how much I actually spend on different subjects during the week to plan next week better. Every time after I've worked on a subject, I go into the app and log the activity. Today, I worked on a TDT4160 task. I choose the subject from the selection menu, and enter use the calendar date selections to add the date 11/14/2023 for both start and end, and start time 12, end time 15. Then I write the description "Øving" and click the add activity button. It then appears in list of entries.
 
 ## Sequence diagram
 The sequence diagram illustrates how a student interacts with a system named "ScheduleLog." The student fills out a logging form, saves the log, and then views previous logs. The "ScheduleLog" system stores and retrieves the necessary information for logging and displaying previous activities. The sequence diagram is located in the same folder with the name "architecture.puml," which can be opened in a preview to convert the code into a diagram.
