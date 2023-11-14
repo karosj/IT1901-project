@@ -1,18 +1,20 @@
 package schedulelog.json;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+
 import schedulelog.core.Activity;
 
 /**
  * FileStorage functionality for managing the storage and retrieval of Activity
- * objects.  
+ * objects.
  * Handles interactions with a JSON file (activities.json) for persisting
  * activity data. Offers methods to read activities from the file, convert them
  * to
@@ -26,9 +28,19 @@ public class FileStorage {
 
   private final String FILE_NAME;
 
+  /**
+   * Constructor to initialize a filename "activities.json"
+   */
+
   public FileStorage() {
     this.FILE_NAME = "activities.json";
   }
+
+  /**
+   * Constructor to initialize an activity.
+   * 
+   * @param fileName name of the file.
+   */
 
   public FileStorage(String fileName) {
     this.FILE_NAME = fileName;

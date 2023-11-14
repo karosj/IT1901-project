@@ -37,7 +37,6 @@ public class Activity {
    * @param endTime     End time of the activity.
    * @param description A textual description of the activity.
    */
-
   public Activity(List<Subject> subjects, LocalDateTime startTime, LocalDateTime endTime, String description) {
     // Validating the input parameters.
     validateInput(subjects, startTime, endTime, description);
@@ -47,7 +46,6 @@ public class Activity {
     this.endTime = endTime;
     this.description = description;
   }
-
 
   /**
    * Validates the input parameters for the constructor.
@@ -102,18 +100,38 @@ public class Activity {
     }
   }
 
+  /**
+   * Retrieves the list of subjects.
+   * 
+   * @return A list of Subject objects associated with this instance.
+   */
   public List<Subject> getSubjects() {
     return subjects;
   }
 
+  /**
+   * Gets the start time.
+   * 
+   * @return The LocalDateTime representing the start time.
+   */
   public LocalDateTime getStartTime() {
     return startTime;
   }
 
+  /**
+   * Gets the end time.
+   * 
+   * @return The LocalDateTime representing the end time.
+   */
   public LocalDateTime getEndTime() {
     return endTime;
   }
 
+  /**
+   * Gets the description.
+   * 
+   * @return A string representing the description of the instance.
+   */
   public String getDescription() {
     return description;
   }
@@ -133,13 +151,13 @@ public class Activity {
     // Loop through all subjects associated with the activity.
     for (Subject subject : subjects) {
       representation.append("Activity for ")
-        .append(subject.getName()).append(" (").append(subject.getCode())
+          .append(subject.getName()).append(" (").append(subject.getCode())
           .append("): ");
     }
 
     // Format the start and end times.
     representation.append(startTime.format(timeFormatter)).append(" - ")
-      .append(endTime.format(timeFormatter))
+        .append(endTime.format(timeFormatter))
         .append(". Description: ").append(description);
 
     return representation.toString();

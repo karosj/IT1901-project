@@ -61,6 +61,14 @@ public class Subject {
     return name;
   }
 
+  /**
+   * Resets the name of the current instance based on the course code.
+   * 
+   * This method updates the 'name' field of the current object by fetching the
+   * course name
+   * associated with the 'code' field from a 'courses' data source.
+   */
+
   public void resetName() {
     this.name = courses.getCourseName(code);
   }
