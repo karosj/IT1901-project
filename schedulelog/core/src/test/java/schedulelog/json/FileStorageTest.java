@@ -43,7 +43,7 @@ public class FileStorageTest {
     @Test
     public void testEmptyConstructor() {
         FileStorage fileStorage = new FileStorage();
-        assertTrue(fileStorage.getFileName() == "activities.json");
+        assertTrue(fileStorage.getFileName() == "activities.json","Default filename should be 'activities.json' in the empty constructor.");
     }
 
     @Test
@@ -69,7 +69,7 @@ public class FileStorageTest {
         FileStorage anotherStorage = new FileStorage(FILE_NAME);
 
         // Assert that the added and retrieved activities are the same
-        Assertions.assertEquals(new ArrayList<Activity>(), anotherStorage.getActivities());
+        Assertions.assertEquals(new ArrayList<Activity>(), anotherStorage.getActivities(),"Activities retrieved from an existing file should match the expected activities.");
     }
 
     @Test
@@ -88,7 +88,7 @@ public class FileStorageTest {
         Activity retrievedActivity = anotherStorage.getActivities().get(0);
 
         // Assert that the added and retrieved activities are the same
-        Assertions.assertEquals(activity.toString(), retrievedActivity.toString());
+        Assertions.assertEquals(activity.toString(), retrievedActivity.toString(),"The activity added and then retrieved should have the same string representation.");
     }
 
     @Test
@@ -112,7 +112,7 @@ public class FileStorageTest {
         System.out.println(jsonResult);
         
         // Since the method catches the IOException, we just ensure it doesn't throw an unhandled exception
-        assertTrue(file.exists());
+        assertTrue(file.exists(),"The file should still exist even if it's unreadable.");
 
     }
 
