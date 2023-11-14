@@ -44,3 +44,17 @@ On the other hand:
 In conclusion, a mobile app would suit our idea regarding ScheduleLog. The app is designed for students. We assume that a student would rather use this application on their phone than a desktop. 
 
 To reduce the amount of disadvantages having a mobile app, we will make sure that the feedback is clear. In addition, to improve the error part, we will take the testing part seriously. 
+
+## Testing
+### Jacoco test coverage
+![image](../../assets/release3png/jacoco-ui.png)
+![image](../../assets/release3png/jacoco-core.png)
+![image](../../assets/release3png/jacoco-rest.png)
+
+More details can be found be opening the report html, created after running tests. These can be found in each module's target/site/jacoco directories. 
+
+In the schedulelog.json and some other places, there are a few catch block branches that are not covered, but we did not think they have much impact on the app when it runs in a normal user scenario. We did also not test the App.java and RestApplication as these does not have logic created by us. Other than that, we have tried to create test scenarios for as much coverage as possible. A high coverage means that we can ensure that as many use cases as possible stays functional and are not broken by future changes, which indicates that our current coverage for the modules are good enough. 
+
+### Mocking
+We are using Mockito and WireMock to mock different aspects of our app during testing.
+The WireMock of the api endpoint in the RestConsumerTest requires port 8080 to be available, so the rest server can not already be running there during tests.
