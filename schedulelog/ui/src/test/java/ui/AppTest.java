@@ -84,21 +84,21 @@ public class AppTest extends ApplicationTest {
   // Tests the initialization of the controller.
   @Test
   public void testControllerInitial() {
-    assertNotNull(this.controller);
+    assertNotNull(this.controller, "Controller should be initialized, but it was null.");
   }
 
   // Tests the initialization of the app.
   @Test
   public void testAppInitial() {
-    assertNotNull(this.app);
+    assertNotNull(this.app, "App instance should be initialized, but it was null");
   }
 
   // Tests the initial activities list in the TableView.
   @Test
   public void testInitialActivitiesList() {
     TableView<Activity> activitiesTableView = lookup("#activitiesTableView").query();
-    assertNotNull(activitiesTableView);
-    assert activitiesTableView.getItems().size() == 1;
+    assertNotNull(activitiesTableView, "Activities List should be loaded, but it was null.");
+    assertEquals(1,activitiesTableView.getItems().size(),"Acitivities List should have 1 activity, but it was: " + activitiesTableView.getItems().size());
   }
 
   // Tests the behavior of the UI when the server is not connected.
@@ -151,7 +151,7 @@ public class AppTest extends ApplicationTest {
 
     TableView<Activity> activitiesTableView = lookup("#activitiesTableView").query();
     ObservableList<Activity> activities = activitiesTableView.getItems();
-    assertNotNull(activities);
+    assertNotNull(activities, "Expected an activity in the list, but there was none");
 
     // Because the getActivites is mocked, the new activity will not be added to the
     // list
@@ -159,7 +159,7 @@ public class AppTest extends ApplicationTest {
     // successfully
 
     // And that the inputs are cleared:
-    assertEquals("", lookup("#descriptionInput").queryTextInputControl().getText());
+    assertEquals("", lookup("#descriptionInput").queryTextInputControl().getText(),"Description input shpuld be cleared after adding an activity");
   }
 
   // Tests the UI response when adding an activity with missing details.
@@ -180,7 +180,7 @@ public class AppTest extends ApplicationTest {
     clickOn(addActivityButtonId);
 
     verifyThat(".alert .content", hasText("Please check the activity details and try again."));
-    assertEquals("10:00", lookup("#startTimeInput").queryTextInputControl().getText());
+    assertEquals("10:00", lookup("#startTimeInput").queryTextInputControl().getText(), "Start time should not be cleared");
   }
 
   // Tests the UI response when adding an activity with incorrect date inputs
@@ -208,7 +208,7 @@ public class AppTest extends ApplicationTest {
     clickOn(addActivityButtonId);
 
     verifyThat(".alert .content", hasText("Start time cannot be after end time."));
-    assertEquals("Strange dates", lookup("#descriptionInput").queryTextInputControl().getText());
+    assertEquals("Strange dates", lookup("#descriptionInput").queryTextInputControl().getText(),"Description input should not be cleared when the date range is wrong");
   }
 
   // Tests the UI response when adding an activity with wrong time format.
@@ -236,7 +236,7 @@ public class AppTest extends ApplicationTest {
     clickOn(addActivityButtonId);
 
     verifyThat(".alert .content", hasText("Please enter the time in HH:mm format."));
-    assertEquals("Strange times", lookup("#descriptionInput").queryTextInputControl().getText());
+    assertEquals("Strange times", lookup("#descriptionInput").queryTextInputControl().getText(), "Description input should not be cleared when there is an incorrect time format");
   }
 
   // Tests the UI response when adding an activity without any subjects.
@@ -258,7 +258,7 @@ public class AppTest extends ApplicationTest {
     clickOn(addActivityButtonId);
 
     verifyThat(".alert .content", hasText("An error occurred: List of subjects cannot be null or empty."));
-    assertEquals("No subjects", lookup("#descriptionInput").queryTextInputControl().getText());
+    assertEquals("No subjects", lookup("#descriptionInput").queryTextInputControl().getText(), "Description input should not be cleared when there aren't any subjects");
   }
 
 }
