@@ -145,6 +145,11 @@ mvn checkstyle:check
 1. ```cd ui```
 2. ```mvn javafx:run```
 
+### jlink and jpackage: 
+1. ```cd ui```
+2. ```mvn javafx:jlink```
+3. ```mvn jpackage:jpackage```
+
 
 
 
